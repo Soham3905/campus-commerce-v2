@@ -1,26 +1,37 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * ==============================================================================
+ * Global Theme Tokens (Tailwind CSS v4)
+ * ==============================================================================
+ * These theme variables can be used everywhere in your application as utility classes:
+ * - `bg-primary` -> #1c3829 (Dark Forest Green for primary buttons/accents)
+ * - `hover:bg-primary-hover` -> #152b1f (Hover state for buttons)
+ * - `bg-primary-light` / `text-primary-light` -> #eef7f2 (Light green badges/pills)
+ * - `text-primary-accent` -> #10b981 (Vibrant green for status dots/links)
+ * - `text-text-main` -> #18181b (Main dark text)
+ * - `text-text-muted` -> #71717a (Secondary/help text)
+ * - `bg-card-subtle` -> #fbfbf9 (Left column off-white card background)
+ * - `bg-terminal-bg` -> #171b1d (Dark code bar background)
+ */
+@theme {
+  --color-primary: #1c3829;
+  --color-primary-hover: #152b1f;
+  --color-primary-light: #eef7f2;
+  --color-primary-accent: #10b981;
+
+  --color-text-main: #18181b;
+  --color-text-muted: #71717a;
+  --color-text-subtle: #a1a1aa;
+
+  --color-page-bg: #fbfbfb;
+  --color-card-subtle: #fbfbf9;
+  --color-terminal-bg: #171b1d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Reusable Dot Grid Background for Pages */
+.bg-dot-grid {
+  background-color: var(--color-page-bg);
+  background-image: radial-gradient(#d4d4d8 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
 }
