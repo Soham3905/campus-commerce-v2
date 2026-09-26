@@ -14,7 +14,7 @@ export type SidebarItem =
   | "finances"
   | "analytics"
   | "marketing"
-  | "discount";
+  | "dummy";
 
 interface SidebarProps {
   activeItem: SidebarItem;
@@ -146,9 +146,17 @@ export function Sidebar({
               <span>Marketing</span>
             </Link>
 
-            <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-600 hover:bg-zinc-200/60 transition">
-              <span>🏷️</span>
-              <span>Discount</span>
+            {/* Dummy Page Link -> /pages/dummy */}
+            <Link
+              href="/pages/dummy"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl transition ${
+                activeItem === "dummy"
+                  ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
+                  : "text-zinc-600 hover:bg-zinc-200/60"
+              }`}
+            >
+              <span>📄</span>
+              <span>Dummy</span>
             </Link>
           </nav>
 
