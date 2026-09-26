@@ -14,7 +14,8 @@ export type SidebarItem =
   | "finances"
   | "analytics"
   | "marketing"
-  | "dummy";
+  | "dummy"
+  | "landing";
 
 interface SidebarProps {
   activeItem: SidebarItem;
@@ -157,6 +158,19 @@ export function Sidebar({
             >
               <span>📄</span>
               <span>Dummy</span>
+            </Link>
+
+            {/* Landing Page Link -> /pages/landing */}
+            <Link
+              href="/pages/landing"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl transition ${
+                activeItem === "landing"
+                  ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
+                  : "text-zinc-600 hover:bg-zinc-200/60"
+              }`}
+            >
+              <span>🌐</span>
+              <span>Landing Page</span>
             </Link>
           </nav>
 

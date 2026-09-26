@@ -72,7 +72,7 @@ export default function DummyContentPage() {
       : items.filter((item) => item.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-800 p-2.5 sm:p-5 md:p-6 font-sans">
+    <div className="min-h-screen bg-zinc-50 text-zinc-800 p-2.5 sm:p-5 md:p-6 font-sans no-scrollbar">
       {/* Top Banner */}
       <div className="rounded-2xl border border-emerald-200 bg-white p-3.5 sm:p-5 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

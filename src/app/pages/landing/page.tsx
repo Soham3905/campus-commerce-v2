@@ -9,19 +9,21 @@ type ViewportMode = "desktop" | "tablet" | "phone";
 
 /**
  * ==============================================================================
- * Route: /pages/dummy
+ * Route: /pages/landing (Landing Page SDUI Viewer)
  * ==============================================================================
  * Beginner Note:
- * This page embeds "/dummy-content" inside a fully responsive <iframe>.
+ * This page embeds "/landing-content" (the Server-Driven UI landing page)
+ * inside a fully responsive <iframe>.
  *
  * Responsiveness Highlights:
  * 1. Auto-detects device screen width on initial load (Mobile, Tablet, or Desktop).
  * 2. Mobile Phone view features an interactive iPhone mockup with realistic notch.
- * 3. Tablet view features a sleek tablet bezel with top camera.
- * 4. Desktop view features a full-width browser window mockup with address bar.
- * 5. Adapts fluidly to real smartphones, tablets, and desktop monitors.
+ * 3. Tablet view features a sleek tablet bezel with top camera dot.
+ * 4. Desktop view features a full-width browser window mockup with secure address bar.
+ * 5. Passes ?device= query params so the SDUI 100-column grid renders the exact
+ *    mobile, tablet, or desktop layout.
  */
-export default function DummyPage() {
+export default function LandingPage() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [viewport, setViewport] = useState<ViewportMode>("desktop");
   const [iframeKey, setIframeKey] = useState(0);
@@ -45,15 +47,18 @@ export default function DummyPage() {
     setIframeKey((prev) => prev + 1);
   };
 
+  // Build the iframe source URL with device mode hint
+  const iframeSrc = `/landing-content?device=${viewport === "phone" ? "mobile" : viewport}`;
+
   return (
-    <div className="min-h-screen bg-[#f4f5f7] text-zinc-800 flex flex-col font-sans selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-[#f4f5f7] text-zinc-800 flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
       {/* 1. Global Header Bar */}
       <Header onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} />
 
       {/* 2. Main Dashboard Layout (Sidebar + Content Area) */}
       <div className="flex flex-1 relative">
         <Sidebar
-          activeItem="dummy"
+          activeItem="landing"
           isOpenMobile={isMobileSidebarOpen}
           onCloseMobile={() => setIsMobileSidebarOpen(false)}
         />
@@ -63,10 +68,10 @@ export default function DummyPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 bg-white p-3 sm:p-4 rounded-xl border border-zinc-200/90 shadow-2xs">
             <div className="flex items-center gap-2">
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-zinc-900">
-                Dummy Page
+                Landing Page
               </h1>
               <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-emerald-800">
-                Iframe Embed
+                SDUI Iframe Embed
               </span>
             </div>
 
@@ -122,7 +127,7 @@ export default function DummyPage() {
                 <button
                   type="button"
                   onClick={handleReload}
-                  className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition active:scale-95"
+                  className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition active:scale-95 cursor-pointer"
                   title="Reload Iframe"
                 >
                   <span>🔄</span>
@@ -130,10 +135,10 @@ export default function DummyPage() {
                 </button>
 
                 <Link
-                  href="/dummy-content"
+                  href="/landing-content"
                   target="_blank"
                   className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition"
-                  title="Open dummy content directly in new tab"
+                  title="Open landing content directly in new tab"
                 >
                   <span>↗️</span>
                   <span className="hidden sm:inline">New Tab</span>
@@ -146,7 +151,6 @@ export default function DummyPage() {
           {/* RESPONSIVE IFRAME CONTAINER                                        */}
           {/* ================================================================== */}
           <div className="flex-1 flex justify-center items-start min-h-[600px] sm:min-h-[750px] pb-4 sm:pb-6">
-            
             {/* ---------------------------------------------------------------- */}
             {/* 1. PHONE VIEWPORT (Realistic Phone Mockup with Notch)             */}
             {/* ---------------------------------------------------------------- */}
@@ -156,11 +160,10 @@ export default function DummyPage() {
                 <div className="w-full rounded-[36px] sm:rounded-[44px] bg-zinc-900 p-2 sm:p-3 shadow-2xl ring-1 ring-zinc-800">
                   {/* Phone Bezel with Notch */}
                   <div className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] bg-black border border-zinc-800">
-                    
                     {/* Status Bar + Dynamic Island / Center Camera Notch */}
                     <div className="relative flex items-center justify-between bg-zinc-900 px-4 sm:px-6 pt-2 pb-1.5 text-[10px] font-bold text-zinc-300 select-none">
                       <span>9:41</span>
-                      
+
                       {/* Realistic Center Camera & Speaker Notch */}
                       <div className="absolute left-1/2 -translate-x-1/2 top-1.5 flex items-center gap-1.5 rounded-full bg-black px-2.5 py-0.5 ring-1 ring-zinc-800/80">
                         <span className="h-2 w-2 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center">
@@ -181,8 +184,8 @@ export default function DummyPage() {
                     <iframe
                       key={iframeKey}
                       ref={iframeRef}
-                      src="/dummy-content"
-                      title="Dummy Content Phone Preview"
+                      src={iframeSrc}
+                      title="Landing Page Phone Preview"
                       className="h-[680px] sm:h-[620px] w-full bg-white border-0 no-scrollbar"
                       style={{ scrollbarWidth: "none" }}
                     />
@@ -217,8 +220,8 @@ export default function DummyPage() {
                     <iframe
                       key={iframeKey}
                       ref={iframeRef}
-                      src="/dummy-content"
-                      title="Dummy Content Tablet Preview"
+                      src={iframeSrc}
+                      title="Landing Page Tablet Preview"
                       className="h-[620px] sm:h-[660px] w-full bg-white border-0 no-scrollbar"
                       style={{ scrollbarWidth: "none" }}
                     />
@@ -248,13 +251,13 @@ export default function DummyPage() {
                   {/* Browser Address Bar Pill */}
                   <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] sm:text-xs text-zinc-500 font-mono max-w-xs sm:max-w-sm w-full shadow-2xs truncate">
                     <span className="text-zinc-400 shrink-0">🔒</span>
-                    <span className="truncate">https://campus-commerce.vnit/dummy-content</span>
+                    <span className="truncate">https://campus-commerce.vnit/landing-content</span>
                   </div>
 
                   {/* Quick Refresh Icon */}
                   <button
                     onClick={handleReload}
-                    className="text-xs text-zinc-400 hover:text-zinc-700 transition p-1 shrink-0"
+                    className="text-xs text-zinc-400 hover:text-zinc-700 transition p-1 shrink-0 cursor-pointer"
                     title="Refresh iframe"
                   >
                     ↻
@@ -265,8 +268,8 @@ export default function DummyPage() {
                 <iframe
                   key={iframeKey}
                   ref={iframeRef}
-                  src="/dummy-content"
-                  title="Dummy Content Desktop Preview"
+                  src={iframeSrc}
+                  title="Landing Page Desktop Preview"
                   className="h-[720px] sm:h-[760px] w-full bg-white border-0 no-scrollbar"
                   style={{ scrollbarWidth: "none" }}
                 />
@@ -278,4 +281,3 @@ export default function DummyPage() {
     </div>
   );
 }
-
