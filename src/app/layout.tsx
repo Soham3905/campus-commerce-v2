@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-dot-grid text-zinc-900 antialiased selection:bg-emerald-800 selection:text-white">
+      <body className="min-h-screen bg-zinc-50 text-zinc-900 antialiased selection:bg-emerald-800 selection:text-white">
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>

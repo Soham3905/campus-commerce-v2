@@ -205,7 +205,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col justify-between px-3 py-3 sm:px-6 sm:py-6 lg:px-8">
+    <div className="relative flex min-h-screen flex-col justify-between bg-zinc-50 px-3 py-3 sm:px-6 sm:py-6 lg:px-8">
       {/* ---------------------------------------------------------------------- */}
       {/* OTP POPUP NOTIFICATION (Fully Mobile-Friendly)                         */}
       {/* ---------------------------------------------------------------------- */}
@@ -254,7 +254,7 @@ export default function LoginPage() {
       {/* ---------------------------------------------------------------------- */}
       {/* 1. TOP HEADER BAR                                                      */}
       {/* ---------------------------------------------------------------------- */}
-      <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-2 py-1 sm:py-2">
+      <header className="mx-auto flex w-full max-w-md sm:max-w-lg md:max-w-5xl items-center justify-between gap-2 py-1 sm:py-2">
         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
           <div className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-200 bg-primary-light text-primary">
             {/* Graduation Cap Icon */}
@@ -280,12 +280,12 @@ export default function LoginPage() {
       {/* 2. MAIN SPLIT CARD (Step 1 & Step 2)                                   */}
       {/* ---------------------------------------------------------------------- */}
       <main className="my-auto flex w-full justify-center py-4 sm:py-6">
-        <div className="grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-2xl sm:rounded-[28px] border border-zinc-200/90 bg-white shadow-lg sm:shadow-xl shadow-zinc-200/40 md:grid-cols-2">
+        <div className="grid w-full max-w-md sm:max-w-lg md:max-w-5xl grid-cols-1 overflow-hidden rounded-2xl sm:rounded-[28px] border border-zinc-200/90 bg-white shadow-lg sm:shadow-xl shadow-zinc-200/40 md:grid-cols-2">
           
           {/* ================================================================== */}
-          {/* LEFT COLUMN: Mascot & Assistant                                    */}
+          {/* LEFT COLUMN: Mascot & Assistant (Hidden on mobile phones)          */}
           {/* ================================================================== */}
-          <section className="flex flex-col justify-between border-b border-zinc-100 bg-card-subtle p-4 sm:p-6 md:p-8 md:border-b-0 md:border-r">
+          <section className="hidden md:flex flex-col justify-between border-b border-zinc-100 bg-card-subtle p-4 sm:p-6 md:p-8 md:border-b-0 md:border-r">
             <div>
               {/* Badges */}
               <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
@@ -520,12 +520,13 @@ export default function LoginPage() {
                             otpRefs.current[idx] = el;
                           }}
                           type="text"
+                          inputMode="numeric"
                           maxLength={1}
                           value={digit}
                           onChange={(e) => handleOtpChange(idx, e.target.value)}
                           onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                           placeholder="•"
-                          className={`h-12 w-full rounded-xl border text-center font-mono text-lg font-bold outline-none transition sm:h-14 sm:text-xl ${
+                          className={`h-11 sm:h-14 w-full rounded-xl border px-0 text-center font-mono text-lg font-bold outline-none transition sm:text-xl ${
                             errorMessage
                               ? "border-red-400 bg-red-50/40 text-red-900 focus:border-red-500 focus:ring-2 focus:ring-red-200"
                               : digit
@@ -610,7 +611,7 @@ export default function LoginPage() {
       {/* ---------------------------------------------------------------------- */}
       {/* 3. FOOTER LINKS                                                        */}
       {/* ---------------------------------------------------------------------- */}
-      <footer className="mx-auto flex w-full max-w-5xl items-center justify-center gap-4 sm:gap-6 py-2 text-xs text-text-subtle">
+      <footer className="mx-auto flex w-full max-w-md sm:max-w-lg md:max-w-5xl items-center justify-center gap-4 sm:gap-6 py-2 text-xs text-text-subtle">
         <a href="#" className="hover:text-text-main transition">Privacy</a>
         <span>&bull;</span>
         <a href="#" className="hover:text-text-main transition">Terms</a>

@@ -29,9 +29,7 @@
   --color-terminal-bg: #171b1d;
 }
 
-/* Reusable Dot Grid Background for Pages */
+/* Page Background Utility */
 .bg-dot-grid {
   background-color: var(--color-page-bg);
-  background-image: radial-gradient(#d4d4d8 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
 }
