@@ -1,0 +1,22 @@
+{
+  "type": "Badge",
+  "displayName": "Badge",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "text"
+  ],
+  "fields": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  }
+}

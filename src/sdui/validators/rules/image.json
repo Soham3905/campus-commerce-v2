@@ -1,0 +1,22 @@
+{
+  "type": "Image",
+  "displayName": "Image",
+  "category": "Atoms",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "imageUrl"
+  ],
+  "fields": {
+    "imageUrl": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 500
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "Score",
+  "displayName": "Score",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [
+    "text"
+  ],
+  "fields": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "out of": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "HeaderButton",
+  "displayName": "Header Button",
+  "category": "Atoms",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Icon",
+    "Text"
+  ],
+  "minValue": 0,
+  "maxValue": 2,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

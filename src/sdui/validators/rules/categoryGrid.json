@@ -1,0 +1,16 @@
+{
+  "type": "CategoryGrid",
+  "displayName": "Category Grid",
+  "category": "Navigation",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "CategoryItem"
+  ],
+  "minValue": 1,
+  "maxValue": 12,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

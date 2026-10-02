@@ -1,0 +1,31 @@
+{
+  "type": "CategoryItem",
+  "displayName": "Category Item",
+  "category": "Navigation",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Image",
+    "Text",
+    "Badge"
+  ],
+  "minValue": 0,
+  "maxValue": 3,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "label"
+  ],
+  "fields": {
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    }
+  }
+}

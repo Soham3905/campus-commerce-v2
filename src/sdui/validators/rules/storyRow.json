@@ -1,0 +1,17 @@
+{
+  "type": "StoryRow",
+  "displayName": "Story Row",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "StoryCircle"
+  ],
+  "minValue": 0,
+  "maxValue": 20,
+  "allowedActions": [
+    "onScroll",
+    "onDrop"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

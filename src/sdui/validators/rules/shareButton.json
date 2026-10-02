@@ -1,0 +1,15 @@
+{
+  "type": "ShareButton",
+  "displayName": "Share Button",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onShare",
+    "onTap"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

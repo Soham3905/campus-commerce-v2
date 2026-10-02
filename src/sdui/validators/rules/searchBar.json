@@ -1,0 +1,32 @@
+{
+  "type": "SearchBar",
+  "displayName": "Search Bar",
+  "category": "Navigation",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onSearch",
+    "onFocus",
+    "onClear",
+    "onChange",
+    "onSubmit",
+    "onBlur"
+  ],
+  "requiredDataFields": [
+    "placeholder"
+  ],
+  "fields": {
+    "placeholder": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20
+    }
+  }
+}

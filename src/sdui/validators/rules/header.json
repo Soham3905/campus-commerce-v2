@@ -1,0 +1,17 @@
+{
+  "type": "Header",
+  "displayName": "Header",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "HeaderButton",
+    "SearchBar",
+    "Icon",
+    "Box"
+  ],
+  "minValue": 0,
+  "maxValue": 10,
+  "allowedActions": [],
+  "requiredDataFields": [],
+  "fields": {}
+}

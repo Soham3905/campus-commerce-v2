@@ -1,0 +1,14 @@
+{
+  "type": "NavBar",
+  "displayName": "Navigation Bar",
+  "category": "Navigation",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onTabSelect"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

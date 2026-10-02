@@ -1,0 +1,20 @@
+{
+  "type": "IFrame",
+  "displayName": "IFrame",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [
+    "src"
+  ],
+  "fields": {
+    "src": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 500
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "CouponCode",
+  "displayName": "Coupon Code",
+  "category": "Marketing",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onCopy",
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "coupon"
+  ],
+  "fields": {
+    "coupon": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 30
+    }
+  }
+}

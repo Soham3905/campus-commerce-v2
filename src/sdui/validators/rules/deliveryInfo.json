@@ -1,0 +1,20 @@
+{
+  "type": "DeliveryInfo",
+  "displayName": "Delivery Info",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [
+    "prefix"
+  ],
+  "fields": {
+    "prefix": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    }
+  }
+}

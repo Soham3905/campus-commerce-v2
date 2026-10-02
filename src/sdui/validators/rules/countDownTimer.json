@@ -1,0 +1,24 @@
+{
+  "type": "CountDownTimer",
+  "displayName": "Countdown Timer",
+  "category": "Marketing",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onEnd",
+    "onHover",
+    "onExpire"
+  ],
+  "requiredDataFields": [
+    "targetDate"
+  ],
+  "fields": {
+    "targetDate": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    }
+  }
+}

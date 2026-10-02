@@ -1,0 +1,18 @@
+{
+  "type": "Sponsored",
+  "displayName": "Sponsored Tag",
+  "category": "Marketing",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [],
+  "fields": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  }
+}

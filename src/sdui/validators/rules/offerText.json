@@ -1,0 +1,20 @@
+{
+  "type": "OfferText",
+  "displayName": "Offer Text",
+  "category": "Marketing",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [
+    "text"
+  ],
+  "fields": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    }
+  }
+}

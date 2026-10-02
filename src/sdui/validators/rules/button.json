@@ -1,0 +1,25 @@
+{
+  "type": "Button",
+  "displayName": "Button",
+  "category": "Atoms",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Text",
+    "Icon"
+  ],
+  "minValue": 0,
+  "maxValue": 2,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "label"
+  ],
+  "fields": {
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    }
+  }
+}

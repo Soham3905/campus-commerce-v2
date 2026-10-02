@@ -1,0 +1,22 @@
+{
+  "type": "PriceBlock",
+  "displayName": "Price Block",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [
+    "sellingPrice"
+  ],
+  "fields": {
+    "sellingPrice": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  }
+}

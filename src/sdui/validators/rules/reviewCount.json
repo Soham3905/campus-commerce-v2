@@ -1,0 +1,25 @@
+{
+  "type": "ReviewCount",
+  "displayName": "Review Count",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [],
+  "minValue": 0,
+  "maxValue": 0,
+  "allowedActions": [],
+  "requiredDataFields": [
+    "text"
+  ],
+  "fields": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "count": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "Label",
+  "displayName": "Label",
+  "category": "Typography",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Sponsored",
+    "Text"
+  ],
+  "minValue": 0,
+  "maxValue": 5,
+  "allowedActions": [],
+  "requiredDataFields": [],
+  "fields": {}
+}

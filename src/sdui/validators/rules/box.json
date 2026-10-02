@@ -1,0 +1,16 @@
+{
+  "type": "Box",
+  "displayName": "Box Container",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "*"
+  ],
+  "minValue": 0,
+  "maxValue": 50,
+  "allowedActions": [
+    "onTap"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}

@@ -1,0 +1,43 @@
+{
+  "type": "ProductCard",
+  "displayName": "Product Card",
+  "category": "Commerce",
+  "isCompulsory": true,
+  "allowedComponents": [
+    "Image",
+    "Badge",
+    "Sponsored",
+    "Label",
+    "PriceBlock",
+    "Title",
+    "Description",
+    "Rating",
+    "Score",
+    "ReviewCount",
+    "OfferText",
+    "DeliveryInfo",
+    "Button",
+    "ShareButton",
+    "Box",
+    "Icon",
+    "Text"
+  ],
+  "minValue": 0,
+  "maxValue": 15,
+  "allowedActions": [
+    "onTap",
+    "onSwipe",
+    "onDoubleTap",
+    "onLongPress"
+  ],
+  "requiredDataFields": [
+    "id"
+  ],
+  "fields": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    }
+  }
+}

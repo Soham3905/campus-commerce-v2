@@ -1,0 +1,23 @@
+{
+  "type": "ProductList",
+  "displayName": "Product List",
+  "category": "Commerce",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "ProductCard"
+  ],
+  "minValue": 0,
+  "maxValue": 20,
+  "allowedActions": [
+    "onScroll",
+    "onEndReached"
+  ],
+  "requiredDataFields": [],
+  "fields": {
+    "title": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80
+    }
+  }
+}

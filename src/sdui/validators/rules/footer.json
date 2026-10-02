@@ -1,0 +1,16 @@
+{
+  "type": "Footer",
+  "displayName": "Footer",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Text",
+    "Box",
+    "Button"
+  ],
+  "minValue": 0,
+  "maxValue": 10,
+  "allowedActions": [],
+  "requiredDataFields": [],
+  "fields": {}
+}

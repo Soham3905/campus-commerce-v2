@@ -1,0 +1,31 @@
+{
+  "type": "HeroBanner",
+  "displayName": "Hero Banner",
+  "category": "Marketing",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "Image",
+    "Title",
+    "Button",
+    "CountDownTimer",
+    "Text",
+    "Box"
+  ],
+  "minValue": 0,
+  "maxValue": 10,
+  "allowedActions": [
+    "onTap",
+    "onMount",
+    "onError"
+  ],
+  "requiredDataFields": [
+    "imageUrl"
+  ],
+  "fields": {
+    "imageUrl": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 500
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "Page",
+  "displayName": "Page Root",
+  "category": "Layout",
+  "isCompulsory": true,
+  "allowedComponents": [
+    "*"
+  ],
+  "minValue": 0,
+  "maxValue": 100,
+  "allowedActions": [],
+  "requiredDataFields": [],
+  "fields": {}
+}

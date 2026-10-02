@@ -1,0 +1,22 @@
+{
+  "type": "Carousel",
+  "displayName": "Carousel",
+  "category": "Layout",
+  "isCompulsory": false,
+  "allowedComponents": [
+    "HeroBanner",
+    "Image",
+    "Box",
+    "IFrame"
+  ],
+  "minValue": 1,
+  "maxValue": 15,
+  "allowedActions": [
+    "onSwipe",
+    "onScroll",
+    "onSwipeLeft",
+    "onSwipeRight"
+  ],
+  "requiredDataFields": [],
+  "fields": {}
+}
