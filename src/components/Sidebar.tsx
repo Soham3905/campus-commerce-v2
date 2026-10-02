@@ -51,7 +51,7 @@ export function Sidebar({
 
       <aside
         className={`fixed inset-y-14 left-0 z-30 w-60 border-r border-zinc-200 bg-[#f8f9fa] p-4 transition-transform duration-200 md:static md:translate-x-0 ${
-          isOpenMobile ? "translate-x-0 shadow-2xl" : "-translate-x-full"
+          isOpenMobile ? "h-[92vh] translate-x-0 shadow-2xl" : "-translate-x-full"
         } flex flex-col justify-between overflow-y-auto shrink-0`}
       >
         <div className="space-y-6">
