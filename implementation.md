@@ -43,8 +43,8 @@ src/
 │   ├── globals.css                # Tailwind theme tokens & color variables
 │   └── page.tsx                   # Root redirect to /login
 ├── components/
-│   ├── Header.tsx                 # Global top navigation bar (User badge, ⌘K search, mobile menu)
-│   └── Sidebar.tsx                # Left navigation sidebar (Updated: Discount renamed to Dummy)
+│   ├── Header.tsx                 # Global top navigation bar (User badge, ⌘K search, mobile hamburger menu)
+│   └── Sidebar.tsx                # Responsive navigation sidebar & mobile drawer (Full-height sheet, backdrop, scroll-lock, auto-close)
 ├── lib/
 │   └── otpStore.ts                # In-memory OTP dictionary & master bypass key
 └── store/
@@ -318,3 +318,221 @@ flowchart TD
   - [x] Verified full visual responsiveness across Desktop, Tablet (778px), and Phone (375px with Dynamic Island notch) via live browser testing.
   - [x] Removed visible scrollbars (`scrollbar-width: none`, `-ms-overflow-style: none`, `::-webkit-scrollbar: none`) across Phone and Tablet device frames while preserving native scroll.
   - [x] Adjusted Tablet frame container width to 778px (+10px width) across landing and dummy pages.
+
+  Next Task : To create themes and interfaces properly for validation purpose as well...it should include everything imp...in that...I have created themes as well as interfaces ...I think themes are correct and proper but interfaces are not...Interfaces should contain keys like minValue : int,maxValue : int,allowedComponents : array , allowed actions : array etc etc etc and default data : { minValue : 2,maxValue:4,allowedComponents : For example for product list it will be product card etc etc etc} like that interfaces I need...so that ..for now as we are rendering our landingpage schema which calls the sduirenderer and page gets render...but now I want that user will select a theme and that theme json will go to the interface for validation properly and that will render...something like this I want to do now...interfaces will act as validators...for the json schema i.e. for now coming from themes...Please ensure that everything should be properly responsive for desktop,tablet as well as phone ...also ensure that the code should be very simple , easy to understand , beginner friendly as I am a newbie...
+
+
+
+4. How the Validator Will Check This (4 Easy Checks)
+When the user selects a theme, our validator will run these 4 simple checks for every node in the schema:
+
+Check 1: Component Whitelist: Does child.type exist inside allowedComponents? (e.g., if someone puts a Footer inside a ProductCard, it gets flagged).
+Check 2: Child Count Range: Is node.children.length between minValue and maxValue?
+Check 3: Required Data Fields: Are the keys in requiredDataFields present in node.data? (e.g., does Button have label?).
+Check 4: Allowed Actions: Are the actions configured on this node present in allowedActions?
+If any rule fails, the validator won't crash — it reports clear errors or safely inserts defaultData and defaultStyle!
+
+Here is the **exact, step-by-step procedure** we will follow to copy, modernize, validate, and wire up the themes and interfaces into Next.js. 
+
+Everything is broken down into **6 clear phases** so you can follow along easily.
+
+---
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        6-STEP IMPLEMENTATION ROADMAP                   │
+└────────────────────────────────────────────────────────────────────────┘
+
+  Step 1: Create Master Interface Contract
+          └── Create src/sdui/interfaces/types.ts with your required keys
+
+  Step 2: Create All 35 Component Interfaces
+          └── Define rules (minValue, maxValue, allowedComponents, 
+              allowedActions, defaultData, defaultStyle) for every component
+
+  Step 3: Port Themes to Next.js (TypeScript + Clean UTF-8)
+          └── Copy themes from CampusCommerce, convert .js to .ts, 
+              restore clean emojis (🛒, ⚡, ❤️, 🏷️), export via index.ts
+
+  Step 4: Build the Simple Validator Engine
+          └── Create src/sdui/validator/validateSDUI.ts 
+              Runs the 4 checks and safely applies fallback defaults
+
+  Step 5: Build the Theme Applier Engine
+          └── Create src/sdui/utils/themeApplier.ts
+              Combines theme selection + schema validation into a safe output
+
+  Step 6: Connect Theme Switcher to Landing Page & Test
+          └── Add visual Theme Selector in /pages/landing
+              Test live across Phone (375px), Tablet (778px), and Desktop
+```
+
+---
+
+### Step 1: Create Master Java Validator Contract (Completed)
+**Target Folder**: [`validators/src/com/campuscommerce/sdui/validators/`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/)
+
+- [x] **Setup Libraries**: Configured Jackson JSON parser jars (`jackson-core`, `jackson-databind`, `jackson-annotations`) inside [`validators/lib/`](file:///d:/Programming/Campus_Commerce/validators/lib/).
+- [x] **Master Interface Contract**: Created [`ComponentValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ComponentValidator.java) defining:
+  - `getType()`
+  - `getDisplayName()`
+  - `getCategory()`
+  - `isCompulsory()`
+  - `getAllowedComponents()`
+  - `getMinValue()` & `getMaxValue()`
+  - `getAllowedActions()`
+  - `getRequiredDataFields()`
+  - `getDefaultData()` & `getDefaultStyle()`
+  - `validate(JsonNode node)`
+- [x] **Base Reusable Engine**: Created [`BaseComponentValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/BaseComponentValidator.java) implementing the standard 4-point validation logic:
+  1. Children count range check (`minValue` <= count <= `maxValue`)
+  2. Component whitelist check (`allowedComponents`)
+  3. Required data fields check (`requiredDataFields`)
+  4. Allowed actions check (`allowedActions`)
+- [x] **Verified Compilation**: Successfully compiled with `javac 17` into `validators/bin/` with 0 errors.
+- [x] **Verified Sample Validators**: Created and compiled [`ProductListValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ProductListValidator.java) and [`ProductCardValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ProductCardValidator.java).
+
+---
+
+### Step 2: Create All 35 Java Component Validators (Completed)
+**Target Folder**: [`validators/src/com/campuscommerce/sdui/validators/`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/)
+
+- [x] **Navigation & Header (5 Validators)**:
+  - [`HeaderValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/HeaderValidator.java)
+  - [`HeaderButtonValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/HeaderButtonValidator.java)
+  - [`NavBarValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/NavBarValidator.java)
+  - [`FooterValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/FooterValidator.java)
+  - [`SearchBarValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/SearchBarValidator.java)
+- [x] **Banners & Marketing (4 Validators)**:
+  - [`HeroBannerValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/HeroBannerValidator.java)
+  - [`CarouselValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/CarouselValidator.java)
+  - [`CountDownTimerValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/CountDownTimerValidator.java)
+  - [`CouponCodeValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/CouponCodeValidator.java)
+- [x] **Category & Discovery (4 Validators)**:
+  - [`CategoryGridValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/CategoryGridValidator.java)
+  - [`CategoryItemValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/CategoryItemValidator.java)
+  - [`StoryRowValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/StoryRowValidator.java)
+  - [`StoryCircleValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/StoryCircleValidator.java)
+- [x] **Containers & Layout (4 Validators)**:
+  - [`PageValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/PageValidator.java)
+  - [`HomeValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/HomeValidator.java)
+  - [`BoxValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/BoxValidator.java)
+  - [`IFrameValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/IFrameValidator.java)
+- [x] **Commerce & Lists (2 Validators)**:
+  - [`ProductCardValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ProductCardValidator.java)
+  - [`ProductListValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ProductListValidator.java)
+- [x] **Commerce Atoms & Interactive (11 Validators)**:
+  - [`ButtonValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ButtonValidator.java)
+  - [`BadgeValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/BadgeValidator.java)
+  - [`PriceBlockValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/PriceBlockValidator.java)
+  - [`OfferTextValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/OfferTextValidator.java)
+  - [`DeliveryInfoValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/DeliveryInfoValidator.java)
+  - [`RatingValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/RatingValidator.java)
+  - [`ScoreValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ScoreValidator.java)
+  - [`ReviewCountValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ReviewCountValidator.java)
+  - [`ShareButtonValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ShareButtonValidator.java)
+  - [`SponsoredValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/SponsoredValidator.java)
+  - [`IconValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/IconValidator.java)
+- [x] **Typography & Media (5 Validators)**:
+  - [`TitleValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/TitleValidator.java)
+  - [`DescriptionValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/DescriptionValidator.java)
+  - [`TextValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/TextValidator.java)
+  - [`LabelValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/LabelValidator.java)
+  - [`ImageValidator.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ImageValidator.java)
+- [x] **Central Registry**: Created [`ValidatorRegistry.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ValidatorRegistry.java) registering all 35 validators.
+- [x] **Verified Compilation**: Successfully compiled all 38 Java classes into `validators/bin/` with 0 errors. Tested runtime retrieval for all components.
+
+---
+
+### Step 3: Port Themes into TypeScript (`.ts`) & Fix Emojis (Completed)
+**Source Folder**: `D:\Programming\CampusCommerce\src\sdui\themes/`  
+**Target Folder**: [`src/sdui/themes/`](file:///d:/Programming/Campus_Commerce/src/sdui/themes/)
+
+- [x] **Ported All 35 Component Themes**: Converted all 35 theme files from JavaScript (`.js`) to TypeScript (`.ts`) in [`src/sdui/themes/`](file:///d:/Programming/Campus_Commerce/src/sdui/themes/).
+- [x] **Fixed Corrupted Emojis & Text**: Cleaned corrupted encoding strings with verified clean UTF-8 characters (`SDUI·Commerce`, `🛒`, `⚡`, `❤️`, `⭐`, `🚚`, `💬`, `📷`, `🔗`).
+- [x] **3 Core Theme Presets Included**:
+  1. `landing_schema`: Default Campus Teal
+  2. `clean_white`: Clean Minimalist White & Slate
+  3. `black_minimal`: Obsidian Dark Mode
+- [x] **Master Registry & Presets Exported**: Created [`src/sdui/themes/index.ts`](file:///d:/Programming/Campus_Commerce/src/sdui/themes/index.ts) exporting all component theme objects and `AVAILABLE_THEMES` metadata.
+- [x] **Verified Zero TypeScript Errors**: Passed `npx tsc --noEmit` with 0 errors across the entire codebase.
+
+---
+
+### Step 4: Build Java ValidatorRunner & Next.js API Bridge (Completed)
+**Target Files**:
+- [`validators/src/com/campuscommerce/sdui/validators/ValidatorRunner.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ValidatorRunner.java)
+- [`src/app/api/validate-theme/route.ts`](file:///d:/Programming/Campus_Commerce/src/app/api/validate-theme/route.ts)
+
+- [x] **Java Schema Validator Runner**: Built [`ValidatorRunner.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ValidatorRunner.java) which accepts theme JSON on stdin, recursively checks all nodes against [`ValidatorRegistry.java`](file:///d:/Programming/Campus_Commerce/validators/src/com/campuscommerce/sdui/validators/ValidatorRegistry.java), applies auto-correction fallbacks (`defaultData`, `defaultStyle`), and outputs clean validated JSON.
+- [x] **Verified Compilation & Self-Test**: Compiled with `javac 17` into `validators/bin/`. Self-test passed: all 35 component validators loaded and verified.
+- [x] **Next.js API Bridge Route**: Implemented [`src/app/api/validate-theme/route.ts`](file:///d:/Programming/Campus_Commerce/src/app/api/validate-theme/route.ts) which receives client theme requests, executes the Java `ValidatorRunner`, and returns the validated schema with a safe fallback mechanism.
+
+---
+
+### Step 5: Build the Theme Applier Engine (Completed)
+**Target File**: [`src/sdui/themes/themeApplier.ts`](file:///d:/Programming/Campus_Commerce/src/sdui/themes/themeApplier.ts)
+
+- [x] **Placement-Preserving Theme Restyling**: Built [`themeApplier.ts`](file:///d:/Programming/Campus_Commerce/src/sdui/themes/themeApplier.ts) supporting `clean_white`, `black_minimal`, and `landing_schema` themes across all 11 page sections (Header, SearchBar, StoryRow, CategoryGrid, Carousel, HeroBanner, CouponCode, CountDownTimer, ProductList, ProductGrid, Footer, NavBar).
+- [x] **Zero TypeScript Errors**: Passed `npx tsc --noEmit` with 0 compilation errors across the entire project.
+
+---
+
+### Step 6: Connect Theme Switcher to Landing Page & Verify (Completed)
+**Target Files**:
+- [`src/app/pages/landing/page.tsx`](file:///d:/Programming/Campus_Commerce/src/app/pages/landing/page.tsx) (Outer Dashboard Shell)
+- [`src/app/landing-content/page.tsx`](file:///d:/Programming/Campus_Commerce/src/app/landing-content/page.tsx) (Iframe Content Page)
+
+- [x] **Integrated UI Theme Selector**: Added interactive theme pills (🎨 **Teal**, ⚪ **White**, ⚫ **Dark**) alongside a **☕ Java SDUI Validated** status badge in the controls toolbar of `/pages/landing`.
+- [x] **Live Iframe Dynamic Synchronization**: Switching themes instantaneously reloads the iframe with `?device=...&theme=...`, applies the chosen theme without full page refresh, and draws the updated colors and styles.
+- [x] **Full Viewport & Device Responsiveness**: Verified live rendering across:
+  - 🖥️ **Desktop Browser Mockup** (100% full-width virtual CSS grid)
+  - 💻 **Tablet Mockup** (778px bezel frame with top camera dot)
+  - 📱 **Phone Mockup** (375px bezel frame with realistic Dynamic Island / camera notch and home indicator)
+- [x] **End-to-End Java API Handshake Verified**: Tested `POST /api/validate-theme` &rarr; executed Java `ValidatorRunner` &rarr; returned `{ success: true, validatedBy: "java-validator-runner" }`.
+- [x] **Zero TypeScript Errors**: Complete project verified with `npx tsc --noEmit` &rarr; 0 errors.
+
+---
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            NEXT.JS FRONTEND (Port 3000)                     │
+│                                                                             │
+│  User picks Theme: "Clean White" ──► Outer Landing Page (/pages/landing)    │
+│                                              │                              │
+│                                              ▼                              │
+│                            Sends HTTP GET request to Java:                  │
+│                            http://localhost:8080/api/v1/sdui/page           │
+│                                  ?theme=clean_white                         │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │ HTTP GET
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       JAVA SPRING BOOT BACKEND (Port 8080)                  │
+│                                                                             │
+│  1. SDUIController.java receives request                                    │
+│  2. Loads Theme JSON (landing_schema, clean_white, or black_minimal)        │
+│                                                                             │
+│  3. Passes JSON to package: com.campuscommerce.sdui.validators              │
+│     ├── ProductListValidator.java                                           │
+│     │     (checks minValue: 2, allowedComponents: ["ProductCard"])          │
+│     ├── ProductCardValidator.java                                           │
+│     │     (checks requiredData: ["id"], allowedActions)                     │
+│     ├── CarouselValidator.java, HeaderValidator.java, ... (35 validators)   │
+│                                                                             │
+│  4. SDUIValidationService.java:                                             │
+│     • Recursively validates every node against its Java Validator.          │
+│     • If valid ──► Returns JSON.                                            │
+│     • If invalid/missing ──► Injects defaultData & defaultStyle.             │
+│                                                                             │
+│  5. Returns HTTP 200: Validated JSON Schema                                 │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │ JSON Response
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            NEXT.JS FRONTEND (Port 3000)                     │
+│                                                                             │
+│  6. Receives validated JSON                                                 │
+│  7. Passes to SDUIRenderer.tsx inside Phone / Tablet / Desktop mockup       │
+│  8. 35 React components render smoothly on the 100-column grid!             │
+└─────────────────────────────────────────────────────────────────────────────┘

@@ -32,10 +32,12 @@ export function Header({
         {onToggleMobileSidebar && (
           <button
             onClick={onToggleMobileSidebar}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-300 hover:bg-zinc-800 md:hidden transition"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-95 md:hidden transition-all focus:outline-hidden focus:ring-2 focus:ring-emerald-500/50"
             aria-label="Toggle navigation menu"
           >
-            ☰
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         )}
 
