@@ -26,6 +26,7 @@ type ViewportMode = "desktop" | "tablet" | "phone";
 export default function LandingPage() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [viewport, setViewport] = useState<ViewportMode>("desktop");
+  const [selectedTheme, setSelectedTheme] = useState<string>("landing_schema");
   const [iframeKey, setIframeKey] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -47,13 +48,45 @@ export default function LandingPage() {
     setIframeKey((prev) => prev + 1);
   };
 
-  // Build the iframe source URL with device mode hint
-  const iframeSrc = `/landing-content?device=${viewport === "phone" ? "mobile" : viewport}`;
+  // Default calculated URL based on device & selected theme
+  const defaultUrl = `/landing-content?device=${viewport === "phone" ? "mobile" : viewport}&theme=${selectedTheme}`;
+
+  // Custom user-entered URL state
+  const [customUrl, setCustomUrl] = useState<string>("");
+  const [urlInput, setUrlInput] = useState<string>(defaultUrl);
+
+  // Sync input when defaultUrl changes (if user hasn't typed a custom route)
+  useEffect(() => {
+    if (!customUrl) {
+      setUrlInput(defaultUrl);
+    }
+  }, [defaultUrl, customUrl]);
+
+  // The active URL rendered by the iframe
+  const iframeSrc = customUrl || defaultUrl;
+
+  // Handle URL form submit
+  const handleUrlSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const clean = urlInput.trim();
+    if (clean) {
+      setCustomUrl(clean);
+      setIframeKey((prev) => prev + 1);
+    }
+  };
+
+  // Reset to default theme preview
+  const handleResetUrl = () => {
+    setCustomUrl("");
+    setUrlInput(defaultUrl);
+    setIframeKey((prev) => prev + 1);
+  };
 
   return (
     <div className="min-h-screen bg-[#f4f5f7] text-zinc-800 flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
       {/* 1. Global Header Bar */}
       <Header onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} />
+
 
       {/* 2. Main Dashboard Layout (Sidebar + Content Area) */}
       <div className="flex flex-1 relative">
@@ -66,23 +99,78 @@ export default function LandingPage() {
         <main className="flex-1 p-2.5 sm:p-5 lg:p-6 w-full space-y-3 sm:space-y-4 overflow-x-hidden flex flex-col">
           {/* Header & Controls Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 bg-white p-3 sm:p-4 rounded-xl border border-zinc-200/90 shadow-2xs">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-zinc-900">
                 Landing Page
               </h1>
-              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold text-emerald-800">
-                SDUI Iframe Embed
-              </span>
+              {customUrl && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[10px] sm:text-[11px] font-mono text-indigo-700 border border-indigo-200">
+                  <span>Custom: {customUrl}</span>
+                  <button
+                    type="button"
+                    onClick={handleResetUrl}
+                    className="ml-0.5 text-indigo-400 hover:text-red-500 font-sans cursor-pointer font-bold"
+                    title="Reset to default theme URL"
+                  >
+                    ✕
+                  </button>
+                </span>
+              )}
             </div>
 
             {/* Viewport Switcher & Utilities */}
             <div className="flex flex-wrap items-center justify-between sm:justify-end gap-1.5 sm:gap-2">
+              {/* Theme Selector Toggle Buttons */}
+              <div className="flex items-center rounded-lg border border-zinc-200 bg-zinc-50/70 p-0.5 shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTheme("landing_schema")}
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
+                    selectedTheme === "landing_schema"
+                      ? "bg-[#0D3540] text-white shadow-xs"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
+                  }`}
+                  title="Default Campus Teal Theme"
+                >
+                  <span>🎨</span>
+                  <span className="hidden lg:inline">Teal</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedTheme("clean_white")}
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
+                    selectedTheme === "clean_white"
+                      ? "bg-indigo-600 text-white shadow-xs"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
+                  }`}
+                  title="Clean Minimalist White Theme"
+                >
+                  <span>⚪</span>
+                  <span className="hidden lg:inline">White</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedTheme("black_minimal")}
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
+                    selectedTheme === "black_minimal"
+                      ? "bg-zinc-950 text-white shadow-xs"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
+                  }`}
+                  title="Obsidian Dark Mode Theme"
+                >
+                  <span>⚫</span>
+                  <span className="hidden lg:inline">Dark</span>
+                </button>
+              </div>
+
               {/* Device Mode Toggle Buttons */}
               <div className="flex items-center rounded-lg border border-zinc-200 bg-zinc-50/70 p-0.5 shadow-2xs">
                 <button
                   type="button"
                   onClick={() => setViewport("desktop")}
-                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition ${
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
                     viewport === "desktop"
                       ? "bg-zinc-900 text-white shadow-xs"
                       : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
@@ -96,7 +184,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setViewport("tablet")}
-                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition ${
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
                     viewport === "tablet"
                       ? "bg-zinc-900 text-white shadow-xs"
                       : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
@@ -110,7 +198,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setViewport("phone")}
-                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition ${
+                  className={`flex items-center gap-1 rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-semibold transition cursor-pointer ${
                     viewport === "phone"
                       ? "bg-zinc-900 text-white shadow-xs"
                       : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/60"
@@ -135,10 +223,10 @@ export default function LandingPage() {
                 </button>
 
                 <Link
-                  href="/landing-content"
+                  href={iframeSrc}
                   target="_blank"
                   className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition"
-                  title="Open landing content directly in new tab"
+                  title="Open current preview URL directly in new tab"
                 >
                   <span>↗️</span>
                   <span className="hidden sm:inline">New Tab</span>
@@ -248,11 +336,49 @@ export default function LandingPage() {
                     <span className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-emerald-400"></span>
                   </div>
 
-                  {/* Browser Address Bar Pill */}
-                  <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] sm:text-xs text-zinc-500 font-mono max-w-xs sm:max-w-sm w-full shadow-2xs truncate">
-                    <span className="text-zinc-400 shrink-0">🔒</span>
-                    <span className="truncate">https://campus-commerce.vnit/landing-content</span>
-                  </div>
+                  {/* Interactive Browser Address Bar */}
+                  <form
+                    onSubmit={handleUrlSubmit}
+                    className="flex-1 max-w-sm sm:max-w-md mx-1 sm:mx-2"
+                  >
+                    <div className="flex items-center gap-1 sm:gap-1.5 rounded-lg border border-zinc-200 bg-white px-2 sm:px-2.5 py-1 text-xs font-mono shadow-2xs focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                      <input
+                        type="text"
+                        value={urlInput}
+                        onChange={(e) => setUrlInput(e.target.value)}
+                        placeholder="Enter route (e.g. /landing-content, /pages/product)..."
+                        className="w-full bg-transparent text-[11px] sm:text-xs font-mono outline-none text-zinc-800 placeholder:text-zinc-400"
+                        list="preview-routes"
+                      />
+                      <datalist id="preview-routes">
+                        <option value="/landing-content?theme=landing_schema">Teal Landing Page</option>
+                        <option value="/landing-content?theme=clean_white">Clean White Landing Page</option>
+                        <option value="/landing-content?theme=black_minimal">Obsidian Dark Landing Page</option>
+                        <option value="/pages/product">Products Catalog</option>
+                        <option value="/pages/orders">Orders Page</option>
+                        <option value="/pages/customers">Customers Page</option>
+                      </datalist>
+
+                      {customUrl && (
+                        <button
+                          type="button"
+                          onClick={handleResetUrl}
+                          className="shrink-0 text-[10px] text-zinc-400 hover:text-red-500 font-sans px-1 rounded transition cursor-pointer"
+                          title="Reset to default theme URL"
+                        >
+                          ✕ Reset
+                        </button>
+                      )}
+
+                      <button
+                        type="submit"
+                        className="shrink-0 px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-900 text-white text-[10px] font-sans font-semibold transition cursor-pointer"
+                        title="Load URL"
+                      >
+                        Go ↵
+                      </button>
+                    </div>
+                  </form>
 
                   {/* Quick Refresh Icon */}
                   <button
