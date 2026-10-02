@@ -14,7 +14,7 @@ import type { BaseRendererProps } from "../types";
 export default function PriceBlockRenderer({ data = {}, style = {} }: BaseRendererProps) {
   return (
     <div style={{ display: "flex", alignItems: "baseline", gap: "8px", ...style }}>
-      <span style={{ fontSize: "20px", fontWeight: "800", color: style.color || "#111" }}>
+      <span style={{ fontSize: "20px", fontWeight: "800", color: style.color || "inherit" }}>
         {data?.sellingPrice}
       </span>
       {data?.mrp && (

@@ -47,7 +47,7 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
           style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
         />
       </div>
-      <span style={{ fontSize: "11px", fontWeight: "500", color: style?.color || "#262626" }}>
+      <span style={{ fontSize: "11px", fontWeight: "500", color: style?.color || "inherit" }}>
         {data?.label}
       </span>
     </div>

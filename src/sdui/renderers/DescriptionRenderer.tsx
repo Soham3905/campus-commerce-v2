@@ -16,7 +16,7 @@ export default function DescriptionRenderer({ data = {}, style = {} }: BaseRende
     <p
       style={{
         fontSize: "13px",
-        color: "#555",
+        color: style.color || "inherit",
         margin: 0,
         display: "-webkit-box",
         WebkitLineClamp: data?.maxLines ?? 2,

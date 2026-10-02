@@ -13,7 +13,7 @@ import type { BaseRendererProps } from "../types";
  */
 export default function ReviewCountRenderer({ data = {}, style = {} }: BaseRendererProps) {
   return (
-    <span style={{ fontSize: "11px", color: "#007185", fontWeight: "500", ...style }}>
+    <span style={{ fontSize: "11px", color: style.color || "inherit", fontWeight: "500", ...style }}>
       ({data?.text} reviews)
     </span>
   );

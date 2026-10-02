@@ -13,7 +13,7 @@ import type { BaseRendererProps } from "../types";
  */
 export default function TitleRenderer({ data = {}, style = {} }: BaseRendererProps) {
   return (
-    <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#111", margin: 0, ...style }}>
+    <h3 style={{ fontSize: "16px", fontWeight: "700", color: style.color || "inherit", margin: 0, ...style }}>
       {data?.text}
     </h3>
   );

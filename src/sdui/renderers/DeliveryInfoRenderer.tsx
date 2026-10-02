@@ -21,7 +21,7 @@ export default function DeliveryInfoRenderer({ data = {}, style = {} }: BaseRend
   });
 
   return (
-    <p style={{ fontSize: "12px", color: "#333", ...style }}>
+    <p style={{ fontSize: "12px", color: style.color || "inherit", ...style }}>
       🚚 <span style={{ fontWeight: "700" }}>{data?.prefix ?? "FREE delivery"}</span> {formatted}
     </p>
   );

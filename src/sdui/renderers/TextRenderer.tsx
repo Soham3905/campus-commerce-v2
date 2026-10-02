@@ -13,7 +13,7 @@ import type { BaseRendererProps } from "../types";
  */
 export default function TextRenderer({ data = {}, style = {} }: BaseRendererProps) {
   return (
-    <span style={{ fontSize: "14px", color: "#111", ...style }}>
+    <span style={{ fontSize: "14px", color: style.color || "inherit", ...style }}>
       {data?.text}
     </span>
   );
