@@ -1,0 +1,55 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Info Icon",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "16px",
+        "height": "16px",
+        "opacity": 0.5,
+        "cursor": "pointer"
+      },
+      "data": {
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png",
+        "altText": "Info"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Blue Star Icon",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "18px",
+        "height": "18px",
+        "cursor": "pointer"
+      },
+      "data": {
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Star_icon_stylized.svg/24px-Star_icon_stylized.svg.png",
+        "altText": "Star"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Glow Icon",
+    "previewColor": "#38BDF8",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "18px",
+        "height": "18px",
+        "filter": "brightness(1.5)",
+        "cursor": "pointer"
+      },
+      "data": {
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png",
+        "altText": "Lightning"
+      }
+    }
+  }
+}

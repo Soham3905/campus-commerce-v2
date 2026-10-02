@@ -1,0 +1,202 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Clean White Nav",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "NavBar",
+      "containerStyle": {
+        "position": "sticky",
+        "bottom": "0",
+        "width": "100%",
+        "height": "60px",
+        "backgroundColor": "#FFFFFF",
+        "zIndex": "210",
+        "borderTop": "1px solid #E5E7EB",
+        "display": "flex"
+      },
+      "data": {
+        "items": [
+          {
+            "label": "Home",
+            "icon": "🏠",
+            "isActive": "true",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home"
+              }
+            }
+          },
+          {
+            "label": "Categories",
+            "icon": "🗂️",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories"
+              }
+            }
+          },
+          {
+            "label": "Cart",
+            "icon": "🛒",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart"
+              }
+            }
+          },
+          {
+            "label": "Account",
+            "icon": "👤",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "account"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Light Slate Nav",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "NavBar",
+      "containerStyle": {
+        "position": "sticky",
+        "bottom": "0",
+        "width": "100%",
+        "height": "60px",
+        "backgroundColor": "#FFFFFF",
+        "zIndex": "210",
+        "borderTop": "1px solid #E2E8F0",
+        "boxShadow": "0 -2px 10px rgba(0, 0, 0, 0.04)",
+        "display": "flex"
+      },
+      "data": {
+        "items": [
+          {
+            "label": "Home",
+            "icon": "🏠",
+            "isActive": "true",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home"
+              }
+            }
+          },
+          {
+            "label": "Categories",
+            "icon": "🗂️",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories"
+              }
+            }
+          },
+          {
+            "label": "Cart",
+            "icon": "🛒",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart"
+              }
+            }
+          },
+          {
+            "label": "Account",
+            "icon": "👤",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "account"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Obsidian Nav",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "NavBar",
+      "containerStyle": {
+        "position": "sticky",
+        "bottom": "0",
+        "width": "100%",
+        "height": "60px",
+        "backgroundColor": "#0F172A",
+        "zIndex": "210",
+        "borderTop": "1px solid #1E293B",
+        "boxShadow": "0 -4px 20px rgba(0, 0, 0, 0.4)",
+        "display": "flex"
+      },
+      "data": {
+        "items": [
+          {
+            "label": "Home",
+            "icon": "🏠",
+            "isActive": "true",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home"
+              }
+            }
+          },
+          {
+            "label": "Categories",
+            "icon": "🗂️",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories"
+              }
+            }
+          },
+          {
+            "label": "Cart",
+            "icon": "🛒",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart"
+              }
+            }
+          },
+          {
+            "label": "Account",
+            "icon": "👤",
+            "isActive": "false",
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "account"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

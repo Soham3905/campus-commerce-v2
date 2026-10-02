@@ -1,0 +1,248 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Store Hero",
+    "previewColor": "#103E4B",
+    "config": {
+      "type": "HeroBanner",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 59,
+          "rowEnd": 99
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E4E7E4",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.05)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1600&q=80",
+        "title": "Season end sale",
+        "subtitle": "Up to 70% off electronics. Ends Sunday.",
+        "altText": "Season end sale banner"
+      },
+      "actions": {
+        "onMount": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_MOUNT_HERO_BANNER"
+        },
+        "onError": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_ERROR_HERO_BANNER"
+        }
+      },
+      "children": [
+        {
+          "type": "CountDownTimer",
+          "containerStyle": {
+            "backgroundColor": "transparent",
+            "position": "absolute",
+            "bottom": "100px",
+            "left": "16px",
+            "border": "1px solid rgba(255,255,255,0.24)",
+            "color": "#FFFFFF",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "letterSpacing": "0.04em",
+            "boxShadow": "0 4px 16px rgba(196,24,95,0.32)"
+          },
+          "data": {
+            "label": "Flash sale ends in",
+            "expiredText": "Sale ended",
+            "targetDate": "2026-10-14T23:59:00",
+            "showDays": "true",
+            "format": "DD:HH:MM:SS"
+          },
+          "actions": {
+            "onHover": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_HOVER_FLASH_TIMER"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Minimal Light",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "HeroBanner",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 59,
+          "rowEnd": 99
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "boxShadow": "0 1px 3px rgba(0, 0, 0, 0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1600&q=80",
+        "title": "Season end sale",
+        "subtitle": "Up to 70% off electronics. Ends Sunday.",
+        "altText": "Season end sale banner"
+      },
+      "actions": {
+        "onMount": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_MOUNT_HERO_BANNER"
+        },
+        "onError": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_ERROR_HERO_BANNER"
+        }
+      },
+      "children": [
+        {
+          "type": "CountDownTimer",
+          "containerStyle": {
+            "backgroundColor": "transparent",
+            "position": "absolute",
+            "bottom": "100px",
+            "left": "16px",
+            "border": "1px solid rgba(255,255,255,0.24)",
+            "color": "#FFFFFF",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "letterSpacing": "0.04em",
+            "boxShadow": "0 4px 16px rgba(14,165,233,0.32)"
+          },
+          "data": {
+            "label": "Flash sale ends in",
+            "expiredText": "Sale ended",
+            "targetDate": "2026-10-14T23:59:00",
+            "showDays": "true",
+            "format": "DD:HH:MM:SS"
+          },
+          "actions": {
+            "onHover": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_HOVER_FLASH_TIMER"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Obsidian",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "HeroBanner",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 59,
+          "rowEnd": 99
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 55,
+          "rowEnd": 95
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #1E293B",
+        "boxShadow": "0 12px 32px rgba(0, 0, 0, 0.5)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1600&q=80",
+        "title": "Season end sale",
+        "subtitle": "Up to 70% off electronics. Ends Sunday.",
+        "altText": "Season end sale banner"
+      },
+      "actions": {
+        "onMount": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_MOUNT_HERO_BANNER"
+        },
+        "onError": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_ERROR_HERO_BANNER"
+        }
+      },
+      "children": [
+        {
+          "type": "CountDownTimer",
+          "containerStyle": {
+            "backgroundColor": "transparent",
+            "position": "absolute",
+            "bottom": "100px",
+            "left": "16px",
+            "border": "1px solid rgba(255,255,255,0.24)",
+            "color": "#FFFFFF",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "letterSpacing": "0.04em",
+            "boxShadow": "0 4px 16px rgba(139,92,246,0.32)"
+          },
+          "data": {
+            "label": "Flash sale ends in",
+            "expiredText": "Sale ended",
+            "targetDate": "2026-10-14T23:59:00",
+            "showDays": "true",
+            "format": "DD:HH:MM:SS"
+          },
+          "actions": {
+            "onHover": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_HOVER_FLASH_TIMER"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

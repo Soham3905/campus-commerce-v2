@@ -1,0 +1,47 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Home Page Wrapper",
+    "previewColor": "#F6F6F4",
+    "config": {
+      "type": "Home",
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #F6F6F4 0%, #F6F6F4 100%)",
+        "backgroundImage": "linear-gradient(180deg, #F6F6F4 0%, #F6F6F4 100%)",
+        "backgroundColor": "#F6F6F4",
+        "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "color": "#101F26"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Home Wrapper",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Home",
+      "containerStyle": {
+        "background": "#FFFFFF",
+        "backgroundImage": "none",
+        "backgroundColor": "#FFFFFF",
+        "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "color": "#0F172A"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Home Wrapper",
+    "previewColor": "#0B0F19",
+    "config": {
+      "type": "Home",
+      "containerStyle": {
+        "background": "#0B0F19",
+        "backgroundImage": "none",
+        "backgroundColor": "#0B0F19",
+        "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "color": "#F1F5F9"
+      }
+    }
+  }
+}

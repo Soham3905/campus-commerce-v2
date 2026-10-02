@@ -1,0 +1,1334 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Teal",
+    "previewColor": "#0D3540",
+    "config": {
+      "topHeader": {
+        "type": "Header",
+        "containerStyle": {
+          "background": "linear-gradient(180deg, #103E4B 0%, #0D3540 100%)",
+          "backgroundColor": "#0D3540",
+          "height": "48px",
+          "padding": "0 max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "borderBottom": "1px solid rgba(255, 255, 255, 0.08)",
+          "boxShadow": "0 1px 4px rgba(0, 0, 0, 0.15)",
+          "overflowX": "auto",
+          "scrollbarWidth": "none"
+        },
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          }
+        },
+        "children": [
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "flex-start",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "borderRadius": "0",
+              "color": "#FFFFFF",
+              "fontSize": "16px",
+              "fontWeight": "700",
+              "letterSpacing": "0.14em",
+              "textTransform": "uppercase",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "logo",
+              "label": "SDUI·Commerce",
+              "icon": "♥"
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_LOGO"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "borderRadius": "0",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "boxShadow": "inset 0 -2px 0 #C4185F"
+            },
+            "data": {
+              "id": "home",
+              "label": "Home",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_NAV_HOME"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "borderRadius": "0",
+              "color": "rgba(255,255,255,0.72)",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "categories",
+              "label": "Categories",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories",
+                "actionName": "ON_TAP_NAV_CATEGORIES"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "borderRadius": "0",
+              "color": "rgba(255,255,255,0.72)",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "deals",
+              "label": "Deals",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "deals",
+                "actionName": "ON_TAP_NAV_DEALS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "borderRadius": "0",
+              "color": "rgba(255,255,255,0.72)",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "orders",
+              "label": "Orders",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "orders",
+                "actionName": "ON_TAP_NAV_ORDERS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundImage": "none",
+              "backgroundColor": "transparent",
+              "border": "1px solid rgba(255,255,255,0.28)",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "login",
+              "label": "Log in",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "login",
+                "actionName": "ON_TAP_LOGIN"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+              "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+              "backgroundColor": "#C4185F",
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "8px",
+              "border": "1px solid #C4185F",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "signup",
+              "label": "Sign up",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "signup",
+                "actionName": "ON_TAP_SIGNUP"
+              }
+            }
+          }
+        ]
+      },
+      "searchHeader": {
+        "type": "Header",
+        "containerStyle": {
+          "background": "linear-gradient(180deg, #0D3540 0%, #08242A 100%)",
+          "backgroundImage": "linear-gradient(180deg, #0D3540 0%, #08242A 100%)",
+          "backgroundColor": "#08242A",
+          "flexWrap": "wrap",
+          "justifyContent": "flex-start",
+          "padding": "12px max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "position": "sticky",
+          "top": "2px",
+          "zIndex": "100",
+          "color": "#FFFFFF",
+          "borderBottom": "none",
+          "boxShadow": "0 4px 14px rgba(10,42,49,0.18)"
+        },
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          }
+        },
+        "children": [
+          {
+            "type": "SearchBar",
+            "containerStyle": {
+              "width": "340px",
+              "alignItems": "center",
+              "border": "1px solid #E4E7E4",
+              "borderRadius": "12px",
+              "boxShadow": "none",
+              "boxSizing": "border-box",
+              "color": "#101F26",
+              "caretColor": "#C4185F",
+              "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+              "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+              "backgroundColor": "#FFFFFF"
+            },
+            "data": {
+              "placeholder": "Search products, brands and more"
+            },
+            "actions": {
+              "onChange": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_CHANGE_SEARCH",
+                "debounceDuration": 500
+              },
+              "onSubmit": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_SUBMIT_SEARCH"
+              },
+              "onFocus": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_FOCUS_SEARCH"
+              },
+              "onBlur": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_BLUR_SEARCH"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+              "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+              "backgroundColor": "#C4185F",
+              "border": "1px solid #C4185F",
+              "color": "#FFFFFF",
+              "boxShadow": "0 2px 10px rgba(196,24,95,0.28)"
+            },
+            "data": {
+              "id": "cart",
+              "label": "Cart",
+              "icon": "🛒",
+              "count": 3
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart",
+                "actionName": "ON_TAP_CART_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "linear-gradient(180deg, #164955 0%, #123A44 100%)",
+              "backgroundImage": "linear-gradient(180deg, #164955 0%, #123A44 100%)",
+              "backgroundColor": "#123A44",
+              "border": "1px solid rgba(255,255,255,0.16)",
+              "color": "#FFFFFF"
+            },
+            "data": {
+              "id": "wishlist",
+              "label": "Wishlist",
+              "icon": "♥",
+              "count": 12
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "wishlist",
+                "actionName": "ON_TAP_WISHLIST_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "linear-gradient(180deg, #164955 0%, #123A44 100%)",
+              "backgroundImage": "linear-gradient(180deg, #164955 0%, #123A44 100%)",
+              "backgroundColor": "#123A44",
+              "border": "1px solid rgba(255,255,255,0.16)",
+              "color": "#FFFFFF"
+            },
+            "data": {
+              "id": "favourites",
+              "label": "Favourites",
+              "icon": "★",
+              "count": 5
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "favourites",
+                "actionName": "ON_TAP_FAVOURITES_HEADER"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "topHeader": {
+        "type": "Header",
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          }
+        },
+        "containerStyle": {
+          "background": "#FFFFFF",
+          "backgroundColor": "#FFFFFF",
+          "height": "48px",
+          "padding": "0 max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "borderBottom": "1px solid #E2E8F0",
+          "boxShadow": "0 1px 3px rgba(0, 0, 0, 0.05)",
+          "overflowX": "auto",
+          "scrollbarWidth": "none",
+          "display": "flex",
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "flex-start",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#0F172A",
+              "fontSize": "16px",
+              "fontWeight": "700",
+              "letterSpacing": "0.14em",
+              "textTransform": "uppercase",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "logo",
+              "label": "SDUI·Commerce",
+              "icon": "♥"
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_LOGO"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#0F172A",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "boxShadow": "inset 0 -2px 0 #0F172A"
+            },
+            "data": {
+              "id": "home",
+              "label": "Home",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_NAV_HOME"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#64748B",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "categories",
+              "label": "Categories",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories",
+                "actionName": "ON_TAP_NAV_CATEGORIES"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#64748B",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "deals",
+              "label": "Deals",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "deals",
+                "actionName": "ON_TAP_NAV_DEALS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#64748B",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "orders",
+              "label": "Orders",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "orders",
+                "actionName": "ON_TAP_NAV_ORDERS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "#F8FAFC",
+              "border": "1px solid #CBD5E1",
+              "borderRadius": "6px",
+              "color": "#0F172A",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "padding": "4px 12px",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "login",
+              "label": "Log in",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "login",
+                "actionName": "ON_TAP_LOGIN"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "background": "#0F172A",
+              "backgroundColor": "#0F172A",
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "8px",
+              "border": "1px solid #0F172A",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "padding": "4px 14px",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "signup",
+              "label": "Sign up",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "signup",
+                "actionName": "ON_TAP_SIGNUP"
+              }
+            }
+          }
+        ]
+      },
+      "searchHeader": {
+        "type": "Header",
+        "containerStyle": {
+          "background": "#FFFFFF",
+          "backgroundImage": "none",
+          "backgroundColor": "#FFFFFF",
+          "flexWrap": "wrap",
+          "justifyContent": "flex-start",
+          "padding": "12px max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "position": "sticky",
+          "top": "2px",
+          "zIndex": "100",
+          "color": "#0F172A",
+          "borderBottom": "1px solid #E2E8F0",
+          "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)"
+        },
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          }
+        },
+        "children": [
+          {
+            "type": "SearchBar",
+            "containerStyle": {
+              "width": "340px",
+              "alignItems": "center",
+              "border": "1px solid #CBD5E1",
+              "borderRadius": "12px",
+              "boxShadow": "none",
+              "boxSizing": "border-box",
+              "color": "#0F172A",
+              "caretColor": "#4F46E5",
+              "background": "#F8FAFC",
+              "backgroundImage": "none",
+              "backgroundColor": "#F8FAFC"
+            },
+            "data": {
+              "placeholder": "Search products, brands and more"
+            },
+            "actions": {
+              "onChange": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_CHANGE_SEARCH",
+                "debounceDuration": 500
+              },
+              "onSubmit": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_SUBMIT_SEARCH"
+              },
+              "onFocus": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_FOCUS_SEARCH"
+              },
+              "onBlur": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_BLUR_SEARCH"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "linear-gradient(180deg, #6366F1 0%, #4F46E5 100%)",
+              "backgroundImage": "linear-gradient(180deg, #6366F1 0%, #4F46E5 100%)",
+              "backgroundColor": "#4F46E5",
+              "border": "1px solid #4F46E5",
+              "color": "#FFFFFF",
+              "boxShadow": "0 2px 10px rgba(79, 70, 229, 0.25)"
+            },
+            "data": {
+              "id": "cart",
+              "label": "Cart",
+              "icon": "🛒",
+              "count": 3
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart",
+                "actionName": "ON_TAP_CART_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "#F1F5F9",
+              "backgroundImage": "none",
+              "backgroundColor": "#F1F5F9",
+              "border": "1px solid #E2E8F0",
+              "color": "#0F172A"
+            },
+            "data": {
+              "id": "wishlist",
+              "label": "Wishlist",
+              "icon": "♥",
+              "count": 12
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "wishlist",
+                "actionName": "ON_TAP_WISHLIST_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "#F1F5F9",
+              "backgroundImage": "none",
+              "backgroundColor": "#F1F5F9",
+              "border": "1px solid #E2E8F0",
+              "color": "#0F172A"
+            },
+            "data": {
+              "id": "favourites",
+              "label": "Favourites",
+              "icon": "★",
+              "count": 5
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "favourites",
+                "actionName": "ON_TAP_FAVOURITES_HEADER"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Black",
+    "previewColor": "#000000",
+    "config": {
+      "topHeader": {
+        "type": "Header",
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 1,
+            "rowEnd": 5
+          }
+        },
+        "containerStyle": {
+          "background": "#000000",
+          "backgroundColor": "#000000",
+          "height": "48px",
+          "padding": "0 max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "borderBottom": "1px solid #262626",
+          "boxShadow": "0 1px 4px rgba(0, 0, 0, 0.4)",
+          "overflowX": "auto",
+          "scrollbarWidth": "none",
+          "display": "flex",
+          "alignItems": "center",
+          "justifyContent": "space-between",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "flex-start",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#FFFFFF",
+              "fontSize": "16px",
+              "fontWeight": "700",
+              "letterSpacing": "0.14em",
+              "textTransform": "uppercase",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "logo",
+              "label": "SDUI·Commerce",
+              "icon": "♥"
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_LOGO"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "boxShadow": "inset 0 -2px 0 #FFFFFF"
+            },
+            "data": {
+              "id": "home",
+              "label": "Home",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "home",
+                "actionName": "ON_TAP_NAV_HOME"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#A3A3A3",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "categories",
+              "label": "Categories",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "categories",
+                "actionName": "ON_TAP_NAV_CATEGORIES"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#A3A3A3",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "deals",
+              "label": "Deals",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "deals",
+                "actionName": "ON_TAP_NAV_DEALS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "none",
+              "backgroundColor": "transparent",
+              "border": "none",
+              "color": "#A3A3A3",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "letterSpacing": "0.01em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "orders",
+              "label": "Orders",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "orders",
+                "actionName": "ON_TAP_NAV_ORDERS"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "background": "#171717",
+              "border": "1px solid #333333",
+              "borderRadius": "6px",
+              "color": "#FFFFFF",
+              "fontSize": "13px",
+              "fontWeight": "600",
+              "padding": "4px 12px",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "login",
+              "label": "Log in",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "login",
+                "actionName": "ON_TAP_LOGIN"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "background": "#FFFFFF",
+              "backgroundColor": "#FFFFFF",
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "8px",
+              "border": "1px solid #FFFFFF",
+              "color": "#000000",
+              "fontSize": "13px",
+              "fontWeight": "700",
+              "padding": "4px 14px",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer"
+            },
+            "data": {
+              "id": "signup",
+              "label": "Sign up",
+              "icon": ""
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "signup",
+                "actionName": "ON_TAP_SIGNUP"
+              }
+            }
+          }
+        ]
+      },
+      "searchHeader": {
+        "type": "Header",
+        "containerStyle": {
+          "background": "linear-gradient(180deg, #090D16 0%, #060910 100%)",
+          "backgroundImage": "none",
+          "backgroundColor": "#090D16",
+          "flexWrap": "wrap",
+          "justifyContent": "flex-start",
+          "padding": "12px max(16px, calc((100% - 1180px) / 2))",
+          "boxSizing": "border-box",
+          "position": "sticky",
+          "top": "2px",
+          "zIndex": "100",
+          "color": "#F8FAFC",
+          "borderBottom": "1px solid #1E293B",
+          "boxShadow": "0 4px 20px rgba(0, 0, 0, 0.6)"
+        },
+        "placement": {
+          "mobile": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "tablet": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          },
+          "desktop": {
+            "colStart": 1,
+            "colEnd": 100,
+            "rowStart": 6,
+            "rowEnd": 10
+          }
+        },
+        "children": [
+          {
+            "type": "SearchBar",
+            "containerStyle": {
+              "width": "340px",
+              "alignItems": "center",
+              "border": "1px solid #1E293B",
+              "borderRadius": "12px",
+              "boxShadow": "none",
+              "boxSizing": "border-box",
+              "color": "#F8FAFC",
+              "caretColor": "#38BDF8",
+              "background": "#0F172A",
+              "backgroundImage": "none",
+              "backgroundColor": "#0F172A"
+            },
+            "data": {
+              "placeholder": "Search products, brands and more"
+            },
+            "actions": {
+              "onChange": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_CHANGE_SEARCH",
+                "debounceDuration": 500
+              },
+              "onSubmit": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_SUBMIT_SEARCH"
+              },
+              "onFocus": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_FOCUS_SEARCH"
+              },
+              "onBlur": {
+                "type": "API_CALL",
+                "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                "actionName": "ON_BLUR_SEARCH"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "linear-gradient(180deg, #0284C7 0%, #0369A1 100%)",
+              "backgroundImage": "linear-gradient(180deg, #0284C7 0%, #0369A1 100%)",
+              "backgroundColor": "#0284C7",
+              "border": "1px solid #38BDF8",
+              "color": "#FFFFFF",
+              "boxShadow": "0 2px 12px rgba(56, 189, 248, 0.3)"
+            },
+            "data": {
+              "id": "cart",
+              "label": "Cart",
+              "icon": "🛒",
+              "count": 3
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "cart",
+                "actionName": "ON_TAP_CART_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "#0F172A",
+              "backgroundImage": "none",
+              "backgroundColor": "#0F172A",
+              "border": "1px solid #1E293B",
+              "color": "#F8FAFC"
+            },
+            "data": {
+              "id": "wishlist",
+              "label": "Wishlist",
+              "icon": "♥",
+              "count": 12
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "wishlist",
+                "actionName": "ON_TAP_WISHLIST_HEADER"
+              }
+            }
+          },
+          {
+            "type": "HeaderButton",
+            "containerStyle": {
+              "display": "inline-flex",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "borderRadius": "12px",
+              "fontSize": "12px",
+              "fontWeight": "600",
+              "letterSpacing": "0.005em",
+              "whiteSpace": "nowrap",
+              "boxSizing": "border-box",
+              "cursor": "pointer",
+              "background": "#0F172A",
+              "backgroundImage": "none",
+              "backgroundColor": "#0F172A",
+              "border": "1px solid #1E293B",
+              "color": "#F8FAFC"
+            },
+            "data": {
+              "id": "favourites",
+              "label": "Favourites",
+              "icon": "★",
+              "count": 5
+            },
+            "actions": {
+              "onTap": {
+                "type": "NAVIGATE",
+                "route": "favourites",
+                "actionName": "ON_TAP_FAVOURITES_HEADER"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Horizontal Strip",
+    "previewColor": "#0A2A31",
+    "config": {
+      "type": "ProductList",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 121,
+          "rowEnd": 173
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        }
+      },
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "actions": {
+        "onScroll": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SCROLL_PRODUCT",
+          "debounceDuration": 1000
+        },
+        "onEndReached": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "LOAD_MORE_PRODUCTS",
+          "nearEndThreshold": 50
+        }
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Strip",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "ProductList",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 121,
+          "rowEnd": 173
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        }
+      },
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "actions": {
+        "onScroll": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SCROLL_PRODUCT",
+          "debounceDuration": 1000
+        },
+        "onEndReached": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "LOAD_MORE_PRODUCTS",
+          "nearEndThreshold": 50
+        }
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Strip",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "ProductList",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 121,
+          "rowEnd": 173
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 117,
+          "rowEnd": 169
+        }
+      },
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "actions": {
+        "onScroll": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SCROLL_PRODUCT",
+          "debounceDuration": 1000
+        },
+        "onEndReached": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "LOAD_MORE_PRODUCTS",
+          "nearEndThreshold": 50
+        }
+      }
+    }
+  }
+}

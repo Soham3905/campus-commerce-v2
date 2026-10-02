@@ -1,0 +1,62 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Frame",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "IFrame",
+      "containerStyle": {
+        "height": "220px",
+        "width": "100%",
+        "borderRadius": "16px",
+        "overflow": "hidden"
+      },
+      "data": {
+        "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+        "title": "Campus Tech & Deals Showcase",
+        "allowFullScreen": true
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Frame",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "IFrame",
+      "containerStyle": {
+        "height": "220px",
+        "width": "100%",
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "overflow": "hidden"
+      },
+      "data": {
+        "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+        "title": "Campus Tech & Deals Showcase",
+        "allowFullScreen": true
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Frame",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "IFrame",
+      "containerStyle": {
+        "height": "220px",
+        "width": "100%",
+        "borderRadius": "16px",
+        "border": "1px solid #1E293B",
+        "backgroundColor": "#0F172A",
+        "overflow": "hidden"
+      },
+      "data": {
+        "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+        "title": "Campus Tech & Deals Showcase",
+        "allowFullScreen": true
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Text",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#101F26"
+      },
+      "data": {
+        "text": "Sample text"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Text",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#0F172A"
+      },
+      "data": {
+        "text": "Sample text"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Text",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#F8FAFC"
+      },
+      "data": {
+        "text": "Sample text"
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Classic Price",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#101F26",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹2,499",
+        "mrp": "₹4,999",
+        "discount": "50%"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Modern Slate Price",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#0F172A",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹2,499",
+        "mrp": "₹4,999",
+        "discount": "50%"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark White Glow Price",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#FFFFFF",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹2,499",
+        "mrp": "₹4,999",
+        "discount": "50%"
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Berry Offer",
+    "previewColor": "#C4185F",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#C4185F",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Up to 5% back with Amazon Pay ICICI card"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Blue Offer",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#2563EB",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Up to 5% back with Amazon Pay ICICI card"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Amber Offer",
+    "previewColor": "#F59E0B",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#F59E0B",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Up to 5% back with Amazon Pay ICICI card"
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Prime Tomorrow",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "DeliveryInfo",
+      "containerStyle": {
+        "height": "18px",
+        "minHeight": "18px",
+        "flex": "0 0 18px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "12px",
+        "color": "#5E6E72",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "prefix": "Free delivery",
+        "daysOffset": 7
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Express Slate",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "DeliveryInfo",
+      "containerStyle": {
+        "height": "18px",
+        "minHeight": "18px",
+        "flex": "0 0 18px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "12px",
+        "color": "#64748B",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "prefix": "Free delivery",
+        "daysOffset": 7
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Express",
+    "previewColor": "#94A3B8",
+    "config": {
+      "type": "DeliveryInfo",
+      "containerStyle": {
+        "height": "18px",
+        "minHeight": "18px",
+        "flex": "0 0 18px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "12px",
+        "color": "#94A3B8",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "prefix": "Free delivery",
+        "daysOffset": 7
+      }
+    }
+  }
+}

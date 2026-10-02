@@ -1,0 +1,50 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Bold Title",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "color": "#101F26"
+      },
+      "data": {
+        "text": "Product Title"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Title",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "color": "#0F172A"
+      },
+      "data": {
+        "text": "Product Title"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Title",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "color": "#F8FAFC"
+      },
+      "data": {
+        "text": "Product Title"
+      }
+    }
+  }
+}

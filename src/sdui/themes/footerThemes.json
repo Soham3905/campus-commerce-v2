@@ -1,0 +1,302 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Teal Footer",
+    "previewColor": "#0A2A31",
+    "config": {
+      "type": "Footer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #0D323B 0%, #0A2A31 100%)",
+        "backgroundImage": "linear-gradient(180deg, #0D323B 0%, #0A2A31 100%)",
+        "backgroundColor": "#0A2A31",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#CFDDDC",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid rgba(255,255,255,0.08)"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Get to know us",
+            "links": [
+              {
+                "label": "About us",
+                "url": "https://example.com/about"
+              },
+              {
+                "label": "Careers",
+                "url": "https://example.com/careers"
+              },
+              {
+                "label": "Community",
+                "url": "https://example.com/community"
+              }
+            ]
+          },
+          {
+            "title": "Let us help you",
+            "links": [
+              {
+                "label": "Your orders",
+                "url": "https://example.com/orders"
+              },
+              {
+                "label": "Returns and refunds",
+                "url": "https://example.com/returns"
+              },
+              {
+                "label": "Help centre",
+                "url": "https://example.com/help"
+              }
+            ]
+          },
+          {
+            "title": "Connect with us",
+            "links": [
+              {
+                "label": "Instagram",
+                "url": "https://instagram.com"
+              },
+              {
+                "label": "Facebook",
+                "url": "https://facebook.com"
+              },
+              {
+                "label": "X",
+                "url": "https://x.com"
+              },
+              {
+                "label": "LinkedIn",
+                "url": "https://linkedin.com"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2024–2026, SDUI·Commerce, Inc. or its affiliates"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Minimal Footer",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Footer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundColor": "#FFFFFF",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#0F172A",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid #E2E8F0"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Get to know us",
+            "links": [
+              {
+                "label": "About us",
+                "url": "https://example.com/about"
+              },
+              {
+                "label": "Careers",
+                "url": "https://example.com/careers"
+              },
+              {
+                "label": "Community",
+                "url": "https://example.com/community"
+              }
+            ]
+          },
+          {
+            "title": "Let us help you",
+            "links": [
+              {
+                "label": "Your orders",
+                "url": "https://example.com/orders"
+              },
+              {
+                "label": "Returns and refunds",
+                "url": "https://example.com/returns"
+              },
+              {
+                "label": "Help centre",
+                "url": "https://example.com/help"
+              }
+            ]
+          },
+          {
+            "title": "Connect with us",
+            "links": [
+              {
+                "label": "Instagram",
+                "url": "https://instagram.com"
+              },
+              {
+                "label": "Facebook",
+                "url": "https://facebook.com"
+              },
+              {
+                "label": "X",
+                "url": "https://x.com"
+              },
+              {
+                "label": "LinkedIn",
+                "url": "https://linkedin.com"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2024–2026, SDUI·Commerce, Inc. or its affiliates"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Deep Midnight Footer",
+    "previewColor": "#0B0F19",
+    "config": {
+      "type": "Footer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 352,
+          "rowEnd": 380
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #111827 0%, #0B0F19 100%)",
+        "backgroundImage": "linear-gradient(180deg, #111827 0%, #0B0F19 100%)",
+        "backgroundColor": "#0B0F19",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#94A3B8",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid #1E293B"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Get to know us",
+            "links": [
+              {
+                "label": "About us",
+                "url": "https://example.com/about"
+              },
+              {
+                "label": "Careers",
+                "url": "https://example.com/careers"
+              },
+              {
+                "label": "Community",
+                "url": "https://example.com/community"
+              }
+            ]
+          },
+          {
+            "title": "Let us help you",
+            "links": [
+              {
+                "label": "Your orders",
+                "url": "https://example.com/orders"
+              },
+              {
+                "label": "Returns and refunds",
+                "url": "https://example.com/returns"
+              },
+              {
+                "label": "Help centre",
+                "url": "https://example.com/help"
+              }
+            ]
+          },
+          {
+            "title": "Connect with us",
+            "links": [
+              {
+                "label": "Instagram",
+                "url": "https://instagram.com"
+              },
+              {
+                "label": "Facebook",
+                "url": "https://facebook.com"
+              },
+              {
+                "label": "X",
+                "url": "https://x.com"
+              },
+              {
+                "label": "LinkedIn",
+                "url": "https://linkedin.com"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2024–2026, SDUI·Commerce, Inc. or its affiliates"
+      }
+    }
+  }
+}

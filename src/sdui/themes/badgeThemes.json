@@ -1,0 +1,89 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Amazon Orange Deal",
+    "previewColor": "#8A5209",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "#FFF3DF",
+        "color": "#8A5209"
+      },
+      "data": {
+        "text": "Limited time offer"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Blue Pill",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "#EFF6FF",
+        "color": "#2563EB"
+      },
+      "data": {
+        "text": "Limited time offer"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Neon Flash",
+    "previewColor": "#FEF08A",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "rgba(250, 204, 21, 0.15)",
+        "color": "#FEF08A"
+      },
+      "data": {
+        "text": "Limited time offer"
+      }
+    }
+  }
+}

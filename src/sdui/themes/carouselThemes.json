@@ -1,0 +1,288 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Campus Carousel",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Carousel",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 36,
+          "rowEnd": 58
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E4E7E4",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "showDots": true,
+        "autoPlay": true,
+        "autoPlayInterval": 5000,
+        "infiniteLoop": true
+      },
+      "actions": {
+        "onSwipeLeft": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_LEFT",
+          "minSwipeDistance": 50
+        },
+        "onSwipeRight": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_RIGHT",
+          "minSwipeDistance": 50
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/1080/1600/500",
+            "altText": "Campus Showcase 1"
+          }
+        },
+        {
+          "type": "IFrame",
+          "containerStyle": {
+            "height": "220px",
+            "width": "100%",
+            "borderRadius": "16px",
+            "overflow": "hidden"
+          },
+          "data": {
+            "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+            "title": "Campus Tech & Deals Showcase",
+            "allowFullScreen": true
+          }
+        },
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/180/1600/500",
+            "altText": "Campus Showcase 2"
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Minimal Carousel",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Carousel",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 36,
+          "rowEnd": 58
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "backgroundColor": "#FFFFFF",
+        "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "showDots": true,
+        "autoPlay": true,
+        "autoPlayInterval": 5000,
+        "infiniteLoop": true
+      },
+      "actions": {
+        "onSwipeLeft": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_LEFT",
+          "minSwipeDistance": 50
+        },
+        "onSwipeRight": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_RIGHT",
+          "minSwipeDistance": 50
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/1080/1600/500",
+            "altText": "Campus Showcase 1"
+          }
+        },
+        {
+          "type": "IFrame",
+          "containerStyle": {
+            "height": "220px",
+            "width": "100%",
+            "borderRadius": "16px",
+            "overflow": "hidden",
+            "border": "1px solid #E2E8F0"
+          },
+          "data": {
+            "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+            "title": "Campus Tech & Deals Showcase",
+            "allowFullScreen": true
+          }
+        },
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/180/1600/500",
+            "altText": "Campus Showcase 2"
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Obsidian Carousel",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Carousel",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 36,
+          "rowEnd": 58
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 31,
+          "rowEnd": 54
+        }
+      },
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #1E293B",
+        "backgroundColor": "#0F172A",
+        "boxShadow": "0 8px 24px rgba(0, 0, 0, 0.4)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "showDots": true,
+        "autoPlay": true,
+        "autoPlayInterval": 5000,
+        "infiniteLoop": true
+      },
+      "actions": {
+        "onSwipeLeft": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_LEFT",
+          "minSwipeDistance": 50
+        },
+        "onSwipeRight": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "CAROUSEL_SWIPE_RIGHT",
+          "minSwipeDistance": 50
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/1080/1600/500",
+            "altText": "Campus Showcase 1"
+          }
+        },
+        {
+          "type": "IFrame",
+          "containerStyle": {
+            "height": "220px",
+            "width": "100%",
+            "borderRadius": "16px",
+            "overflow": "hidden",
+            "border": "1px solid #1E293B",
+            "backgroundColor": "#0F172A"
+          },
+          "data": {
+            "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
+            "title": "Campus Tech & Deals Showcase",
+            "allowFullScreen": true
+          }
+        },
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "220px",
+            "objectFit": "cover",
+            "borderRadius": "16px"
+          },
+          "data": {
+            "imageUrl": "https://picsum.photos/id/180/1600/500",
+            "altText": "Campus Showcase 2"
+          }
+        }
+      ]
+    }
+  }
+}

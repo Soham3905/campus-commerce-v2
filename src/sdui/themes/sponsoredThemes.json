@@ -1,0 +1,56 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Muted Sponsored",
+    "previewColor": "#888888",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#888888",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Blue Sponsored",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#2563EB",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Amber Sponsored",
+    "previewColor": "#F59E0B",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#F59E0B",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  }
+}

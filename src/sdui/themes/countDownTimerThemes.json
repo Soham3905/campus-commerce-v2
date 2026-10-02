@@ -1,0 +1,185 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Teal Timer",
+    "previewColor": "#0A2A31",
+    "config": {
+      "type": "CountDownTimer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 112,
+          "rowEnd": 120
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        }
+      },
+      "containerStyle": {
+        "flexShrink": "0",
+        "minWidth": "280px",
+        "maxWidth": "320px",
+        "background": "linear-gradient(180deg, #11404C 0%, #0A2A31 100%)",
+        "backgroundImage": "linear-gradient(180deg, #11404C 0%, #0A2A31 100%)",
+        "backgroundColor": "#0A2A31",
+        "padding": "14px 16px",
+        "borderRadius": "16px",
+        "border": "1px solid rgba(255,255,255,0.12)",
+        "color": "#FFFFFF",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "letterSpacing": "0.06em",
+        "textAlign": "left",
+        "boxSizing": "border-box",
+        "boxShadow": "0 4px 16px rgba(10, 42, 49, 0.25)"
+      },
+      "data": {
+        "label": "Deal of the day ends in",
+        "expiredText": "Deal ended",
+        "targetDate": "2026-09-13T23:59:00",
+        "showDays": "false",
+        "format": "HH:MM:SS"
+      },
+      "actions": {
+        "onExpire": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "DEAL_OF_THE_DAY_ENDED"
+        }
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Timer",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "CountDownTimer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 112,
+          "rowEnd": 120
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        }
+      },
+      "containerStyle": {
+        "flexShrink": "0",
+        "minWidth": "280px",
+        "maxWidth": "320px",
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundColor": "#FFFFFF",
+        "padding": "14px 16px",
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "color": "#0F172A",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "letterSpacing": "0.06em",
+        "textAlign": "left",
+        "boxSizing": "border-box",
+        "boxShadow": "0 4px 16px rgba(15, 23, 42, 0.06)"
+      },
+      "data": {
+        "label": "Deal of the day ends in",
+        "expiredText": "Deal ended",
+        "targetDate": "2026-09-13T23:59:00",
+        "showDays": "false",
+        "format": "HH:MM:SS"
+      },
+      "actions": {
+        "onExpire": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "DEAL_OF_THE_DAY_ENDED"
+        }
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Neon Timer",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "CountDownTimer",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 112,
+          "rowEnd": 120
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 108,
+          "rowEnd": 116
+        }
+      },
+      "containerStyle": {
+        "flexShrink": "0",
+        "minWidth": "280px",
+        "maxWidth": "320px",
+        "background": "linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%)",
+        "backgroundImage": "linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%)",
+        "backgroundColor": "#0F172A",
+        "padding": "14px 16px",
+        "borderRadius": "16px",
+        "border": "1px solid #312E81",
+        "color": "#F8FAFC",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "letterSpacing": "0.06em",
+        "textAlign": "left",
+        "boxSizing": "border-box",
+        "boxShadow": "0 4px 16px rgba(49, 46, 129, 0.35)"
+      },
+      "data": {
+        "label": "Deal of the day ends in",
+        "expiredText": "Deal ended",
+        "targetDate": "2026-09-13T23:59:00",
+        "showDays": "false",
+        "format": "HH:MM:SS"
+      },
+      "actions": {
+        "onExpire": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "DEAL_OF_THE_DAY_ENDED"
+        }
+      }
+    }
+  }
+}

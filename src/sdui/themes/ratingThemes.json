@@ -1,0 +1,113 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Rating Row",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#5E6E72",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Score",
+          "data": {
+            "text": "4.4",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "data": {
+            "text": "376"
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Rating",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#64748B",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Score",
+          "data": {
+            "text": "4.4",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "data": {
+            "text": "376"
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Rating",
+    "previewColor": "#94A3B8",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#94A3B8",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Score",
+          "data": {
+            "text": "4.4",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "data": {
+            "text": "376"
+          }
+        }
+      ]
+    }
+  }
+}

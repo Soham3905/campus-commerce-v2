@@ -1,0 +1,53 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Rounded Cover",
+    "previewColor": "#FAFAF8",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "220px",
+        "objectFit": "cover",
+        "borderRadius": "16px"
+      },
+      "data": {
+        "imageUrl": "https://picsum.photos/id/180/1600/500",
+        "altText": ""
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Bordered Cover",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "220px",
+        "objectFit": "cover",
+        "borderRadius": "16px"
+      },
+      "data": {
+        "imageUrl": "https://picsum.photos/id/180/1600/500",
+        "altText": ""
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Dark Studio Glow",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "220px",
+        "objectFit": "cover",
+        "borderRadius": "16px"
+      },
+      "data": {
+        "imageUrl": "https://picsum.photos/id/180/1600/500",
+        "altText": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Share Button",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "ShareButton",
+      "containerStyle": {
+        "width": "44px",
+        "height": "44px",
+        "borderRadius": "12px",
+        "border": "1px solid #E4E7E4",
+        "backgroundColor": "#FFFFFF",
+        "color": "#101F26",
+        "fontSize": "17px",
+        "cursor": "pointer",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "center"
+      },
+      "data": {
+        "label": "",
+        "icon": "↗"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Share Button",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "ShareButton",
+      "containerStyle": {
+        "width": "44px",
+        "height": "44px",
+        "borderRadius": "12px",
+        "border": "1px solid #E2E8F0",
+        "backgroundColor": "#FFFFFF",
+        "color": "#0F172A",
+        "fontSize": "17px",
+        "cursor": "pointer",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "center"
+      },
+      "data": {
+        "label": "",
+        "icon": "↗"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Share Button",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "ShareButton",
+      "containerStyle": {
+        "width": "44px",
+        "height": "44px",
+        "borderRadius": "12px",
+        "border": "1px solid #1E293B",
+        "backgroundColor": "#1E293B",
+        "color": "#F8FAFC",
+        "fontSize": "17px",
+        "cursor": "pointer",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "center"
+      },
+      "data": {
+        "label": "",
+        "icon": "↗"
+      }
+    }
+  }
+}

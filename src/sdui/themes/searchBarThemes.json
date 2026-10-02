@@ -1,0 +1,203 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Store Search",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "SearchBar",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        }
+      },
+      "containerStyle": {
+        "width": "340px",
+        "alignItems": "center",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "boxSizing": "border-box",
+        "color": "#101F26",
+        "caretColor": "#C4185F",
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "placeholder": "Search products, brands and more"
+      },
+      "actions": {
+        "onChange": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_CHANGE_SEARCH",
+          "debounceDuration": 500
+        },
+        "onSubmit": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SUBMIT_SEARCH"
+        },
+        "onFocus": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_FOCUS_SEARCH"
+        },
+        "onBlur": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_BLUR_SEARCH"
+        }
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Minimal Sky",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "SearchBar",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        }
+      },
+      "containerStyle": {
+        "width": "340px",
+        "alignItems": "center",
+        "border": "1px solid #E2E8F0",
+        "borderRadius": "12px",
+        "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
+        "boxSizing": "border-box",
+        "color": "#0F172A",
+        "caretColor": "#2563EB",
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "placeholder": "Search products, brands and more"
+      },
+      "actions": {
+        "onChange": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_CHANGE_SEARCH",
+          "debounceDuration": 500
+        },
+        "onSubmit": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SUBMIT_SEARCH"
+        },
+        "onFocus": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_FOCUS_SEARCH"
+        },
+        "onBlur": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_BLUR_SEARCH"
+        }
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Glass",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "SearchBar",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 6,
+          "rowEnd": 10
+        }
+      },
+      "containerStyle": {
+        "width": "340px",
+        "alignItems": "center",
+        "border": "1px solid #1E293B",
+        "borderRadius": "12px",
+        "boxShadow": "0 4px 16px rgba(0, 0, 0, 0.4)",
+        "boxSizing": "border-box",
+        "color": "#FFFFFF",
+        "caretColor": "#F59E0B",
+        "background": "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+        "backgroundImage": "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+        "backgroundColor": "#0F172A"
+      },
+      "data": {
+        "placeholder": "Search products, brands and more"
+      },
+      "actions": {
+        "onChange": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_CHANGE_SEARCH",
+          "debounceDuration": 500
+        },
+        "onSubmit": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_SUBMIT_SEARCH"
+        },
+        "onFocus": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_FOCUS_SEARCH"
+        },
+        "onBlur": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_BLUR_SEARCH"
+        }
+      }
+    }
+  }
+}

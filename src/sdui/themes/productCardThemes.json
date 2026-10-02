@@ -1,0 +1,1149 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Landing Page Default",
+    "previewColor": "#FAFAF8",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "flex": "0 0 auto",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "16px",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "id": "serenelife-001"
+      },
+      "actions": {
+        "onLongPress": {
+          "type": "SHOW_CONTEXT_MENU",
+          "data": {
+            "title": "Quick actions",
+            "options": [
+              {
+                "label": "Add to wishlist",
+                "icon": "♥",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_WISHLIST"
+                }
+              },
+              {
+                "label": "Add to cart",
+                "icon": "🛒",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_CART"
+                }
+              },
+              {
+                "label": "Add to favourites",
+                "icon": "★",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_FAVOURITE"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "176px",
+            "minHeight": "176px",
+            "flex": "0 0 176px",
+            "flexShrink": "0",
+            "width": "100%",
+            "maxHeight": "176px",
+            "objectFit": "contain",
+            "backgroundColor": "#FAFAF8",
+            "borderRadius": "10px",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "imageUrl": "https://m.media-amazon.com/images/I/816r5iLd4LL._AC_UL480_FMwebp_QL65_.jpg",
+            "altText": "SereneLife folding shopping cart"
+          }
+        },
+        {
+          "type": "Label",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "4px",
+            "overflow": "hidden",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#8D9A9D",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Sponsored",
+              "data": {
+                "text": "Sponsored"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Badge",
+          "containerStyle": {
+            "height": "22px",
+            "minHeight": "22px",
+            "flex": "0 0 22px",
+            "flexShrink": "0",
+            "alignSelf": "flex-start",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "padding": "0 9px",
+            "borderRadius": "999px",
+            "fontSize": "11px",
+            "fontWeight": "600",
+            "letterSpacing": "0.01em",
+            "whiteSpace": "nowrap",
+            "boxSizing": "border-box",
+            "backgroundColor": "#FFF3DF",
+            "color": "#8A5209"
+          },
+          "data": {
+            "text": "Limited time offer"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "11px",
+            "fontWeight": "700",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#5E6E72",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "SereneLife"
+          }
+        },
+        {
+          "type": "Description",
+          "containerStyle": {
+            "height": "60px",
+            "minHeight": "60px",
+            "flex": "0 0 60px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "3",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "maxHeight": "60px",
+            "fontSize": "14px",
+            "lineHeight": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.005em",
+            "color": "#101F26",
+            "overflowWrap": "anywhere",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Compact folding shopping cart with waterproof liner, 360° swivel wheels and a 70 lb capacity"
+          }
+        },
+        {
+          "type": "Rating",
+          "containerStyle": {
+            "height": "20px",
+            "minHeight": "20px",
+            "flex": "0 0 20px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "6px",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "12px",
+            "letterSpacing": "0.02em",
+            "color": "#5E6E72",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Score",
+              "data": {
+                "text": "4.4",
+                "out of": "5"
+              }
+            },
+            {
+              "type": "ReviewCount",
+              "data": {
+                "text": "376"
+              }
+            }
+          ]
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "height": "28px",
+            "minHeight": "28px",
+            "flex": "0 0 28px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "8px",
+            "overflow": "hidden",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "18px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.01em",
+            "color": "#101F26",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "sellingPrice": "₹7,089",
+            "mrp": "₹12,250",
+            "discount": "42%"
+          }
+        },
+        {
+          "type": "OfferText",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "1",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "color": "#C4185F",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Up to 5% back with Amazon Pay ICICI card"
+          }
+        },
+        {
+          "type": "DeliveryInfo",
+          "containerStyle": {
+            "height": "18px",
+            "minHeight": "18px",
+            "flex": "0 0 18px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "12px",
+            "color": "#5E6E72",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "prefix": "Free delivery",
+            "daysOffset": 7
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "height": "44px",
+            "minHeight": "44px",
+            "flex": "0 0 44px",
+            "flexShrink": "0",
+            "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+            "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
+            "backgroundColor": "#C4185F",
+            "marginTop": "auto",
+            "width": "calc(100% - 52px)",
+            "alignSelf": "flex-end",
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "padding": "0 16px",
+            "borderRadius": "12px",
+            "border": "none",
+            "color": "#FFFFFF",
+            "fontSize": "14px",
+            "fontWeight": "600",
+            "letterSpacing": "0.01em",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+          },
+          "data": {
+            "label": "Add to cart"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ADD_TO_CART"
+            }
+          }
+        },
+        {
+          "type": "ShareButton",
+          "containerStyle": {
+            "position": "absolute",
+            "right": "14px",
+            "bottom": "8px",
+            "zIndex": "3",
+            "width": "44px",
+            "height": "44px",
+            "minWidth": "44px",
+            "padding": "0",
+            "margin": "0",
+            "borderRadius": "12px",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "gap": "0",
+            "backgroundColor": "#FFFFFF",
+            "border": "1px solid #E4E7E4",
+            "color": "#101F26",
+            "fontSize": "17px",
+            "lineHeight": "1",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "overflow": "hidden",
+            "boxShadow": "none"
+          },
+          "data": {
+            "label": "",
+            "icon": "↗"
+          },
+          "actions": {
+            "onTap": {
+              "type": "OPEN_BOTTOM_SHEET",
+              "data": {
+                "title": "Share this product",
+                "options": [
+                  {
+                    "label": "WhatsApp",
+                    "icon": "💬",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_WHATSAPP"
+                    }
+                  },
+                  {
+                    "label": "Instagram",
+                    "icon": "📷",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_INSTAGRAM"
+                    }
+                  },
+                  {
+                    "label": "Copy link",
+                    "icon": "🔗",
+                    "action": {
+                      "type": "COPY_TO_CLIPBOARD",
+                      "value": "https://example.com/p/serenelife-001"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Store",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundColor": "#FFFFFF",
+        "flex": "0 0 auto",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #E2E8F0",
+        "borderRadius": "16px",
+        "boxShadow": "0 4px 12px rgba(0, 0, 0, 0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "id": "serenelife-001"
+      },
+      "actions": {
+        "onLongPress": {
+          "type": "SHOW_CONTEXT_MENU",
+          "data": {
+            "title": "Quick actions",
+            "options": [
+              {
+                "label": "Add to wishlist",
+                "icon": "♥",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_WISHLIST"
+                }
+              },
+              {
+                "label": "Add to cart",
+                "icon": "🛒",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_CART"
+                }
+              },
+              {
+                "label": "Add to favourites",
+                "icon": "★",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_FAVOURITE"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "176px",
+            "minHeight": "176px",
+            "flex": "0 0 176px",
+            "flexShrink": "0",
+            "width": "100%",
+            "maxHeight": "176px",
+            "objectFit": "contain",
+            "backgroundColor": "#F8FAFC",
+            "borderRadius": "10px",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "imageUrl": "https://m.media-amazon.com/images/I/816r5iLd4LL._AC_UL480_FMwebp_QL65_.jpg",
+            "altText": "SereneLife folding shopping cart"
+          }
+        },
+        {
+          "type": "Label",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "4px",
+            "overflow": "hidden",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#2563EB",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Sponsored",
+              "data": {
+                "text": "Sponsored"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Badge",
+          "containerStyle": {
+            "height": "22px",
+            "minHeight": "22px",
+            "flex": "0 0 22px",
+            "flexShrink": "0",
+            "alignSelf": "flex-start",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "padding": "0 9px",
+            "borderRadius": "999px",
+            "fontSize": "11px",
+            "fontWeight": "600",
+            "letterSpacing": "0.01em",
+            "whiteSpace": "nowrap",
+            "boxSizing": "border-box",
+            "backgroundColor": "#EFF6FF",
+            "color": "#2563EB"
+          },
+          "data": {
+            "text": "Limited time offer"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "11px",
+            "fontWeight": "700",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#64748B",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "SereneLife"
+          }
+        },
+        {
+          "type": "Description",
+          "containerStyle": {
+            "height": "60px",
+            "minHeight": "60px",
+            "flex": "0 0 60px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "3",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "maxHeight": "60px",
+            "fontSize": "14px",
+            "lineHeight": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.005em",
+            "color": "#0F172A",
+            "overflowWrap": "anywhere",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Compact folding shopping cart with waterproof liner, 360° swivel wheels and a 70 lb capacity"
+          }
+        },
+        {
+          "type": "Rating",
+          "containerStyle": {
+            "height": "20px",
+            "minHeight": "20px",
+            "flex": "0 0 20px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "6px",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "12px",
+            "letterSpacing": "0.02em",
+            "color": "#64748B",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Score",
+              "data": {
+                "text": "4.4",
+                "out of": "5"
+              }
+            },
+            {
+              "type": "ReviewCount",
+              "data": {
+                "text": "376"
+              }
+            }
+          ]
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "height": "28px",
+            "minHeight": "28px",
+            "flex": "0 0 28px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "8px",
+            "overflow": "hidden",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "18px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.01em",
+            "color": "#0F172A",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "sellingPrice": "₹7,089",
+            "mrp": "₹12,250",
+            "discount": "42%"
+          }
+        },
+        {
+          "type": "OfferText",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "1",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "color": "#2563EB",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Up to 5% back with Amazon Pay ICICI card"
+          }
+        },
+        {
+          "type": "DeliveryInfo",
+          "containerStyle": {
+            "height": "18px",
+            "minHeight": "18px",
+            "flex": "0 0 18px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "12px",
+            "color": "#64748B",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "prefix": "Free delivery",
+            "daysOffset": 7
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "height": "44px",
+            "minHeight": "44px",
+            "flex": "0 0 44px",
+            "flexShrink": "0",
+            "background": "linear-gradient(180deg, #3B82F6 0%, #2563EB 100%)",
+            "backgroundImage": "linear-gradient(180deg, #3B82F6 0%, #2563EB 100%)",
+            "backgroundColor": "#2563EB",
+            "marginTop": "auto",
+            "width": "calc(100% - 52px)",
+            "alignSelf": "flex-end",
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "padding": "0 16px",
+            "borderRadius": "12px",
+            "border": "none",
+            "color": "#FFFFFF",
+            "fontSize": "14px",
+            "fontWeight": "600",
+            "letterSpacing": "0.01em",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "boxShadow": "0 2px 10px rgba(37,99,235,0.24)"
+          },
+          "data": {
+            "label": "Add to cart"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ADD_TO_CART"
+            }
+          }
+        },
+        {
+          "type": "ShareButton",
+          "containerStyle": {
+            "position": "absolute",
+            "right": "14px",
+            "bottom": "8px",
+            "zIndex": "3",
+            "width": "44px",
+            "height": "44px",
+            "minWidth": "44px",
+            "padding": "0",
+            "margin": "0",
+            "borderRadius": "12px",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "gap": "0",
+            "backgroundColor": "#FFFFFF",
+            "border": "1px solid #E2E8F0",
+            "color": "#0F172A",
+            "fontSize": "17px",
+            "lineHeight": "1",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "overflow": "hidden",
+            "boxShadow": "none"
+          },
+          "data": {
+            "label": "",
+            "icon": "↗"
+          },
+          "actions": {
+            "onTap": {
+              "type": "OPEN_BOTTOM_SHEET",
+              "data": {
+                "title": "Share this product",
+                "options": [
+                  {
+                    "label": "WhatsApp",
+                    "icon": "💬",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_WHATSAPP"
+                    }
+                  },
+                  {
+                    "label": "Instagram",
+                    "icon": "📷",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_INSTAGRAM"
+                    }
+                  },
+                  {
+                    "label": "Copy link",
+                    "icon": "🔗",
+                    "action": {
+                      "type": "COPY_TO_CLIPBOARD",
+                      "value": "https://example.com/p/serenelife-001"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Black",
+    "previewColor": "#000000",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+        "backgroundImage": "linear-gradient(180deg, #1E293B 0%, #0F172A 100%)",
+        "backgroundColor": "#0F172A",
+        "flex": "0 0 auto",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #1E293B",
+        "borderRadius": "16px",
+        "boxShadow": "0 8px 24px rgba(0, 0, 0, 0.4)",
+        "boxSizing": "border-box",
+        "color": "#F8FAFC"
+      },
+      "data": {
+        "id": "serenelife-001"
+      },
+      "actions": {
+        "onLongPress": {
+          "type": "SHOW_CONTEXT_MENU",
+          "data": {
+            "title": "Quick actions",
+            "options": [
+              {
+                "label": "Add to wishlist",
+                "icon": "♥",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_WISHLIST"
+                }
+              },
+              {
+                "label": "Add to cart",
+                "icon": "🛒",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_CART"
+                }
+              },
+              {
+                "label": "Add to favourites",
+                "icon": "★",
+                "action": {
+                  "type": "API_CALL",
+                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                  "actionName": "ADD_TO_FAVOURITE"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "176px",
+            "minHeight": "176px",
+            "flex": "0 0 176px",
+            "flexShrink": "0",
+            "width": "100%",
+            "maxHeight": "176px",
+            "objectFit": "contain",
+            "backgroundColor": "#1E293B",
+            "borderRadius": "10px",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "imageUrl": "https://m.media-amazon.com/images/I/816r5iLd4LL._AC_UL480_FMwebp_QL65_.jpg",
+            "altText": "SereneLife folding shopping cart"
+          }
+        },
+        {
+          "type": "Label",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "4px",
+            "overflow": "hidden",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#F59E0B",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Sponsored",
+              "data": {
+                "text": "Sponsored"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Badge",
+          "containerStyle": {
+            "height": "22px",
+            "minHeight": "22px",
+            "flex": "0 0 22px",
+            "flexShrink": "0",
+            "alignSelf": "flex-start",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "padding": "0 9px",
+            "borderRadius": "999px",
+            "fontSize": "11px",
+            "fontWeight": "600",
+            "letterSpacing": "0.01em",
+            "whiteSpace": "nowrap",
+            "boxSizing": "border-box",
+            "backgroundColor": "rgba(250, 204, 21, 0.15)",
+            "color": "#FEF08A"
+          },
+          "data": {
+            "text": "Limited time offer"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "11px",
+            "fontWeight": "700",
+            "letterSpacing": "0.10em",
+            "textTransform": "uppercase",
+            "color": "#94A3B8",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "SereneLife"
+          }
+        },
+        {
+          "type": "Description",
+          "containerStyle": {
+            "height": "60px",
+            "minHeight": "60px",
+            "flex": "0 0 60px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "3",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "maxHeight": "60px",
+            "fontSize": "14px",
+            "lineHeight": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.005em",
+            "color": "#F8FAFC",
+            "overflowWrap": "anywhere",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Compact folding shopping cart with waterproof liner, 360° swivel wheels and a 70 lb capacity"
+          }
+        },
+        {
+          "type": "Rating",
+          "containerStyle": {
+            "height": "20px",
+            "minHeight": "20px",
+            "flex": "0 0 20px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "center",
+            "gap": "6px",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "12px",
+            "letterSpacing": "0.02em",
+            "color": "#94A3B8",
+            "boxSizing": "border-box"
+          },
+          "children": [
+            {
+              "type": "Score",
+              "data": {
+                "text": "4.4",
+                "out of": "5"
+              }
+            },
+            {
+              "type": "ReviewCount",
+              "data": {
+                "text": "376"
+              }
+            }
+          ]
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "height": "28px",
+            "minHeight": "28px",
+            "flex": "0 0 28px",
+            "flexShrink": "0",
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "8px",
+            "overflow": "hidden",
+            "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+            "fontSize": "18px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.01em",
+            "color": "#FFFFFF",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "sellingPrice": "₹7,089",
+            "mrp": "₹12,250",
+            "discount": "42%"
+          }
+        },
+        {
+          "type": "OfferText",
+          "containerStyle": {
+            "height": "16px",
+            "minHeight": "16px",
+            "flex": "0 0 16px",
+            "flexShrink": "0",
+            "display": "-webkit-box",
+            "WebkitLineClamp": "1",
+            "WebkitBoxOrient": "vertical",
+            "overflow": "hidden",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "color": "#F59E0B",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "text": "Up to 5% back with Amazon Pay ICICI card"
+          }
+        },
+        {
+          "type": "DeliveryInfo",
+          "containerStyle": {
+            "height": "18px",
+            "minHeight": "18px",
+            "flex": "0 0 18px",
+            "flexShrink": "0",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis",
+            "fontSize": "12px",
+            "color": "#94A3B8",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "prefix": "Free delivery",
+            "daysOffset": 7
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "height": "44px",
+            "minHeight": "44px",
+            "flex": "0 0 44px",
+            "flexShrink": "0",
+            "background": "linear-gradient(180deg, #F59E0B 0%, #D97706 100%)",
+            "backgroundImage": "linear-gradient(180deg, #F59E0B 0%, #D97706 100%)",
+            "backgroundColor": "#F59E0B",
+            "marginTop": "auto",
+            "width": "calc(100% - 52px)",
+            "alignSelf": "flex-end",
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "padding": "0 16px",
+            "borderRadius": "12px",
+            "border": "none",
+            "color": "#000000",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "letterSpacing": "0.01em",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "boxShadow": "0 2px 10px rgba(245,158,11,0.24)"
+          },
+          "data": {
+            "label": "Add to cart"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ADD_TO_CART"
+            }
+          }
+        },
+        {
+          "type": "ShareButton",
+          "containerStyle": {
+            "position": "absolute",
+            "right": "14px",
+            "bottom": "8px",
+            "zIndex": "3",
+            "width": "44px",
+            "height": "44px",
+            "minWidth": "44px",
+            "padding": "0",
+            "margin": "0",
+            "borderRadius": "12px",
+            "display": "inline-flex",
+            "alignItems": "center",
+            "justifyContent": "center",
+            "gap": "0",
+            "backgroundColor": "#1E293B",
+            "border": "1px solid #334155",
+            "color": "#FFFFFF",
+            "fontSize": "17px",
+            "lineHeight": "1",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box",
+            "overflow": "hidden",
+            "boxShadow": "none"
+          },
+          "data": {
+            "label": "",
+            "icon": "↗"
+          },
+          "actions": {
+            "onTap": {
+              "type": "OPEN_BOTTOM_SHEET",
+              "data": {
+                "title": "Share this product",
+                "options": [
+                  {
+                    "label": "WhatsApp",
+                    "icon": "💬",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_WHATSAPP"
+                    }
+                  },
+                  {
+                    "label": "Instagram",
+                    "icon": "📷",
+                    "action": {
+                      "type": "API_CALL",
+                      "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+                      "actionName": "ON_TAP_SHARE_INSTAGRAM"
+                    }
+                  },
+                  {
+                    "label": "Copy link",
+                    "icon": "🔗",
+                    "action": {
+                      "type": "COPY_TO_CLIPBOARD",
+                      "value": "https://example.com/p/serenelife-001"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

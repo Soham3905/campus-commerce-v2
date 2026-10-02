@@ -1,0 +1,86 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Icon Category",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#101F26",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "Fashion",
+        "icon": "👕"
+      },
+      "actions": {
+        "onTap": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_TAP_FASHION"
+        }
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Category",
+    "previewColor": "#0EA5E9",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#0F172A",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "Fashion",
+        "icon": "👕"
+      },
+      "actions": {
+        "onTap": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_TAP_FASHION"
+        }
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Category",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#F8FAFC",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "Fashion",
+        "icon": "👕"
+      },
+      "actions": {
+        "onTap": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_TAP_FASHION"
+        }
+      }
+    }
+  }
+}

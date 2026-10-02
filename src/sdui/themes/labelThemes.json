@@ -1,0 +1,107 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Flex Label",
+    "previewColor": "#8D9A9D",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#8D9A9D",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#8D9A9D"
+          },
+          "data": {
+            "text": "Sponsored"
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Blue Label",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#2563EB",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#2563EB"
+          },
+          "data": {
+            "text": "Sponsored"
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Dark Amber Label",
+    "previewColor": "#F59E0B",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#F59E0B",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#F59E0B"
+          },
+          "data": {
+            "text": "Sponsored"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default 2-Line Muted",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Description",
+      "containerStyle": {
+        "height": "60px",
+        "minHeight": "60px",
+        "flex": "0 0 60px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "3",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "maxHeight": "60px",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "fontWeight": "500",
+        "letterSpacing": "-0.005em",
+        "color": "#101F26",
+        "overflowWrap": "anywhere",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Buds Pro ANC wireless earbuds — 42 hr battery, dual pairing, IPX5 water resistance"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Light Slate",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Description",
+      "containerStyle": {
+        "height": "60px",
+        "minHeight": "60px",
+        "flex": "0 0 60px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "3",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "maxHeight": "60px",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "fontWeight": "500",
+        "letterSpacing": "-0.005em",
+        "color": "#0F172A",
+        "overflowWrap": "anywhere",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Buds Pro ANC wireless earbuds — 42 hr battery, dual pairing, IPX5 water resistance"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Glow",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "Description",
+      "containerStyle": {
+        "height": "60px",
+        "minHeight": "60px",
+        "flex": "0 0 60px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "3",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "maxHeight": "60px",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "fontWeight": "500",
+        "letterSpacing": "-0.005em",
+        "color": "#F8FAFC",
+        "overflowWrap": "anywhere",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Buds Pro ANC wireless earbuds — 42 hr battery, dual pairing, IPX5 water resistance"
+      }
+    }
+  }
+}

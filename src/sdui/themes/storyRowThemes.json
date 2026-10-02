@@ -1,0 +1,538 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Instagram Pink",
+    "previewColor": "#E1306C",
+    "config": {
+      "type": "StoryRow",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 16,
+          "rowEnd": 26
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        }
+      },
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "actions": {
+        "onDrop": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_DROP_STORY"
+        }
+      },
+      "children": [
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#123A44",
+            "accentColor": "#123A44",
+            "border": "2px solid #123A44",
+            "--story-ring": "#123A44",
+            "--ring-color": "#123A44"
+          },
+          "data": {
+            "label": "Sale",
+            "imageUrl": "https://picsum.photos/id/2/200/200"
+          },
+          "actions": {
+            "onDrag": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_DRAG_STORY"
+            },
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/2/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#C4185F",
+            "accentColor": "#C4185F",
+            "border": "2px solid #C4185F",
+            "--story-ring": "#C4185F",
+            "--ring-color": "#C4185F"
+          },
+          "data": {
+            "label": "Trending",
+            "imageUrl": "https://picsum.photos/id/3/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/3/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#C4185F",
+            "accentColor": "#C4185F",
+            "border": "2px solid #C4185F",
+            "--story-ring": "#C4185F",
+            "--ring-color": "#C4185F"
+          },
+          "data": {
+            "label": "Electronics",
+            "imageUrl": "https://picsum.photos/id/4/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/4/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#C4185F",
+            "accentColor": "#C4185F",
+            "border": "2px solid #C4185F",
+            "--story-ring": "#C4185F",
+            "--ring-color": "#C4185F"
+          },
+          "data": {
+            "label": "Kitchen",
+            "imageUrl": "https://picsum.photos/id/30/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/30/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#C4185F",
+            "accentColor": "#C4185F",
+            "border": "2px solid #C4185F",
+            "--story-ring": "#C4185F",
+            "--ring-color": "#C4185F"
+          },
+          "data": {
+            "label": "Fashion",
+            "imageUrl": "https://picsum.photos/id/21/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/21/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#C4185F",
+            "accentColor": "#C4185F",
+            "border": "2px solid #C4185F",
+            "--story-ring": "#C4185F",
+            "--ring-color": "#C4185F"
+          },
+          "data": {
+            "label": "Beauty",
+            "imageUrl": "https://picsum.photos/id/64/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/64/600/600"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Sky Blue Minimal",
+    "previewColor": "#0EA5E9",
+    "config": {
+      "type": "StoryRow",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 16,
+          "rowEnd": 26
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        }
+      },
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "actions": {
+        "onDrop": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_DROP_STORY"
+        }
+      },
+      "children": [
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0284C7",
+            "accentColor": "#0284C7",
+            "border": "2px solid #0284C7",
+            "--story-ring": "#0284C7",
+            "--ring-color": "#0284C7"
+          },
+          "data": {
+            "label": "Sale",
+            "imageUrl": "https://picsum.photos/id/2/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/2/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0EA5E9",
+            "accentColor": "#0EA5E9",
+            "border": "2px solid #0EA5E9",
+            "--story-ring": "#0EA5E9",
+            "--ring-color": "#0EA5E9"
+          },
+          "data": {
+            "label": "Trending",
+            "imageUrl": "https://picsum.photos/id/3/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/3/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0EA5E9",
+            "accentColor": "#0EA5E9",
+            "border": "2px solid #0EA5E9",
+            "--story-ring": "#0EA5E9",
+            "--ring-color": "#0EA5E9"
+          },
+          "data": {
+            "label": "Electronics",
+            "imageUrl": "https://picsum.photos/id/4/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/4/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0EA5E9",
+            "accentColor": "#0EA5E9",
+            "border": "2px solid #0EA5E9",
+            "--story-ring": "#0EA5E9",
+            "--ring-color": "#0EA5E9"
+          },
+          "data": {
+            "label": "Kitchen",
+            "imageUrl": "https://picsum.photos/id/30/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/30/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0EA5E9",
+            "accentColor": "#0EA5E9",
+            "border": "2px solid #0EA5E9",
+            "--story-ring": "#0EA5E9",
+            "--ring-color": "#0EA5E9"
+          },
+          "data": {
+            "label": "Fashion",
+            "imageUrl": "https://picsum.photos/id/21/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/21/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#0EA5E9",
+            "accentColor": "#0EA5E9",
+            "border": "2px solid #0EA5E9",
+            "--story-ring": "#0EA5E9",
+            "--ring-color": "#0EA5E9"
+          },
+          "data": {
+            "label": "Beauty",
+            "imageUrl": "https://picsum.photos/id/64/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/64/600/600"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Neon",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "StoryRow",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 16,
+          "rowEnd": 26
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 11,
+          "rowEnd": 22
+        }
+      },
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "actions": {
+        "onDrop": {
+          "type": "API_CALL",
+          "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+          "actionName": "ON_DROP_STORY"
+        }
+      },
+      "children": [
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#38BDF8",
+            "accentColor": "#38BDF8",
+            "border": "2px solid #38BDF8",
+            "--story-ring": "#38BDF8",
+            "--ring-color": "#38BDF8",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Sale",
+            "imageUrl": "https://picsum.photos/id/2/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/2/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#8B5CF6",
+            "accentColor": "#8B5CF6",
+            "border": "2px solid #8B5CF6",
+            "--story-ring": "#8B5CF6",
+            "--ring-color": "#8B5CF6",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Trending",
+            "imageUrl": "https://picsum.photos/id/3/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/3/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#8B5CF6",
+            "accentColor": "#8B5CF6",
+            "border": "2px solid #8B5CF6",
+            "--story-ring": "#8B5CF6",
+            "--ring-color": "#8B5CF6",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Electronics",
+            "imageUrl": "https://picsum.photos/id/4/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/4/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#8B5CF6",
+            "accentColor": "#8B5CF6",
+            "border": "2px solid #8B5CF6",
+            "--story-ring": "#8B5CF6",
+            "--ring-color": "#8B5CF6",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Kitchen",
+            "imageUrl": "https://picsum.photos/id/30/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/30/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#8B5CF6",
+            "accentColor": "#8B5CF6",
+            "border": "2px solid #8B5CF6",
+            "--story-ring": "#8B5CF6",
+            "--ring-color": "#8B5CF6",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Fashion",
+            "imageUrl": "https://picsum.photos/id/21/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/21/600/600"
+              }
+            }
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "containerStyle": {
+            "borderColor": "#8B5CF6",
+            "accentColor": "#8B5CF6",
+            "border": "2px solid #8B5CF6",
+            "--story-ring": "#8B5CF6",
+            "--ring-color": "#8B5CF6",
+            "backgroundColor": "#1E293B",
+            "color": "#F8FAFC"
+          },
+          "data": {
+            "label": "Beauty",
+            "imageUrl": "https://picsum.photos/id/64/200/200"
+          },
+          "actions": {
+            "onTap": {
+              "type": "SHOW_IMAGE_MODAL",
+              "data": {
+                "imageUrl": "https://picsum.photos/id/64/600/600"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Score",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "fontWeight": "700",
+        "color": "#101F26"
+      },
+      "data": {
+        "text": "4.4",
+        "out of": "5"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Score",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "fontWeight": "700",
+        "color": "#0F172A"
+      },
+      "data": {
+        "text": "4.4",
+        "out of": "5"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Score",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "fontWeight": "700",
+        "color": "#F8FAFC"
+      },
+      "data": {
+        "text": "4.4",
+        "out of": "5"
+      }
+    }
+  }
+}

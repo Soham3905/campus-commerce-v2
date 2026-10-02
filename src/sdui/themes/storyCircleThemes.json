@@ -1,0 +1,80 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Pink Ring Story",
+    "previewColor": "#C4185F",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#C4185F",
+        "accentColor": "#C4185F",
+        "--story-ring": "#C4185F",
+        "--ring-color": "#C4185F"
+      },
+      "data": {
+        "label": "Trending",
+        "imageUrl": "https://picsum.photos/id/3/200/200"
+      },
+      "actions": {
+        "onTap": {
+          "type": "SHOW_IMAGE_MODAL",
+          "data": {
+            "imageUrl": "https://picsum.photos/id/3/600/600"
+          }
+        }
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Sky Blue Story",
+    "previewColor": "#0EA5E9",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#0EA5E9",
+        "accentColor": "#0EA5E9",
+        "--story-ring": "#0EA5E9",
+        "--ring-color": "#0EA5E9"
+      },
+      "data": {
+        "label": "Trending",
+        "imageUrl": "https://picsum.photos/id/3/200/200"
+      },
+      "actions": {
+        "onTap": {
+          "type": "SHOW_IMAGE_MODAL",
+          "data": {
+            "imageUrl": "https://picsum.photos/id/3/600/600"
+          }
+        }
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Neon Story",
+    "previewColor": "#8B5CF6",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#8B5CF6",
+        "accentColor": "#8B5CF6",
+        "--story-ring": "#8B5CF6",
+        "--ring-color": "#8B5CF6"
+      },
+      "data": {
+        "label": "Trending",
+        "imageUrl": "https://picsum.photos/id/3/200/200"
+      },
+      "actions": {
+        "onTap": {
+          "type": "SHOW_IMAGE_MODAL",
+          "data": {
+            "imageUrl": "https://picsum.photos/id/3/600/600"
+          }
+        }
+      }
+    }
+  }
+}

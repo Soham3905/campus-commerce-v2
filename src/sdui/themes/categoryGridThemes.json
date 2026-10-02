@@ -1,0 +1,533 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Store Grid",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "CategoryGrid",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 27,
+          "rowEnd": 35
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": "16px",
+        "border": "1px solid #E4E7E4",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Mobiles",
+            "icon": "📱"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_MOBILES"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Fashion",
+            "icon": "👕"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_FASHION"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Laptops",
+            "icon": "💻"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_LAPTOPS"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Home",
+            "icon": "🏠"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_HOME"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Beauty",
+            "icon": "💄"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_BEAUTY"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#101F26",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Grocery",
+            "icon": "🛍️"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_GROCERY"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean White Store",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "CategoryGrid",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 27,
+          "rowEnd": 35
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "boxShadow": "0 1px 3px rgba(0,0,0,0.04)",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Mobiles",
+            "icon": "📱"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_MOBILES"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Fashion",
+            "icon": "👕"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_FASHION"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Laptops",
+            "icon": "💻"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_LAPTOPS"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Home",
+            "icon": "🏠"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_HOME"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Beauty",
+            "icon": "💄"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_BEAUTY"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#0F172A",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Grocery",
+            "icon": "🛍️"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_GROCERY"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Black",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "CategoryGrid",
+      "placement": {
+        "mobile": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 27,
+          "rowEnd": 35
+        },
+        "tablet": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        },
+        "desktop": {
+          "colStart": 1,
+          "colEnd": 100,
+          "rowStart": 22,
+          "rowEnd": 30
+        }
+      },
+      "containerStyle": {
+        "background": "linear-gradient(180deg, #111827 0%, #0F172A 100%)",
+        "backgroundImage": "linear-gradient(180deg, #111827 0%, #0F172A 100%)",
+        "backgroundColor": "#0F172A",
+        "borderRadius": "16px",
+        "border": "1px solid #1E293B",
+        "boxShadow": "0 4px 16px rgba(0,0,0,0.3)",
+        "boxSizing": "border-box"
+      },
+      "children": [
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Mobiles",
+            "icon": "📱"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_MOBILES"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Fashion",
+            "icon": "👕"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_FASHION"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Laptops",
+            "icon": "💻"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_LAPTOPS"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Home",
+            "icon": "🏠"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_HOME"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Beauty",
+            "icon": "💄"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_BEAUTY"
+            }
+          }
+        },
+        {
+          "type": "CategoryItem",
+          "containerStyle": {
+            "gap": "10px",
+            "borderRadius": "12px",
+            "fontWeight": "600",
+            "fontSize": "16px",
+            "color": "#F8FAFC",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "label": "Grocery",
+            "icon": "🛍️"
+          },
+          "actions": {
+            "onTap": {
+              "type": "API_CALL",
+              "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
+              "actionName": "ON_TAP_GROCERY"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

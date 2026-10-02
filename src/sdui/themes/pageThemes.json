@@ -1,0 +1,29 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default 100-Column Grid Canvas",
+    "previewColor": "#F6F6F4",
+    "config": {
+      "type": "Page",
+      "containerStyle": {}
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Grid Canvas",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Page",
+      "containerStyle": {}
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Grid Canvas",
+    "previewColor": "#0B0F19",
+    "config": {
+      "type": "Page",
+      "containerStyle": {}
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "landing_schema": {
+    "id": "landing_schema",
+    "name": "Default Review Count",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#5E6E72"
+      },
+      "data": {
+        "text": "376"
+      }
+    }
+  },
+  "clean_white": {
+    "id": "clean_white",
+    "name": "Clean Slate Review Count",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#64748B"
+      },
+      "data": {
+        "text": "376"
+      }
+    }
+  },
+  "black_minimal": {
+    "id": "black_minimal",
+    "name": "Minimal Dark Review Count",
+    "previewColor": "#94A3B8",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#94A3B8"
+      },
+      "data": {
+        "text": "376"
+      }
+    }
+  }
+}
