@@ -21,6 +21,7 @@ export default function ProductCardRenderer({ children, style = {} }: BaseRender
       style={{
         padding: '14px',
         width: '280px',
+        maxWidth: '100%',
         borderRadius: '16px',
         backgroundColor: '#ffffff',
         position: 'relative',

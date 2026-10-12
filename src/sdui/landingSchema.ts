@@ -294,7 +294,7 @@ export const fullPageJSON: SDUINode = {
             "boxShadow": "0 4px 14px rgba(10,42,49,0.18)"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 10 },
+            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 15 },
             "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 10 },
             "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 10 }
           },
@@ -302,7 +302,8 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "SearchBar",
               "containerStyle": {
-                "width": "340px",
+                "width": "100%",
+                "maxWidth": "340px",
                 "alignItems": "center",
                 "border": "1px solid #E4E7E4",
                 "borderRadius": "12px",

@@ -3,51 +3,43 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import SDUIRenderer from "@/sdui/SDUIRenderer";
-import { fullPageJSON } from "@/sdui/landingSchema";
-import { applyThemeToSchema } from "@/sdui/themes/themeApplier";
-import { validateAndSanitize } from "@/sdui/validators/validator";
+import { THEMES_REGISTRY } from "@/sdui/themeBundle";
+import { validateThemeStrict } from "@/sdui/validators/validator";
 import type { DeviceType } from "@/sdui/types";
 
 /**
  * ==============================================================================
- * Route: /landing-content (Embedded Iframe Source Page for SDUI Landing Page)
+ * Route: /landing-content (Embedded Iframe Source Page for SDUI Preview)
  * ==============================================================================
  * Beginner Note:
- * This page is a standalone, lightweight page designed to be embedded inside an
- * <iframe> on the /pages/landing route.
+ * This page is embedded inside the preview <iframe> in our Theme Slider.
  *
- * Responsiveness Highlights:
- * 1. Checks its current window/iframe width dynamically:
- *    - < 640px  -> Sets device mode to "mobile"  (matches Phone Mockup 375px)
- *    - < 1024px -> Sets device mode to "tablet"  (matches Tablet Mockup 778px)
- *    - >= 1024px -> Sets device mode to "desktop" (matches Desktop Browser Mockup)
- * 2. Accepts ?device=phone|tablet|desktop and ?theme=landing_schema|clean_white|black_minimal.
- * 3. Mounts <SDUIRenderer customSchema={themedSchema} hideEditor={true} /> so the landing page
- *    displays edge-to-edge cleanly with zero clutter, responding live to theme switching.
+ * How it works:
+ * 1. Reads ?theme=theme1|theme2|theme3 from the URL.
+ * 2. Runs strict validation on the schema.
+ * 3. If valid, renders the theme using <SDUIRenderer />.
+ * 4. If disabled/invalid, displays a friendly error notice and does not render.
+ * ==============================================================================
  */
 
 function LandingContentInner() {
   const searchParams = useSearchParams();
   const requestedDevice = searchParams.get("device") as DeviceType | null;
-  const requestedTheme = searchParams.get("theme") || "landing_schema";
+  const requestedTheme = searchParams.get("theme") || "theme1";
 
   const [deviceMode, setDeviceMode] = useState<DeviceType>(
     requestedDevice || "desktop"
   );
 
-  // Compute the themed schema dynamically and sanitize suspicious components
-  const themedSchema = useMemo(() => {
-    const rawThemed = applyThemeToSchema(fullPageJSON, requestedTheme);
-    const { sanitizedSchema, errors } = validateAndSanitize(rawThemed);
-    if (errors.length > 0) {
-      console.warn("[SDUI Security Guard] Sanitized suspicious nodes:", errors);
-    }
-    return sanitizedSchema;
+  // Look up the requested theme from our Theme Bundle
+  const { schema, validation } = useMemo(() => {
+    const rawSchema = THEMES_REGISTRY[requestedTheme] || THEMES_REGISTRY["theme1"];
+    const valResult = validateThemeStrict(rawSchema, requestedTheme);
+    return { schema: rawSchema, validation: valResult };
   }, [requestedTheme]);
 
   // Auto-detect viewport width inside the iframe
   useEffect(() => {
-    // If a specific device query parameter was passed, prioritize it
     if (requestedDevice && ["mobile", "tablet", "desktop"].includes(requestedDevice)) {
       setDeviceMode(requestedDevice);
       return;
@@ -69,21 +61,44 @@ function LandingContentInner() {
     return () => window.removeEventListener("resize", updateDeviceFromWidth);
   }, [requestedDevice]);
 
+  // If the theme is disabled, show a simple error screen instead of rendering
+  if (validation.isDisabled) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-zinc-50">
+        <div className="max-w-md p-6 bg-white rounded-2xl border border-red-200 shadow-sm space-y-3">
+          <div className="text-3xl">⚠️</div>
+          <h2 className="text-lg font-bold text-zinc-900">Theme Disabled</h2>
+          <p className="text-xs text-zinc-500">
+            Theme <span className="font-semibold text-zinc-800 font-mono">"{requestedTheme}"</span> has validation errors and is disabled.
+          </p>
+          <div className="bg-red-50 p-3 rounded-lg text-left text-xs text-red-700 font-mono space-y-1 max-h-40 overflow-y-auto">
+            {validation.errors.map((err, i) => (
+              <div key={i}>• {err}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Theme-aware page background
   const pageBgClass =
-    requestedTheme === "black_minimal"
-      ? "bg-[#090D16] text-slate-100"
-      : requestedTheme === "clean_white"
+    requestedTheme === "theme3" || requestedTheme === "black_minimal"
+      ? "bg-[#FBFBF9] text-zinc-900"
+      : requestedTheme === "theme2" || requestedTheme === "clean_white"
       ? "bg-white text-zinc-900"
       : "bg-[#FAFAF8] text-zinc-900";
 
   return (
-    <main className={`min-h-screen w-full font-sans selection:bg-emerald-600 selection:text-white no-scrollbar transition-colors duration-200 ${pageBgClass}`}>
+    <main
+      className={`min-h-screen w-full font-sans selection:bg-emerald-600 selection:text-white no-scrollbar transition-colors duration-200 ${pageBgClass}`}
+    >
       <SDUIRenderer
-        customSchema={themedSchema}
+        customSchema={schema}
         hideEditor={true}
         defaultDevice={deviceMode}
         autoDetectDevice={!requestedDevice}
+        className="min-h-screen"
       />
     </main>
   );
@@ -94,7 +109,7 @@ export default function LandingContentPage() {
     <Suspense
       fallback={
         <div className="flex h-screen w-full items-center justify-center bg-white text-xs font-semibold text-zinc-400">
-          Loading Campus Commerce Landing Page...
+          Loading Campus Commerce Preview...
         </div>
       }
     >

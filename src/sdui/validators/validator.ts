@@ -385,10 +385,139 @@ export function validateFullTree(treeJson: any): ValidationResult {
 }
 
 /**
- * Function 3: Runtime Security Guard (Sanitizer)
- * If an untrusted theme or bad backend data contains illegal children
- * (e.g. an unknown tag or a countdown timer placed inside a button),
- * this function removes the suspicious component so the website never crashes!
+ * ==============================================================================
+ * Function 3: Strict Theme Validator (validateThemeStrict)
+ * ==============================================================================
+ * Beginner Note:
+ * This is our strict inspector for themes.
+ * If a theme has even 1 error (bad placement, illegal component, missing field):
+ * - It is marked as isDisabled: true
+ * - It will NOT be rendered to the user on the eCommerce page
+ * - Full error details are logged to the console so developers know why
+ * ==============================================================================
+ */
+export interface StrictThemeValidationResult {
+  themeId: string;
+  isValid: boolean;
+  isDisabled: boolean; // Simple English: if true, this theme is disabled
+  errors: string[];
+}
+
+export function validateThemeStrict(
+  themeSchema: any,
+  themeId: string = "theme"
+): StrictThemeValidationResult {
+  const errors: string[] = [];
+
+  // 1. Basic JSON object check
+  if (!themeSchema || typeof themeSchema !== "object") {
+    errors.push("Invalid theme: Schema must be a valid JSON object.");
+  } else {
+    const root = themeSchema.config ? themeSchema.config : themeSchema;
+
+    // 2. Recursive inspector checking every node and child
+    function inspectNode(node: any, path: string = "root") {
+      if (!node || typeof node !== "object") return;
+
+      const nodeType = node.type || "UnknownComponent";
+      const rule = ALL_RULES[nodeType];
+
+      // A. Check if component type is registered
+      if (node.type && !rule) {
+        errors.push(`[Unknown Component] '${nodeType}' at ${path} is not registered in rulebook.`);
+      }
+
+      // B. Check 100-column responsive placement (Mobile, Tablet, Desktop)
+      if (node.placement) {
+        validatePlacement(node, path, errors);
+      }
+
+      // C. Check node against its specific rule (required fields, lengths)
+      if (rule) {
+        const result = validate(node, rule);
+        if (!result.isValid) {
+          result.errors.forEach((err) => {
+            errors.push(`[Invalid Field] ${nodeType} at ${path}: ${err}`);
+          });
+        }
+      }
+
+      // D. Check children hierarchy against allowedComponents
+      if (Array.isArray(node.children)) {
+        const allowed = rule?.allowedComponents;
+
+        if (Array.isArray(allowed)) {
+          if (allowed.length === 0 && node.children.length > 0) {
+            errors.push(
+              `[Disallowed Child] '${nodeType}' does not allow children, but found ${node.children.length} child component(s) at ${path}.`
+            );
+          } else {
+            node.children.forEach((child: any, idx: number) => {
+              if (child && child.type) {
+                if (!allowed.includes("*") && !allowed.includes(child.type)) {
+                  errors.push(
+                    `[Disallowed Child] '${child.type}' is not permitted inside '${nodeType}' at ${path}.children[${idx}].`
+                  );
+                }
+              }
+            });
+          }
+        }
+
+        // E. Check maximum child count limit
+        if (rule?.maxValue !== undefined && rule.maxValue > 0 && node.children.length > rule.maxValue) {
+          errors.push(
+            `[Child Count Exceeded] '${nodeType}' has ${node.children.length} children, which exceeds maximum limit of ${rule.maxValue}.`
+          );
+        }
+
+        // F. Recursively inspect all children
+        node.children.forEach((child: any, idx: number) => {
+          inspectNode(child, `${path}.children[${idx}](${child?.type || "Component"})`);
+        });
+      }
+    }
+
+    inspectNode(root);
+  }
+
+  const isValid = errors.length === 0;
+  const isDisabled = !isValid; // Simple English: disabled if any error exists
+
+  // 3. Clear, friendly Console Logging
+  if (isDisabled) {
+    console.error(`\n❌ [SDUI Theme Validator] Theme "${themeId}" has ${errors.length} error(s) and is DISABLED:`);
+    errors.forEach((err, idx) => {
+      console.error(`   ${idx + 1}. ${err}`);
+    });
+    console.error(`⚠️ Because of these errors, "${themeId}" is disabled and will NOT be rendered.\n`);
+  } else {
+    console.log(`✅ [SDUI Theme Validator] Theme "${themeId}" is valid and ready to display.`);
+  }
+
+  return {
+    themeId,
+    isValid,
+    isDisabled,
+    errors,
+  };
+}
+
+/**
+ * Helper: Validates a whole dictionary of themes at once (e.g. theme1, theme2, theme3)
+ */
+export function validateAllThemes(
+  themes: Record<string, any>
+): Record<string, StrictThemeValidationResult> {
+  const results: Record<string, StrictThemeValidationResult> = {};
+  for (const [themeId, schema] of Object.entries(themes)) {
+    results[themeId] = validateThemeStrict(schema, themeId);
+  }
+  return results;
+}
+
+/**
+ * Function 4: Runtime Security Guard (Sanitizer) - Kept for backwards compatibility
  */
 export function validateAndSanitize(treeJson: any): SanitizedValidationResult {
   const errors: string[] = [];
@@ -454,7 +583,6 @@ export function validateAndSanitize(treeJson: any): SanitizedValidationResult {
         // Step 3: Validate child's data against its own rule
         const childRule = ALL_RULES[childType];
         if (childRule) {
-          // If child container has too many items, trim the extras
           if (Array.isArray(child.children) && childRule.maxValue && child.children.length > childRule.maxValue) {
             const excess = child.children.length - childRule.maxValue;
             child.children = child.children.slice(0, childRule.maxValue);
@@ -499,3 +627,4 @@ export function validateAndSanitize(treeJson: any): SanitizedValidationResult {
 }
 
 export default validate;
+

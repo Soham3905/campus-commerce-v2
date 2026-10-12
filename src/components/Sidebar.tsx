@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/store/slices/authSlice";
+import { openSlider } from "@/store/slices/themeSlice";
 
 export type SidebarItem =
   | "home"
+  | "welcome"
   | "orders"
   | "products"
   | "customers"
@@ -15,8 +17,7 @@ export type SidebarItem =
   | "finances"
   | "analytics"
   | "marketing"
-  | "dummy"
-  | "landing";
+  | "dummy";
 
 interface SidebarProps {
   activeItem: SidebarItem;
@@ -76,17 +77,15 @@ export function Sidebar({
       <div
         onClick={onCloseMobile}
         aria-hidden="true"
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${
-          isOpenMobile ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs transition-opacity duration-300 md:hidden ${isOpenMobile ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
       />
 
       {/* 2. Sidebar Container */}
       <aside
         aria-label="Main Navigation"
-        className={`fixed inset-y-0 left-0 z-50 flex h-dvh w-[280px] max-w-[85vw] flex-col justify-between bg-[#f8f9fa] shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:static md:inset-auto md:z-20 md:h-[calc(100vh-3.5rem)] md:w-60 md:shrink-0 md:translate-x-0 md:border-r md:border-zinc-200 md:shadow-none md:sticky md:top-14 ${
-          isOpenMobile ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 flex h-dvh w-[280px] max-w-[85vw] flex-col justify-between bg-[#f8f9fa] shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:static md:inset-auto md:z-20 md:h-[calc(100vh-3.5rem)] md:w-60 md:shrink-0 md:translate-x-0 md:border-r md:border-zinc-200 md:shadow-none md:sticky md:top-14 ${isOpenMobile ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Mobile Header with Logo & Close Button (hidden on desktop) */}
         <div className="flex h-14 items-center justify-between border-b border-zinc-200/90 bg-white px-4 shrink-0 md:hidden">
@@ -130,25 +129,41 @@ export function Sidebar({
             <Link
               href="/dashboard"
               onClick={onCloseMobile}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-                activeItem === "home"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeItem === "home"
                   ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
                   : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-              }`}
+                }`}
             >
               <span className="text-sm">🏠</span>
               <span>Home</span>
             </Link>
 
-            {/* 2. Orders Link -> /pages/orders */}
+            {/* 2. Welcome Link -> /pages/welcome */}
+            <Link
+              href="/pages/welcome"
+              onClick={() => {
+                onCloseMobile?.();
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("open-welcome-modal"));
+                }
+              }}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeItem === "welcome"
+                  ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
+                  : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
+                }`}
+            >
+              <span className="text-sm">✨</span>
+              <span>Welcome</span>
+            </Link>
+
+            {/* 3. Orders Link -> /pages/orders */}
             <Link
               href="/pages/orders"
               onClick={onCloseMobile}
-              className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition ${
-                activeItem === "orders"
+              className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition ${activeItem === "orders"
                   ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
                   : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-sm">📋</span>
@@ -164,11 +179,10 @@ export function Sidebar({
               <Link
                 href="/pages/product"
                 onClick={onCloseMobile}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-                  activeItem === "products"
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeItem === "products"
                     ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
                     : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-                }`}
+                  }`}
               >
                 <span className="text-sm">🏷️</span>
                 <span>Products</span>
@@ -215,11 +229,10 @@ export function Sidebar({
             <Link
               href="/pages/customers"
               onClick={onCloseMobile}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-                activeItem === "customers"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeItem === "customers"
                   ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
                   : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-              }`}
+                }`}
             >
               <span className="text-sm">👥</span>
               <span>Customers</span>
@@ -277,28 +290,13 @@ export function Sidebar({
             <Link
               href="/pages/dummy"
               onClick={onCloseMobile}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-                activeItem === "dummy"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${activeItem === "dummy"
                   ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
                   : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-              }`}
+                }`}
             >
               <span className="text-sm">📄</span>
               <span>Dummy</span>
-            </Link>
-
-            {/* Landing Page Link -> /pages/landing */}
-            <Link
-              href="/pages/landing"
-              onClick={onCloseMobile}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition ${
-                activeItem === "landing"
-                  ? "bg-white font-bold text-zinc-900 shadow-xs border border-zinc-200"
-                  : "text-zinc-600 hover:bg-zinc-200/60 active:bg-zinc-200/80"
-              }`}
-            >
-              <span className="text-sm">🌐</span>
-              <span>Landing Page</span>
             </Link>
           </nav>
 

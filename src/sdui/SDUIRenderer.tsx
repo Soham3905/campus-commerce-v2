@@ -177,6 +177,7 @@ export interface SDUIRendererProps {
   hideEditor?: boolean;
   defaultDevice?: DeviceType;
   autoDetectDevice?: boolean;
+  className?: string;
 }
 
 /**
@@ -196,6 +197,7 @@ export default function SDUIRenderer({
   hideEditor = false,
   defaultDevice = "desktop",
   autoDetectDevice = true,
+  className = "",
 }: SDUIRendererProps) {
   const [activeTab, setActiveTab] = useState("Full Page");
   const [jsonText, setJsonText] = useState(
@@ -306,7 +308,7 @@ export default function SDUIRenderer({
   // If hideEditor is true, render a clean, full-width canvas (ideal for iframes)
   if (hideEditor) {
     return (
-      <div className="relative w-full min-h-screen bg-white">
+      <div className={`relative w-full ${className}`}>
         <Renderer
           schema={schema}
           deviceType={deviceView}
@@ -1134,6 +1136,8 @@ const Renderer = ({
         ...placementStyle,
         gridColumn: `${coordinates.colStart} / ${colEnd}`,
         gridRow: `${coordinates.rowStart} / ${coordinates.rowEnd}`,
+        minWidth: 0,
+        maxWidth: "100%",
       };
     }
   }
@@ -1141,11 +1145,11 @@ const Renderer = ({
   const stickyStyle: React.CSSProperties =
     schema.containerStyle?.position === "sticky"
       ? {
-          position: "sticky",
-          top: schema.containerStyle.top,
-          bottom: schema.containerStyle.bottom,
-          zIndex: schema.containerStyle.zIndex,
-        }
+        position: "sticky",
+        top: schema.containerStyle.top,
+        bottom: schema.containerStyle.bottom,
+        zIndex: schema.containerStyle.zIndex,
+      }
       : {};
 
   return (
