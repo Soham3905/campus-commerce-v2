@@ -1,0 +1,113 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Footer",
+    "previewColor": "#0A2A31",
+    "config": {
+      "type": "Footer",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #0D323B 0%, #0A2A31 100%)",
+        "backgroundColor": "#0A2A31",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#CFDDDC",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid rgba(255,255,255,0.08)"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Footer Section",
+            "links": [
+              {
+                "label": "Link 1",
+                "url": "#"
+              },
+              {
+                "label": "Link 2",
+                "url": "#"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2026 Campus Commerce"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Footer",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Footer",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+        "backgroundColor": "#FFFFFF",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#0F172A",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid #E2E8F0"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Footer Section",
+            "links": [
+              {
+                "label": "Link 1",
+                "url": "#"
+              },
+              {
+                "label": "Link 2",
+                "url": "#"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2026 Campus Commerce"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Footer",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "Footer",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #1C3829 0%, #152B1F 100%)",
+        "backgroundColor": "#1C3829",
+        "padding": "20px",
+        "borderRadius": "12px",
+        "color": "#D1FAE5",
+        "fontSize": "14px",
+        "lineHeight": "22px",
+        "boxSizing": "border-box",
+        "borderTop": "1px solid rgba(16, 185, 129, 0.2)"
+      },
+      "data": {
+        "sections": [
+          {
+            "title": "Footer Section",
+            "links": [
+              {
+                "label": "Link 1",
+                "url": "#"
+              },
+              {
+                "label": "Link 2",
+                "url": "#"
+              }
+            ]
+          }
+        ],
+        "copyrightText": "© 2026 Campus Commerce"
+      }
+    }
+  }
+}

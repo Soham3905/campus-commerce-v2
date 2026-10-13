@@ -1,0 +1,77 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Page",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Page",
+      "containerStyle": {},
+      "data": {},
+      "children": [
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "color": "#101F26"
+          },
+          "data": {
+            "text": "Page Content"
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Page",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Page",
+      "containerStyle": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#0F172A"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "color": "#0F172A"
+          },
+          "data": {
+            "text": "Page Content"
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Page",
+    "previewColor": "#FBFBF9",
+    "config": {
+      "type": "Page",
+      "containerStyle": {
+        "backgroundColor": "#FBFBF9",
+        "color": "#18181B"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "color": "#18181B"
+          },
+          "data": {
+            "text": "Page Content"
+          }
+        }
+      ]
+    }
+  }
+}

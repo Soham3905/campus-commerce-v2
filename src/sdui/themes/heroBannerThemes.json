@@ -1,0 +1,62 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "HeroBanner",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "HeroBanner",
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E4E7E4",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.05)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "",
+        "title": "HeroBanner",
+        "subtitle": "Default banner subtitle",
+        "altText": "HeroBanner"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "HeroBanner",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "HeroBanner",
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #E2E8F0",
+        "boxShadow": "0 1px 3px rgba(0, 0, 0, 0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "",
+        "title": "HeroBanner",
+        "subtitle": "Default banner subtitle",
+        "altText": "HeroBanner"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "HeroBanner",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "HeroBanner",
+      "containerStyle": {
+        "borderRadius": "16px",
+        "border": "1px solid #A7F3D0",
+        "boxShadow": "0 8px 24px rgba(28, 56, 41, 0.12)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "imageUrl": "",
+        "title": "HeroBanner",
+        "subtitle": "Default banner subtitle",
+        "altText": "HeroBanner"
+      }
+    }
+  }
+}

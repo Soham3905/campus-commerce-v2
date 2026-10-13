@@ -1,0 +1,44 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "ReviewCount",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#5E6E72"
+      },
+      "data": {
+        "text": "(120)"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "ReviewCount",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#2563EB"
+      },
+      "data": {
+        "text": "(120)"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "ReviewCount",
+    "previewColor": "#10B981",
+    "config": {
+      "type": "ReviewCount",
+      "containerStyle": {
+        "color": "#10B981"
+      },
+      "data": {
+        "text": "(120)"
+      }
+    }
+  }
+}

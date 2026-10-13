@@ -1,0 +1,131 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "StoryRow",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "StoryRow",
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Trending",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Deals",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Campus",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Clubs",
+            "imageUrl": ""
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "StoryRow",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "StoryRow",
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Trending",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Deals",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Campus",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Clubs",
+            "imageUrl": ""
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "StoryRow",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "StoryRow",
+      "containerStyle": {
+        "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
+        "backgroundColor": "transparent"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Trending",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Deals",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Campus",
+            "imageUrl": ""
+          }
+        },
+        {
+          "type": "StoryCircle",
+          "data": {
+            "label": "Clubs",
+            "imageUrl": ""
+          }
+        }
+      ]
+    }
+  }
+}

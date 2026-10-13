@@ -4,15 +4,11 @@
  * ==============================================================================
  * Global Theme Tokens (Tailwind CSS v4)
  * ==============================================================================
- * These theme variables can be used everywhere in your application as utility classes:
- * - `bg-primary` -> #1c3829 (Dark Forest Green for primary buttons/accents)
- * - `hover:bg-primary-hover` -> #152b1f (Hover state for buttons)
- * - `bg-primary-light` / `text-primary-light` -> #eef7f2 (Light green badges/pills)
- * - `text-primary-accent` -> #10b981 (Vibrant green for status dots/links)
- * - `text-text-main` -> #18181b (Main dark text)
- * - `text-text-muted` -> #71717a (Secondary/help text)
- * - `bg-card-subtle` -> #fbfbf9 (Left column off-white card background)
- * - `bg-terminal-bg` -> #171b1d (Dark code bar background)
+ * Design system tokens used across login, workspace, and navigation components:
+ * - Primary colors: Forest green brand accents and button states.
+ * - Text colors: High-contrast headings and readable muted subtitles.
+ * - Surface colors: Card panels and code terminal backgrounds.
+ * ==============================================================================
  */
 @theme {
   --color-primary: #1c3829;
@@ -24,55 +20,26 @@
   --color-text-muted: #71717a;
   --color-text-subtle: #a1a1aa;
 
-  --color-page-bg: #fbfbfb;
   --color-card-subtle: #fbfbf9;
   --color-terminal-bg: #171b1d;
 }
 
-/* Page Background Utility */
-.bg-dot-grid {
-  background-color: var(--color-page-bg);
-}
-
 /* Scrollbar Suppression for Clean Mobile & Tablet Mockups */
-.no-scrollbar,
-html:has(.no-scrollbar),
-body:has(.no-scrollbar) {
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.no-scrollbar::-webkit-scrollbar,
-html:has(.no-scrollbar)::-webkit-scrollbar,
-body:has(.no-scrollbar)::-webkit-scrollbar {
-  display: none !important;
-  width: 0px !important;
-  height: 0px !important;
-  background: transparent !important;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
+/* Hide scrollbars inside embedded preview iframes */
 iframe {
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 iframe::-webkit-scrollbar {
-  display: none !important;
-  width: 0px !important;
-  height: 0px !important;
-}
-
-/* 3D Flip Card Utilities */
-.perspective-1000 {
-  perspective: 1000px;
-}
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.rotate-y-180 {
-  transform: rotateY(180deg);
+  display: none;
 }
 
 /* Modal Pop-In & Overlay Animations */
@@ -103,5 +70,3 @@ iframe::-webkit-scrollbar {
 .animate-overlay-in {
   animation: overlayFadeIn 0.2s ease-out forwards;
 }
-
-

@@ -1,0 +1,80 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Title",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "11px",
+        "fontWeight": "700",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#5E6E72",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Title"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Title",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "11px",
+        "fontWeight": "700",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#0F172A",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Title"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Title",
+    "previewColor": "#18181B",
+    "config": {
+      "type": "Title",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "overflow": "hidden",
+        "whiteSpace": "nowrap",
+        "textOverflow": "ellipsis",
+        "fontSize": "11px",
+        "fontWeight": "700",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#18181B",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Title"
+      }
+    }
+  }
+}

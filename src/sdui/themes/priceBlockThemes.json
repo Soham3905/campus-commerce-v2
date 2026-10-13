@@ -1,0 +1,89 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "PriceBlock",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#101F26",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹999",
+        "mrp": "₹1,999",
+        "discount": "50% OFF"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "PriceBlock",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#0F172A",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹999",
+        "mrp": "₹1,999",
+        "discount": "50% OFF"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "PriceBlock",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "PriceBlock",
+      "containerStyle": {
+        "height": "28px",
+        "minHeight": "28px",
+        "flex": "0 0 28px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "baseline",
+        "gap": "8px",
+        "overflow": "hidden",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "18px",
+        "fontWeight": "600",
+        "letterSpacing": "-0.01em",
+        "color": "#1C3829",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "sellingPrice": "₹999",
+        "mrp": "₹1,999",
+        "discount": "50% OFF"
+      }
+    }
+  }
+}

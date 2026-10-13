@@ -1,0 +1,48 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Text",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#101F26"
+      },
+      "data": {
+        "text": "Text"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Text",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#0F172A"
+      },
+      "data": {
+        "text": "Text"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Text",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Text",
+      "containerStyle": {
+        "fontSize": "14px",
+        "color": "#18181B",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "text": "Text"
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Badge",
+    "previewColor": "#FFF3DF",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "#FFF3DF",
+        "color": "#8A5209"
+      },
+      "data": {
+        "text": "Badge"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Badge",
+    "previewColor": "#EFF6FF",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "#EFF6FF",
+        "color": "#2563EB"
+      },
+      "data": {
+        "text": "Badge"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Badge",
+    "previewColor": "#EEF7F2",
+    "config": {
+      "type": "Badge",
+      "containerStyle": {
+        "height": "22px",
+        "minHeight": "22px",
+        "flex": "0 0 22px",
+        "flexShrink": "0",
+        "alignSelf": "flex-start",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "padding": "0 9px",
+        "borderRadius": "999px",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.01em",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "backgroundColor": "#EEF7F2",
+        "color": "#1C3829",
+        "border": "1px solid #A7F3D0"
+      },
+      "data": {
+        "text": "Badge"
+      }
+    }
+  }
+}

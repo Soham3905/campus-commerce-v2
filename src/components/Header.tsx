@@ -29,17 +29,22 @@ export function Header({
     <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-zinc-800 bg-[#1a1b1d] px-4 sm:px-6 shadow-xs">
       {/* Left: Brand & Mobile Menu Button */}
       <div className="flex items-center gap-3">
-        {onToggleMobileSidebar && (
-          <button
-            onClick={onToggleMobileSidebar}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-95 md:hidden transition-all focus:outline-hidden focus:ring-2 focus:ring-emerald-500/50"
-            aria-label="Toggle navigation menu"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        )}
+        <button
+          onClick={() => {
+            if (window.innerWidth < 768) {
+              onToggleMobileSidebar?.();
+            } else {
+              window.dispatchEvent(new CustomEvent("toggle-desktop-sidebar"));
+            }
+          }}
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800 active:scale-95 transition-all focus:outline-hidden focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
+          aria-label="Toggle navigation menu"
+          title="Toggle sidebar"
+        >
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
 
         {/* Graduation Cap Logo */}
         <Link href="/dashboard" className="flex items-center gap-3 hover:opacity-90 transition">

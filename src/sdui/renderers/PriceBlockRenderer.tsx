@@ -28,7 +28,7 @@ export default function PriceBlockRenderer({ data = {}, style = {} }: BaseRender
             fontSize: "11px",
             color: "#16a34a",
             fontWeight: "700",
-            background: "rgba(22,163,74,0.12)",
+            backgroundColor: "rgba(22,163,74,0.12)",
             padding: "2px 6px",
             borderRadius: "4px"
           }}

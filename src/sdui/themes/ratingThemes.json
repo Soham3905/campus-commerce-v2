@@ -1,0 +1,134 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Rating",
+    "previewColor": "#5E6E72",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#5E6E72",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Score",
+          "containerStyle": {
+            "color": "#5E6E72"
+          },
+          "data": {
+            "text": "4.5",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "containerStyle": {
+            "color": "#5E6E72"
+          },
+          "data": {
+            "text": "(120)"
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Rating",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#64748B",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Score",
+          "containerStyle": {
+            "color": "#64748B"
+          },
+          "data": {
+            "text": "4.5",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "containerStyle": {
+            "color": "#2563EB"
+          },
+          "data": {
+            "text": "(120)"
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Rating",
+    "previewColor": "#10B981",
+    "config": {
+      "type": "Rating",
+      "containerStyle": {
+        "height": "20px",
+        "minHeight": "20px",
+        "flex": "0 0 20px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "6px",
+        "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+        "fontSize": "12px",
+        "letterSpacing": "0.02em",
+        "color": "#10B981",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Score",
+          "containerStyle": {
+            "color": "#10B981"
+          },
+          "data": {
+            "text": "4.5",
+            "out of": "5"
+          }
+        },
+        {
+          "type": "ReviewCount",
+          "containerStyle": {
+            "color": "#10B981"
+          },
+          "data": {
+            "text": "(120)"
+          }
+        }
+      ]
+    }
+  }
+}

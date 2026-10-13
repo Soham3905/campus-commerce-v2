@@ -1,0 +1,53 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Image",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "200px",
+        "objectFit": "cover",
+        "borderRadius": "14px"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Image"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Image",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "200px",
+        "objectFit": "cover",
+        "borderRadius": "14px"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Image"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Image",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "Image",
+      "containerStyle": {
+        "height": "200px",
+        "objectFit": "cover",
+        "borderRadius": "14px"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Image"
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
       style={{
         padding: "8px 12px",
         borderRadius: 12,
-        background: "#f8fafc",
+        backgroundColor: "#f8fafc",
         border: "1px solid #e5e7eb",
         display: "flex",
         alignItems: "center",

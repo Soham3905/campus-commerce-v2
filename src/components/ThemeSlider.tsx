@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setActiveTheme,
@@ -10,6 +10,7 @@ import {
   ThemeId,
 } from "@/store/slices/themeSlice";
 import { THEMES_REGISTRY } from "@/sdui/themeBundle";
+import { getAllDefaultComponents } from "@/sdui/themes";
 import SDUIRenderer from "@/sdui/SDUIRenderer";
 import type { SDUINode } from "@/sdui/types";
 import { IframeViewer } from "@/components/iframe";
@@ -40,15 +41,47 @@ export default function ThemeSlider() {
   // Mobile navigation tab: "themes" list vs "preview" pane on small screens
   const [mobileTab, setMobileTab] = useState<"themes" | "preview">("themes");
 
-  if (!isSliderOpen) return null;
+  // 1. Search and category filter states for the components tab
+  const [componentSearch, setComponentSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  // Selected preview theme (defaults to previewThemeId, or activeThemeId)
+  // 2. Identify which theme is currently selected for preview ("theme1", "theme2", or "theme3")
   const effectivePreviewId: ThemeId = (previewThemeId || activeThemeId || "theme1") as ThemeId;
   const activePreviewMeta = availableThemes.find((t) => t.id === effectivePreviewId) || availableThemes[0];
   const activeThemeSchema = THEMES_REGISTRY[effectivePreviewId] || THEMES_REGISTRY["theme1"];
 
-  // Real components directly from Page children of the theme schema
-  const themeComponents: SDUINode[] = activeThemeSchema?.children?.[0]?.children || [];
+  // 3. 🎓 Beginner Note: Retrieve all 35 default components styled for the selected theme
+  // useMemo remembers the result and only recalculates when the preview theme changes!
+  const allDefaultComponents = useMemo(() => {
+    return getAllDefaultComponents(effectivePreviewId);
+  }, [effectivePreviewId]);
+
+  // 4. Collect unique categories (e.g. "Typography", "Atoms", "Commerce", "Layout") for filter pills
+  const categories = useMemo(() => {
+    const set = new Set(allDefaultComponents.map((c) => c.category));
+    return ["All", ...Array.from(set)];
+  }, [allDefaultComponents]);
+
+  // 5. Filter the 35 components based on search text and selected category pill
+  const filteredComponents = useMemo(() => {
+    const q = componentSearch.trim().toLowerCase();
+    return allDefaultComponents.filter((comp) => {
+      // Check if search matches component name, type, or category
+      const matchesSearch =
+        !q ||
+        comp.name.toLowerCase().includes(q) ||
+        comp.type.toLowerCase().includes(q) ||
+        comp.category.toLowerCase().includes(q);
+      
+      // Check if category matches
+      const matchesCategory =
+        selectedCategory === "All" || comp.category === selectedCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [allDefaultComponents, componentSearch, selectedCategory]);
+
+  if (!isSliderOpen) return null;
 
   const handlePreview = (themeId: ThemeId) => {
     dispatch(setPreviewTheme(themeId));
@@ -249,7 +282,7 @@ export default function ThemeSlider() {
                       : "text-zinc-600 hover:text-zinc-900"
                     }`}
                 >
-                  🧩 Components ({themeComponents.length})
+                  🧩 Components ({allDefaultComponents.length})
                 </button>
               </div>
 
@@ -321,45 +354,102 @@ export default function ThemeSlider() {
                 </div>
               )}
 
-              {/* 2. Direct Real Components Preview (Rendered from Theme Schema without placement) */}
+              {/* 2. Direct All 35 Default Components Preview */}
               {previewSubTab === "components" && (
-                <div className="w-full max-w-3xl space-y-4">
-                  {themeComponents.map((comp, idx) => {
-                    // Create clean node without 100-column grid placement constraint
-                    const cleanCompNode: SDUINode = { ...comp, placement: undefined };
-
-                    return (
-                      <div
-                        key={idx}
-                        className="rounded-xl border border-zinc-200 bg-white overflow-hidden shadow-2xs"
-                      >
-                        {/* Component Header Strip */}
-                        <div className="px-3.5 py-2 bg-zinc-50 border-b border-zinc-200 flex items-center justify-between">
-                          <span className="text-xs font-semibold text-zinc-900">
-                            {comp.type}
-                          </span>
-                          <span className="text-[10px] text-zinc-500 font-mono">
-                            Section #{idx + 1}
-                          </span>
-                        </div>
-
-                        {/* Direct SDUI Component Render */}
-                        <div
-                          className="p-3.5 w-full flex justify-center overflow-x-auto"
-                          style={{ backgroundColor: activePreviewMeta?.bgColor || "#FFFFFF" }}
+                <div className="w-full max-w-4xl space-y-4">
+                  {/* Category Filter Pills & Search */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-zinc-200 shadow-2xs">
+                    <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setSelectedCategory(cat)}
+                          className={`px-2.5 py-1 rounded-md text-xs font-semibold transition cursor-pointer whitespace-nowrap ${
+                            selectedCategory === cat
+                              ? "bg-zinc-900 text-white shadow-2xs"
+                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70"
+                          }`}
                         >
-                          <div className="w-full">
-                            <SDUIRenderer
-                              customSchema={cleanCompNode}
-                              hideEditor={true}
-                              defaultDevice="desktop"
-                              autoDetectDevice={false}
-                            />
+                          {cat}
+                          <span className="ml-1 opacity-70 text-[10px]">
+                            ({cat === "All" ? allDefaultComponents.length : allDefaultComponents.filter((c) => c.category === cat).length})
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="relative w-full sm:w-60">
+                      <input
+                        type="text"
+                        value={componentSearch}
+                        onChange={(e) => setComponentSearch(e.target.value)}
+                        placeholder="Search 35 components..."
+                        className="w-full rounded-lg border border-zinc-200 bg-zinc-50/50 px-3 py-1.5 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400"
+                      />
+                      {componentSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setComponentSearch("")}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 text-xs font-bold"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Components List or Empty State */}
+                  {filteredComponents.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-xl border border-zinc-200">
+                      <p className="text-sm font-semibold text-zinc-700">No components found</p>
+                      <p className="text-xs text-zinc-500 mt-1">Try searching for a different component or category</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {filteredComponents.map((comp, idx) => {
+                        // Create clean node without placement coordinates
+                        const cleanCompNode: SDUINode = { ...comp.config, placement: undefined };
+
+                        return (
+                          <div
+                            key={comp.name}
+                            className="rounded-xl border border-zinc-200 bg-white overflow-hidden shadow-2xs transition hover:shadow-xs"
+                          >
+                            {/* Component Header Strip */}
+                            <div className="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 flex items-center justify-between">
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-xs font-bold text-zinc-900">
+                                  {comp.name}
+                                </span>
+                                <span className="rounded-full bg-zinc-200/80 px-2 py-0.5 text-[10px] font-semibold text-zinc-700">
+                                  {comp.category}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-zinc-400 font-mono">
+                                #{idx + 1} of {filteredComponents.length}
+                              </span>
+                            </div>
+
+                            {/* Direct SDUI Component Render Styled by Theme */}
+                            <div
+                              className="p-4 w-full flex justify-center overflow-x-auto"
+                              style={{ backgroundColor: activePreviewMeta?.bgColor || "#FFFFFF" }}
+                            >
+                              <div className="w-full max-w-xl">
+                                <SDUIRenderer
+                                  customSchema={cleanCompNode}
+                                  hideEditor={true}
+                                  defaultDevice="desktop"
+                                  autoDetectDevice={false}
+                                />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

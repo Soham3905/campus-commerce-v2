@@ -1,0 +1,77 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "OfferText",
+    "previewColor": "#C4185F",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#C4185F",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "OfferText"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "OfferText",
+    "previewColor": "#2563EB",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#2563EB",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "OfferText"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "OfferText",
+    "previewColor": "#10B981",
+    "config": {
+      "type": "OfferText",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "-webkit-box",
+        "WebkitLineClamp": "1",
+        "WebkitBoxOrient": "vertical",
+        "overflow": "hidden",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#10B981",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "OfferText"
+      }
+    }
+  }
+}

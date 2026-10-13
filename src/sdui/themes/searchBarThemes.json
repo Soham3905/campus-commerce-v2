@@ -1,0 +1,72 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "SearchBar",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "SearchBar",
+      "containerStyle": {
+        "width": "100%",
+        "maxWidth": "340px",
+        "alignItems": "center",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "boxSizing": "border-box",
+        "color": "#101F26",
+        "caretColor": "#C4185F",
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "placeholder": "Search..."
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "SearchBar",
+    "previewColor": "#F8FAFC",
+    "config": {
+      "type": "SearchBar",
+      "containerStyle": {
+        "width": "100%",
+        "maxWidth": "340px",
+        "alignItems": "center",
+        "border": "1px solid #CBD5E1",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "boxSizing": "border-box",
+        "color": "#0F172A",
+        "caretColor": "#4F46E5",
+        "backgroundColor": "#F8FAFC"
+      },
+      "data": {
+        "placeholder": "Search..."
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "SearchBar",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "SearchBar",
+      "containerStyle": {
+        "width": "100%",
+        "maxWidth": "340px",
+        "alignItems": "center",
+        "border": "1.5px solid #A7F3D0",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "boxSizing": "border-box",
+        "color": "#18181B",
+        "caretColor": "#10B981",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "placeholder": "Search..."
+      }
+    }
+  }
+}

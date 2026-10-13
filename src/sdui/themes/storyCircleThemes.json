@@ -1,0 +1,58 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "StoryCircle",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#123A44",
+        "accentColor": "#123A44",
+        "--story-ring": "#123A44",
+        "--ring-color": "#123A44"
+      },
+      "data": {
+        "label": "Story",
+        "imageUrl": ""
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "StoryCircle",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#123A44",
+        "accentColor": "#123A44",
+        "--story-ring": "#123A44",
+        "--ring-color": "#123A44",
+        "color": "#0F172A"
+      },
+      "data": {
+        "label": "Story",
+        "imageUrl": ""
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "StoryCircle",
+    "previewColor": "#18181B",
+    "config": {
+      "type": "StoryCircle",
+      "containerStyle": {
+        "borderColor": "#123A44",
+        "accentColor": "#123A44",
+        "--story-ring": "#123A44",
+        "--ring-color": "#123A44",
+        "color": "#18181B"
+      },
+      "data": {
+        "label": "Story",
+        "imageUrl": ""
+      }
+    }
+  }
+}

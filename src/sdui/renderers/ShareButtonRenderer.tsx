@@ -14,6 +14,7 @@ import type { BaseRendererProps } from "../types";
 export default function ShareButtonRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
       style={{
         border: "1px solid #ddd",

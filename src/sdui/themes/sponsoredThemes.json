@@ -1,0 +1,48 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Sponsored",
+    "previewColor": "#888888",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#888888",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Sponsored",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#64748B"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Sponsored",
+    "previewColor": "#10B981",
+    "config": {
+      "type": "Sponsored",
+      "containerStyle": {
+        "color": "#10B981"
+      },
+      "data": {
+        "text": "Sponsored"
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Box",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Box",
+      "containerStyle": {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "nowrap",
+        "gap": "14px",
+        "overflowX": "auto",
+        "scrollbarWidth": "none",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Text",
+          "containerStyle": {
+            "fontSize": "14px",
+            "color": "#101F26"
+          },
+          "data": {
+            "text": "Box Container"
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Box",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Box",
+      "containerStyle": {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "nowrap",
+        "gap": "14px",
+        "overflowX": "auto",
+        "scrollbarWidth": "none",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Text",
+          "containerStyle": {
+            "fontSize": "14px",
+            "color": "#0F172A"
+          },
+          "data": {
+            "text": "Box Container"
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Box",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "Box",
+      "containerStyle": {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "nowrap",
+        "gap": "14px",
+        "overflowX": "auto",
+        "scrollbarWidth": "none",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "Text",
+          "containerStyle": {
+            "fontSize": "14px",
+            "color": "#18181B"
+          },
+          "data": {
+            "text": "Box Container"
+          }
+        }
+      ]
+    }
+  }
+}

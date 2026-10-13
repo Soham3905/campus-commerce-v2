@@ -15,8 +15,8 @@ export default function HeroBannerRenderer({ data = {}, style = {}, children, on
   return (
     <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", ...style }}>
       <img
-        src={data?.imageUrl}
-        alt={data?.altText}
+        src={data?.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png"}
+        alt={data?.altText || "Hero Banner"}
         onError={onError}
         style={{ width: "100%", height: style?.height || "400px", objectFit: "cover" }}
       />

@@ -1,0 +1,87 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "HeaderButton",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "HeaderButton",
+      "containerStyle": {
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "flex-start",
+        "backgroundColor": "transparent",
+        "border": "none",
+        "borderRadius": "0",
+        "color": "#0D3540",
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "cursor": "pointer"
+      },
+      "data": {
+        "id": "headerBtn",
+        "label": "HeaderButton",
+        "icon": "🔍"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "HeaderButton",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "HeaderButton",
+      "containerStyle": {
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "flex-start",
+        "backgroundColor": "transparent",
+        "border": "none",
+        "color": "#0F172A",
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "cursor": "pointer"
+      },
+      "data": {
+        "id": "headerBtn",
+        "label": "HeaderButton",
+        "icon": "🔍"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "HeaderButton",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "HeaderButton",
+      "containerStyle": {
+        "display": "inline-flex",
+        "alignItems": "center",
+        "justifyContent": "flex-start",
+        "backgroundColor": "transparent",
+        "border": "none",
+        "color": "#1C3829",
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase",
+        "whiteSpace": "nowrap",
+        "boxSizing": "border-box",
+        "cursor": "pointer"
+      },
+      "data": {
+        "id": "headerBtn",
+        "label": "HeaderButton",
+        "icon": "🔍"
+      }
+    }
+  }
+}

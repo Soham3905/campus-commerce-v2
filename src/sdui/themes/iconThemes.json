@@ -1,0 +1,57 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Icon",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "16px",
+        "height": "16px",
+        "opacity": 0.5,
+        "cursor": "pointer"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Icon"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Icon",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "18px",
+        "height": "18px",
+        "cursor": "pointer"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Icon"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Icon",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "Icon",
+      "containerStyle": {
+        "width": "16px",
+        "height": "16px",
+        "opacity": 0.5,
+        "cursor": "pointer",
+        "color": "#18181B",
+        "backgroundColor": "#FFFFFF"
+      },
+      "data": {
+        "imageUrl": "",
+        "altText": "Icon"
+      }
+    }
+  }
+}

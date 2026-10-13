@@ -1,0 +1,65 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "CategoryItem",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#101F26",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "CategoryItem",
+        "icon": "📦"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "CategoryItem",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#101F26",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "CategoryItem",
+        "icon": "📦"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "CategoryItem",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "CategoryItem",
+      "containerStyle": {
+        "gap": "10px",
+        "borderRadius": "12px",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "color": "#101F26",
+        "cursor": "pointer",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "label": "CategoryItem",
+        "icon": "📦"
+      }
+    }
+  }
+}

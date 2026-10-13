@@ -1,0 +1,116 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Label",
+    "previewColor": "#8D9A9D",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#8D9A9D",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Label"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#8D9A9D"
+          },
+          "data": {
+            "text": "Label"
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Label",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#64748B",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Label"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#64748B"
+          },
+          "data": {
+            "text": "Label"
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Label",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "Label",
+      "containerStyle": {
+        "height": "16px",
+        "minHeight": "16px",
+        "flex": "0 0 16px",
+        "flexShrink": "0",
+        "display": "flex",
+        "alignItems": "center",
+        "gap": "4px",
+        "overflow": "hidden",
+        "fontSize": "10px",
+        "fontWeight": "600",
+        "letterSpacing": "0.10em",
+        "textTransform": "uppercase",
+        "color": "#1C3829",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "text": "Label"
+      },
+      "children": [
+        {
+          "type": "Sponsored",
+          "containerStyle": {
+            "color": "#10B981"
+          },
+          "data": {
+            "text": "Label"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "ProductCard",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "flex": "0 0 auto",
+        "height": "300px",
+        "minHeight": "300px",
+        "maxHeight": "516px",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "16px",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+        "boxSizing": "border-box"
+      },
+      "data": {
+        "id": "default-product-01"
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "140px",
+            "width": "100%",
+            "backgroundColor": "#FAFAF8",
+            "borderRadius": "8px"
+          },
+          "data": {
+            "imageUrl": "",
+            "altText": "Image"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "#101F26"
+          },
+          "data": {
+            "text": "Title"
+          }
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "6px",
+            "color": "#0D3540"
+          },
+          "data": {
+            "sellingPrice": "₹999",
+            "mrp": "₹1,999",
+            "discount": "50% OFF"
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "width": "100%",
+            "height": "36px",
+            "borderRadius": "8px",
+            "backgroundColor": "#0D3540",
+            "color": "#FFFFFF",
+            "fontWeight": "600",
+            "border": "none"
+          },
+          "data": {
+            "label": "Button"
+          }
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "ProductCard",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "flex": "0 0 auto",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "16px",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+        "boxSizing": "border-box",
+        "height": "300px",
+        "minHeight": "300px",
+        "maxHeight": "516px",
+        "color": "#0F172A"
+      },
+      "data": {
+        "id": "default-product-01"
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "140px",
+            "width": "100%",
+            "backgroundColor": "#F8FAFC",
+            "borderRadius": "8px"
+          },
+          "data": {
+            "imageUrl": "",
+            "altText": "Image"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "#0F172A"
+          },
+          "data": {
+            "text": "Title"
+          }
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "6px",
+            "color": "#0F172A"
+          },
+          "data": {
+            "sellingPrice": "₹999",
+            "mrp": "₹1,999",
+            "discount": "50% OFF"
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "width": "100%",
+            "height": "36px",
+            "borderRadius": "8px",
+            "backgroundColor": "#0F172A",
+            "color": "#FFFFFF",
+            "fontWeight": "600",
+            "border": "none"
+          },
+          "data": {
+            "label": "Button"
+          }
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "ProductCard",
+    "previewColor": "#FFFFFF",
+    "config": {
+      "type": "ProductCard",
+      "containerStyle": {
+        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+        "backgroundColor": "#FFFFFF",
+        "flex": "0 0 auto",
+        "alignSelf": "stretch",
+        "display": "flex",
+        "flexDirection": "column",
+        "gap": "8px",
+        "padding": "14px",
+        "border": "1px solid #E4E7E4",
+        "borderRadius": "16px",
+        "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+        "boxSizing": "border-box",
+        "color": "#18181B",
+        "height": "300px",
+        "minHeight": "300px",
+        "maxHeight": "516px"
+      },
+      "data": {
+        "id": "default-product-01"
+      },
+      "children": [
+        {
+          "type": "Image",
+          "containerStyle": {
+            "height": "140px",
+            "width": "100%",
+            "backgroundColor": "#FBFBF9",
+            "borderRadius": "8px"
+          },
+          "data": {
+            "imageUrl": "",
+            "altText": "Image"
+          }
+        },
+        {
+          "type": "Title",
+          "containerStyle": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "#18181B"
+          },
+          "data": {
+            "text": "Title"
+          }
+        },
+        {
+          "type": "PriceBlock",
+          "containerStyle": {
+            "display": "flex",
+            "alignItems": "baseline",
+            "gap": "6px",
+            "color": "#1C3829"
+          },
+          "data": {
+            "sellingPrice": "₹999",
+            "mrp": "₹1,999",
+            "discount": "50% OFF"
+          }
+        },
+        {
+          "type": "Button",
+          "containerStyle": {
+            "width": "100%",
+            "height": "36px",
+            "borderRadius": "8px",
+            "backgroundColor": "#1C3829",
+            "color": "#FFFFFF",
+            "fontWeight": "600",
+            "border": "none"
+          },
+          "data": {
+            "label": "Button"
+          }
+        }
+      ]
+    }
+  }
+}

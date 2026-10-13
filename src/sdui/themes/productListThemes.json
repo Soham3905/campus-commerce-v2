@@ -1,0 +1,215 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "ProductList",
+    "previewColor": "#0D3540",
+    "config": {
+      "type": "ProductList",
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p1"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 1"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 1"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹499"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p2"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 2"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 2"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹799"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "ProductList",
+    "previewColor": "#0F172A",
+    "config": {
+      "type": "ProductList",
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p1"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 1"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 1"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹499"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p2"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 2"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 2"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹799"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "ProductList",
+    "previewColor": "#1C3829",
+    "config": {
+      "type": "ProductList",
+      "containerStyle": {
+        "gap": "14px",
+        "overflowX": "auto",
+        "WebkitOverflowScrolling": "touch",
+        "boxSizing": "border-box"
+      },
+      "data": {},
+      "children": [
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p1"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 1"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 1"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹499"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ProductCard",
+          "data": {
+            "id": "p2"
+          },
+          "children": [
+            {
+              "type": "Image",
+              "data": {
+                "imageUrl": "",
+                "altText": "Product 2"
+              }
+            },
+            {
+              "type": "Title",
+              "data": {
+                "text": "Product 2"
+              }
+            },
+            {
+              "type": "PriceBlock",
+              "data": {
+                "sellingPrice": "₹799"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

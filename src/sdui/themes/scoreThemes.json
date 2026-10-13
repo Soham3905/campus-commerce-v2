@@ -1,0 +1,48 @@
+{
+  "theme1": {
+    "id": "theme1",
+    "name": "Score",
+    "previewColor": "#101F26",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "fontWeight": "700",
+        "color": "#101F26"
+      },
+      "data": {
+        "text": "4.5",
+        "out of": "5"
+      }
+    }
+  },
+  "theme2": {
+    "id": "theme2",
+    "name": "Score",
+    "previewColor": "#64748B",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "color": "#64748B"
+      },
+      "data": {
+        "text": "4.5",
+        "out of": "5"
+      }
+    }
+  },
+  "theme3": {
+    "id": "theme3",
+    "name": "Score",
+    "previewColor": "#10B981",
+    "config": {
+      "type": "Score",
+      "containerStyle": {
+        "color": "#10B981"
+      },
+      "data": {
+        "text": "4.5",
+        "out of": "5"
+      }
+    }
+  }
+}

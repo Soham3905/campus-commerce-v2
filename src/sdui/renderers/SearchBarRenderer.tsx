@@ -23,7 +23,7 @@ export default function SearchBarRenderer({ data, style }: BaseRendererProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={data?.placeholder || "Search..."}
-          style={{ fontSize: "14px", width: "100%", minWidth: 0, border: "none", outline: "none", background: "transparent" }}
+          style={{ fontSize: "14px", width: "100%", minWidth: 0, border: "none", outline: "none", backgroundColor: "transparent" }}
         />
       </div>
     </div>

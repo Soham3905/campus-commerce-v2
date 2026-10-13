@@ -18,7 +18,8 @@ export default function ButtonRenderer({ data = {}, style = {}, onClick }: BaseR
       style={{
         width: "100%",
         padding: "8px",
-        background: "linear-gradient(135deg, #ffa41c, #ff8f00)",
+        backgroundImage: "linear-gradient(135deg, #ffa41c, #ff8f00)",
+        backgroundColor: "#ffa41c",
         color: "#111",
         border: "none",
         borderRadius: "24px",

@@ -37,12 +37,12 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#fff",
+          backgroundColor: "#f8f9fa",
           ...style
         }}
       >
         <img
-          src={data?.imageUrl}
+          src={data?.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png"}
           alt={data?.label || "Story"}
           style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
         />
