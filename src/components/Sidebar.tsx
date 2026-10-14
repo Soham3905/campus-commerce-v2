@@ -193,12 +193,7 @@ export function Sidebar({
             {/* 2. Welcome Link */}
             <Link
               href="/pages/welcome"
-              onClick={() => {
-                onCloseMobile?.();
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("open-welcome-modal"));
-                }
-              }}
+              onClick={onCloseMobile}
               title={isCollapsedDesktop ? "Welcome" : undefined}
               className={`flex items-center rounded-xl transition ${
                 isCollapsedDesktop ? "justify-center p-2.5" : "gap-3 px-3 py-2.5"

@@ -206,8 +206,8 @@ const ALL_35_COMPONENTS_MAP: Array<{
  */
 function normalizeThemeKey(themeId?: string): "theme1" | "theme2" | "theme3" {
   if (!themeId) return "theme1";
-  if (themeId === "clean_white" || themeId === "theme2") return "theme2";
-  if (themeId === "black_minimal" || themeId === "theme3") return "theme3";
+  if (themeId === "theme2") return "theme2";
+  if (themeId === "theme3") return "theme3";
   return "theme1";
 }
 

@@ -31,12 +31,56 @@ function LandingContentInner() {
     requestedDevice || "desktop"
   );
 
+  const isLive = searchParams.get("mode") === "live" || searchParams.get("preview") === "live";
+  const [liveSchema, setLiveSchema] = useState<any>(null);
+
   // Look up the requested theme from our Theme Bundle
   const { schema, validation } = useMemo(() => {
     const rawSchema = THEMES_REGISTRY[requestedTheme] || THEMES_REGISTRY["theme1"];
     const valResult = validateThemeStrict(rawSchema, requestedTheme);
     return { schema: rawSchema, validation: valResult };
   }, [requestedTheme]);
+
+  // Read live canvas schema from localStorage or postMessage when in live mode
+  useEffect(() => {
+    if (!isLive || typeof window === "undefined") return;
+
+    const readStoredSchema = () => {
+      try {
+        const stored = localStorage.getItem("campus_live_canvas_schema");
+        if (stored) {
+          setLiveSchema(JSON.parse(stored));
+        }
+      } catch (err) {
+        console.warn("Failed to load live canvas schema", err);
+      }
+    };
+
+    readStoredSchema();
+
+    // Listen for storage events (updates from other tabs)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "campus_live_canvas_schema" && e.newValue) {
+        try {
+          setLiveSchema(JSON.parse(e.newValue));
+        } catch {}
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    // Listen for postMessage (when embedded in an iframe)
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === "UPDATE_LIVE_SCHEMA" && e.data?.schema) {
+        setLiveSchema(e.data.schema);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [isLive]);
 
   // Auto-detect viewport width inside the iframe
   useEffect(() => {
@@ -61,8 +105,26 @@ function LandingContentInner() {
     return () => window.removeEventListener("resize", updateDeviceFromWidth);
   }, [requestedDevice]);
 
-  // If the theme is disabled, show a simple error screen instead of rendering
-  if (validation.isDisabled) {
+  // If in live mode and canvas is still empty, show friendly placeholder
+  if (isLive && (!liveSchema || !liveSchema.children || liveSchema.children.length === 0)) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-white text-zinc-500">
+        <div className="h-12 w-12 rounded-xl bg-zinc-100 flex items-center justify-center text-xl mb-3 shadow-2xs">
+          📱
+        </div>
+        <p className="text-sm font-bold text-zinc-800">Live Preview Ready</p>
+        <p className="text-xs text-zinc-400 mt-1 max-w-[220px]">
+          Drop components onto <strong>Panel 2 (Canvas)</strong> to see your landing page rendered here live!
+        </p>
+      </div>
+    );
+  }
+
+  // Active schema to render
+  const activeSchemaToRender = isLive && liveSchema ? liveSchema : schema;
+
+  // If the theme is disabled, show error
+  if (!isLive && validation.isDisabled) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-zinc-50">
         <div className="max-w-md p-6 bg-white rounded-2xl border border-red-200 shadow-sm space-y-3">
@@ -91,10 +153,12 @@ function LandingContentInner() {
 
   return (
     <main
-      className={`min-h-screen w-full font-sans selection:bg-emerald-600 selection:text-white no-scrollbar transition-colors duration-200 ${pageBgClass}`}
+      className={`min-h-screen w-full font-sans selection:bg-emerald-600 selection:text-white no-scrollbar transition-colors duration-200 ${
+        isLive ? "bg-white text-zinc-900" : pageBgClass
+      }`}
     >
       <SDUIRenderer
-        customSchema={schema}
+        customSchema={activeSchemaToRender}
         hideEditor={true}
         defaultDevice={deviceMode}
         autoDetectDevice={!requestedDevice}
