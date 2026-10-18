@@ -1,53 +1,43 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import type { DeviceType, GridPlacement, SDUINode } from "@/sdui/types";
+import { ComponentMap } from "@/sdui/SDUIRenderer";
 import { ALL_RULES } from "@/sdui/validators/rules";
-import type { SDUINode } from "@/sdui/types";
-import { getActiveDragPayload, setActiveDragPayload } from "../dragState";
-import type { DefaultComponentItem } from "@/sdui/themes";
+import { getAllDefaultComponents } from "@/sdui/themes";
+import { getActiveDragPayload } from "../dragState";
 
 /**
  * ==============================================================================
- * 🎓 Beginner Guide: Panel 2 (Landing Page Canvas)
+ * 🎓 CanvasPanel: Step 4 (Fluid Drag & Resize Engine)
  * ==============================================================================
- * 
- * 1. WHAT IS THIS PANEL?
- *    This is the visual 100-Column Grid Canvas where you build your landing page.
- *    You can:
- *    - Drag components from Panel 1 (Toolbox) and insert them ANYWHERE
- *      (at the top, in the middle between elements, or at the bottom).
- *    - Drag components directly into containers (e.g. ProductCard inside ProductList,
- *      and Title / Description / PriceBlock / Button inside ProductCard) to any depth!
- *    - Reorder elements by dragging them or clicking ▲ / ▼.
- * 
- * 2. 100-COLUMN RESPONSIVE GRID & AUTOMATIC POSITION CALCULATION:
- *    - Every component has a column span (100%, 50%, 33%, or 25%).
- *    - When an element is added, moved, or resized, `recalculateGridPositions`
- *      automatically calculates `col` (0..99) and `row` (0, 1, 2...).
- *    - If two 50% blocks are adjacent, they share the same row (0..50 and 50..100)!
- *    - If an element exceeds 100 columns, it automatically wraps to the next row.
- * 
- * 3. VALIDATOR GUARD & DEBOUNCING:
- *    - Validates nesting against the official SDUI rulebook (`ALL_RULES`).
- *    - 🟢 GREEN BOX: Valid drop! Shows "✓ Allowed" badge.
- *    - 🔴 RED BOX: Invalid drop (e.g. Header inside Button)! Shows "✕ Blocked" badge.
- *    - DEBOUNCED: Checks are cached via `lastCheckedRef` to maintain smooth 60fps.
+ * Beginner Guide:
+ * - Drag anywhere on a block body to move it across columns and rows.
+ * - Drag any of the 8 resize handles to resize the block.
+ * - Positions snap smoothly and directly to grid cells in real time.
+ * - Each block moves independently without shifting other blocks.
  * ==============================================================================
  */
+
+// -----------------------------------------------------------------------------
+// 1. Types & Interfaces
+// -----------------------------------------------------------------------------
 
 export interface CanvasLayoutItem {
   id: string;
   type: string;
   name: string;
   category: string;
-  col: number;      // 0 to 99 start column
-  colSpan: number;  // 25, 33, 50, 100
-  row: number;      // vertical row index
-  x?: number;       // alias for col
-  w?: number;       // alias for colSpan
-  h?: number;       // height unit
+  placement?: Partial<Record<DeviceType, GridPlacement>>;
+  zIndex?: number;
+  col?: number;
+  colSpan?: number;
+  row?: number;
+  w?: number;
+  h?: number;
+  x?: number;
   config: SDUINode;
-  children: CanvasLayoutItem[];
+  children?: CanvasLayoutItem[];
 }
 
 export interface CanvasPanelProps {
@@ -55,884 +45,2485 @@ export interface CanvasPanelProps {
   onItemsChange: (items: CanvasLayoutItem[]) => void;
   selectedItemId: string | null;
   onSelectItem: (id: string | null) => void;
+  device?: DeviceType;
+  onDeviceChange?: (device: DeviceType) => void;
 }
 
-/**
- * Default 100-column span for each component type
- */
-export function getDefault100ColSpan(type: string): number {
+// Active pointer interaction state (for real-time dragging & resizing)
+interface ActiveInteraction {
+  itemId: string;
+  mode: "move" | "resize";
+  direction?: string;
+  startX: number;
+  startY: number;
+  origPlacement: GridPlacement;
+  currentPlacement: GridPlacement;
+}
+
+// -----------------------------------------------------------------------------
+// 2. Viewport Configurations
+// -----------------------------------------------------------------------------
+
+interface DeviceConfig {
+  label: string;
+  columns: number;
+  icon: string;
+  widthPx: number;
+}
+
+export const DEVICE_CONFIGS: Record<DeviceType, DeviceConfig> = {
+  desktop: {
+    label: "Desktop",
+    columns: 24,
+    icon: "🖥️",
+    widthPx: 1080,
+  },
+  tablet: {
+    label: "Tablet",
+    columns: 12,
+    icon: "📱",
+    widthPx: 720,
+  },
+  mobile: {
+    label: "Mobile",
+    columns: 8,
+    icon: "📲",
+    widthPx: 375,
+  },
+};
+
+export const ROW_HEIGHT_PX = 36;
+export const GRID_GAP_PX = 8;
+export const DEFAULT_ROWS = 18;
+
+// -----------------------------------------------------------------------------
+// 3. Helper: Default Grid Placement for Components
+// -----------------------------------------------------------------------------
+
+export function getDefaultPlacement(type: string, device: DeviceType, startRow: number = 1): GridPlacement {
+  const maxCols = device === "desktop" ? 24 : device === "tablet" ? 12 : 8;
+
+  let colSpan = 10;
+  let rowSpan = 2;
+
   switch (type) {
-    // 100% Full Width Sections
-    case "Header":
-    case "Footer":
-    case "NavBar":
+    case "Title":
+      colSpan = Math.min(4, maxCols);
+      rowSpan = 1;
+      break;
+    case "Description":
+      colSpan = Math.min(6, maxCols);
+      rowSpan = 2;
+      break;
+    case "Text":
+      colSpan = Math.min(4, maxCols);
+      rowSpan = 1;
+      break;
+    case "Button":
+      colSpan = Math.min(4, maxCols);
+      rowSpan = 2;
+      break;
+    case "HeaderButton":
+      colSpan = Math.min(6, maxCols);
+      rowSpan = 2;
+      break;
     case "HeroBanner":
-    case "Carousel":
-    case "StoryRow":
+      colSpan = maxCols;
+      rowSpan = 7;
+      break;
+    case "ProductCard":
+      colSpan = Math.min(8, maxCols);
+      rowSpan = 8;
+      break;
+    case "Image":
+      colSpan = Math.min(8, maxCols);
+      rowSpan = 6;
+      break;
+    case "SearchBar":
+      colSpan = Math.min(16, maxCols);
+      rowSpan = 2;
+      break;
+    case "Badge":
+    case "Label":
+    case "Icon":
+      colSpan = Math.min(4, maxCols);
+      rowSpan = 1;
+      break;
     case "ProductList":
     case "CategoryGrid":
-    case "Page":
-    case "Home":
-      return 100;
-
-    // 50% Half Width Blocks
-    case "ProductCard":
-    case "Box":
-    case "IFrame":
-    case "CountDownTimer":
-    case "CouponCode":
-    case "SearchBar":
-      return 50;
-
-    // 33% Third Width Blocks
-    case "PriceBlock":
-    case "DeliveryInfo":
-    case "OfferText":
-    case "Title":
-    case "Description":
-    case "Text":
-      return 33;
-
-    // 25% Compact Atoms
-    case "Button":
-    case "HeaderButton":
-    case "Badge":
-    case "Rating":
-    case "Score":
-    case "ReviewCount":
-    case "ShareButton":
-    case "Sponsored":
-    case "Icon":
-    case "Image":
-    case "StoryCircle":
-    case "Label":
-    case "CategoryItem":
-      return 25;
-
+      colSpan = maxCols;
+      rowSpan = 8;
+      break;
     default:
-      return 100;
+      colSpan = Math.min(8, maxCols);
+      rowSpan = 3;
+      break;
   }
+
+  return {
+    colStart: 1,
+    colEnd: 1 + colSpan,
+    rowStart: startRow,
+    rowEnd: startRow + rowSpan,
+  };
+}
+
+// -----------------------------------------------------------------------------
+// 4. Helpers: Tree ID Assignment, Tree Manipulation & Interactive Rendering
+// -----------------------------------------------------------------------------
+
+/**
+ * Ensures all nodes in the SDUI tree have a unique, stable string ID.
+ */
+let nextNodeId = 1;
+export function ensureNodeIds(node: SDUINode, prefix = "node"): SDUINode {
+  if (!node) return node;
+  const nodeId =
+    node.id ||
+    `${prefix}-${node.type.toLowerCase()}-${Date.now().toString(36)}-${nextNodeId++}`;
+
+  return {
+    ...node,
+    id: nodeId,
+    children: Array.isArray(node.children)
+      ? node.children.map((child, idx) => ensureNodeIds(child, `${nodeId}-c${idx}`))
+      : undefined,
+  };
 }
 
 /**
- * Pure function: Automatically calculates row (0, 1, 2...) and col (0..99)
- * for a list of items on a 100-column grid.
- * If consecutive items fit within 100 columns, they stay on the same row!
- * If an item overflows 100 columns, it moves to the next row.
+ * Converts nested SDUI node children into CanvasLayoutItem array for tree sync.
  */
-export function recalculateGridPositions(items: CanvasLayoutItem[]): CanvasLayoutItem[] {
-  let currentRow = 0;
-  let currentCol = 0;
+export function syncChildrenLayoutItems(node: SDUINode): CanvasLayoutItem[] {
+  if (!node.children || node.children.length === 0) return [];
+  return node.children.map((child) => ({
+    id: child.id || `${child.type.toLowerCase()}-${Math.random().toString(36).substring(2, 7)}`,
+    type: child.type,
+    name: child.type,
+    category: ALL_RULES[child.type]?.category || "Component",
+    config: child,
+    children: syncChildrenLayoutItems(child),
+  }));
+}
 
-  return items.map((item) => {
-    const span = item.colSpan || 100;
-
-    // If item doesn't fit in the remaining columns of current row, wrap to new row
-    if (currentCol + span > 100) {
-      currentRow += 1;
-      currentCol = 0;
+/**
+ * Recursively searches an SDUINode tree to find a node by its ID.
+ */
+export function findNodeInTree(root: SDUINode, id: string): SDUINode | null {
+  if (!root) return null;
+  if (root.id === id) return root;
+  if (root.children && root.children.length > 0) {
+    for (const child of root.children) {
+      const found = findNodeInTree(child, id);
+      if (found) return found;
     }
+  }
+  return null;
+}
 
-    const itemCol = currentCol;
-    const itemRow = currentRow;
-
-    // Advance current column
-    currentCol += span;
-    if (currentCol >= 100) {
-      currentRow += 1;
-      currentCol = 0;
+/**
+ * Finds which root CanvasLayoutItem contains a given node ID in its config tree.
+ */
+export function findRootItemForNodeId(
+  items: CanvasLayoutItem[],
+  nodeId: string
+): CanvasLayoutItem | null {
+  for (const item of items) {
+    if (item.id === nodeId || (item.config && findNodeInTree(item.config, nodeId))) {
+      return item;
     }
+  }
+  return null;
+}
 
+/**
+ * Recursively appends a new child node to a target node in the tree.
+ */
+export function addChildToNodeRecursive(
+  root: SDUINode,
+  targetId: string,
+  newChild: SDUINode
+): SDUINode {
+  if (root.id === targetId) {
+    const existing = Array.isArray(root.children) ? [...root.children] : [];
     return {
-      ...item,
-      row: itemRow,
-      col: itemCol,
-      x: itemCol,
-      w: span,
-      // Recursively calculate positions for children if any
-      children: item.children && item.children.length > 0 ? recalculateGridPositions(item.children) : [],
+      ...root,
+      children: [...existing, newChild],
     };
+  }
+
+  if (root.children && root.children.length > 0) {
+    return {
+      ...root,
+      children: root.children.map((child) =>
+        addChildToNodeRecursive(child, targetId, newChild)
+      ),
+    };
+  }
+
+  return root;
+}
+
+/**
+ * Recursively duplicates a child node within its parent's children array.
+ */
+export function duplicateChildInTree(root: SDUINode, targetId: string): SDUINode {
+  if (!root.children || root.children.length === 0) return root;
+
+  const newChildren: SDUINode[] = [];
+  for (const child of root.children) {
+    newChildren.push(duplicateChildInTree(child, targetId));
+    if (child.id === targetId) {
+      const cloned = JSON.parse(JSON.stringify(child));
+      delete cloned.id;
+      const freshClone = ensureNodeIds(cloned, `${child.type.toLowerCase()}-copy`);
+      newChildren.push(freshClone);
+    }
+  }
+
+  return {
+    ...root,
+    children: newChildren,
+  };
+}
+
+/**
+ * Recursively deletes a child node from the tree.
+ */
+export function deleteChildFromTree(root: SDUINode, targetId: string): SDUINode {
+  if (!root.children || root.children.length === 0) return root;
+
+  return {
+    ...root,
+    children: root.children
+      .filter((child) => child.id !== targetId)
+      .map((child) => deleteChildFromTree(child, targetId)),
+  };
+}
+
+/**
+ * Recursively updates a node anywhere inside an SDUINode tree.
+ */
+export function updateNodeInTree(root: SDUINode, updatedNode: SDUINode): SDUINode {
+  if (root.id === updatedNode.id) {
+    return {
+      ...updatedNode,
+      children: updatedNode.children !== undefined ? updatedNode.children : root.children,
+    };
+  }
+  if (!root.children || root.children.length === 0) {
+    return root;
+  }
+  return {
+    ...root,
+    children: root.children.map((child) => updateNodeInTree(child, updatedNode)),
+  };
+}
+
+/**
+ * Finds the direct parent SDUINode of a target child node.
+ */
+export function findParentNodeInTree(root: SDUINode, targetId: string): SDUINode | null {
+  if (!root.children || root.children.length === 0) return null;
+  for (const child of root.children) {
+    if (child.id === targetId) return root;
+    const found = findParentNodeInTree(child, targetId);
+    if (found) return found;
+  }
+  return null;
+}
+
+/**
+ * Active pointer interaction state for resizing nested child components
+ */
+export interface ActiveChildResize {
+  childId: string;
+  rootItemId: string;
+  direction: string;
+  startX: number;
+  startY: number;
+  origWidthPx: number;
+  origHeightPx: number;
+  currentWidthPx: number;
+  currentHeightPx: number;
+}
+
+/**
+ * Calculates whether a root component needs more vertical rows
+ * to accommodate its resized or expanded nested children without overflowing.
+ */
+export function calculateRequiredRootRows(
+  rootItem: CanvasLayoutItem,
+  device: DeviceType,
+  totalColumns: number,
+  overrideChildId?: string,
+  overrideWidthPx?: number,
+  overrideHeightPx?: number
+): number {
+  const currentPlace = rootItem.placement?.[device] || getDefaultPlacement(rootItem.type, device, 1);
+  const rootColSpan = currentPlace.colEnd - currentPlace.colStart;
+  const deviceWidth = DEVICE_CONFIGS[device].widthPx;
+  const rootWidthPx = (deviceWidth / totalColumns) * rootColSpan;
+
+  const children = rootItem.config?.children || [];
+  if (children.length === 0) return currentPlace.rowEnd - currentPlace.rowStart;
+
+  if (rootItem.type === "ProductList") {
+    let currentLineWidth = 0;
+    let lines = 1;
+    let maxCardHeight = 300;
+
+    for (const ch of children) {
+      let cardWidth = 280;
+      let cardHeight = 300;
+
+      if (ch.containerStyle?.width) {
+        const parsed = parseInt(String(ch.containerStyle.width), 10);
+        if (!isNaN(parsed) && parsed > 0) cardWidth = parsed;
+      }
+      if (ch.containerStyle?.height) {
+        const parsed = parseInt(String(ch.containerStyle.height), 10);
+        if (!isNaN(parsed) && parsed > 0) cardHeight = parsed;
+      }
+
+      if (ch.id === overrideChildId) {
+        if (overrideWidthPx !== undefined) cardWidth = overrideWidthPx;
+        if (overrideHeightPx !== undefined) cardHeight = overrideHeightPx;
+      }
+
+      if (cardHeight > maxCardHeight) maxCardHeight = cardHeight;
+
+      if (currentLineWidth > 0 && currentLineWidth + cardWidth + 12 > rootWidthPx) {
+        lines++;
+        currentLineWidth = cardWidth;
+      } else {
+        currentLineWidth += (currentLineWidth > 0 ? 12 : 0) + cardWidth;
+      }
+    }
+
+    const totalNeededPx = lines * (maxCardHeight + 16) + 32;
+    const neededRows = Math.ceil((totalNeededPx + GRID_GAP_PX) / (ROW_HEIGHT_PX + GRID_GAP_PX));
+    return Math.max(currentPlace.rowEnd - currentPlace.rowStart, neededRows);
+  }
+
+  // Generic container height check (e.g. Box, HeroBanner)
+  let maxChildHeight = 0;
+  for (const ch of children) {
+    let h = 100;
+    if (ch.containerStyle?.height) {
+      const parsed = parseInt(String(ch.containerStyle.height), 10);
+      if (!isNaN(parsed)) h = parsed;
+    }
+    if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
+      h = overrideHeightPx;
+    }
+    if (h > maxChildHeight) maxChildHeight = h;
+  }
+
+  if (maxChildHeight > 0) {
+    const totalNeededPx = maxChildHeight + 40;
+    const neededRows = Math.ceil((totalNeededPx + GRID_GAP_PX) / (ROW_HEIGHT_PX + GRID_GAP_PX));
+    return Math.max(currentPlace.rowEnd - currentPlace.rowStart, neededRows);
+  }
+
+  return currentPlace.rowEnd - currentPlace.rowStart;
+}
+
+/**
+ * 8 Resize Handles rendered around a selected nested child component.
+ */
+interface ChildResizeHandlesProps {
+  onStartResize: (e: React.PointerEvent, direction: string) => void;
+}
+
+function ChildResizeHandles({ onStartResize }: ChildResizeHandlesProps) {
+  return (
+    <>
+      {/* 4 Corner Handles */}
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "nw")}
+        title="Resize Top-Left"
+        className="absolute -top-1.5 -left-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-nwse-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "ne")}
+        title="Resize Top-Right"
+        className="absolute -top-1.5 -right-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-nesw-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "sw")}
+        title="Resize Bottom-Left"
+        className="absolute -bottom-1.5 -left-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-nesw-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "se")}
+        title="Resize Bottom-Right"
+        className="absolute -bottom-1.5 -right-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-nwse-resize z-40 hover:scale-125 transition-transform"
+      />
+
+      {/* 4 Edge Handles */}
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "n")}
+        title="Resize Top"
+        className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-2.5 w-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ns-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "s")}
+        title="Resize Bottom"
+        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-2.5 w-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ns-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "w")}
+        title="Resize Left"
+        className="absolute top-1/2 -left-1.5 -translate-y-1/2 w-2.5 h-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ew-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+        onPointerDown={(e) => onStartResize(e, "e")}
+        title="Resize Right"
+        className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ew-resize z-40 hover:scale-110 transition-transform"
+      />
+    </>
+  );
+}
+
+/**
+ * Floating mini action bar for a selected nested child component.
+ */
+interface ChildActionBarProps {
+  node: SDUINode;
+  allowedChildren: string[];
+  onAddChild: (type: string) => void;
+  onDuplicate: () => void;
+  onDelete: () => void;
+}
+
+function ChildActionBar({
+  node,
+  allowedChildren,
+  onAddChild,
+  onDuplicate,
+  onDelete,
+}: ChildActionBarProps) {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const close = () => setShowDropdown(false);
+    window.addEventListener("click", close);
+    return () => window.removeEventListener("click", close);
+  }, [showDropdown]);
+
+  // Position nicely: inside container corner for cards/boxes, right above for buttons/labels
+  const isContainer =
+    allowedChildren.length > 0 || node.type === "ProductCard" || node.type === "Box";
+  const positionClass = isContainer ? "top-1.5 left-1.5" : "-top-7 left-0";
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+      className={`absolute ${positionClass} z-50 flex items-center gap-1 bg-zinc-900/95 backdrop-blur-xs text-white px-2 py-0.5 rounded shadow-lg border border-zinc-700/80 text-[10px] whitespace-nowrap select-none`}
+    >
+      <span className="font-semibold text-zinc-300 pr-1 border-r border-zinc-700/80">
+        {node.type}
+      </span>
+
+      {/* + Add Child button (only shown if validator allows children) */}
+      {allowedChildren.length > 0 && (
+        <div className="relative pr-1 border-r border-zinc-700/80">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDropdown((prev) => !prev);
+            }}
+            title="Add Child"
+            className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[9px] cursor-pointer shadow-2xs"
+          >
+            <span>+ Add Child</span>
+            <span className="text-[7px]">{showDropdown ? "▲" : "▼"}</span>
+          </button>
+
+          {showDropdown && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-full left-0 mt-1 z-60 w-44 max-h-48 overflow-y-auto rounded bg-zinc-900/95 backdrop-blur-md border border-zinc-700 shadow-xl py-1 text-xs"
+            >
+              <div className="px-2 py-0.5 text-[8px] font-bold uppercase text-zinc-400 border-b border-zinc-800">
+                Allowed Children ({allowedChildren.length})
+              </div>
+              {allowedChildren.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAddChild(type);
+                    setShowDropdown(false);
+                  }}
+                  className="w-full text-left px-2 py-1 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 text-[10px] cursor-pointer"
+                >
+                  <span>{type}</span>
+                  <span className="text-emerald-400 font-semibold">+ Add</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Duplicate */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDuplicate();
+        }}
+        title="Duplicate Child"
+        className="p-0.5 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white cursor-pointer"
+      >
+        📋
+      </button>
+
+      {/* Delete */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+        title="Delete Child"
+        className="p-0.5 rounded hover:bg-red-900/80 text-red-300 hover:text-red-100 cursor-pointer"
+      >
+        🗑️
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Recursive SDUI Component Renderer with Interactive Child Selection & Resizing.
+ */
+interface RenderInteractiveNodeProps {
+  node: SDUINode;
+  rootItemId: string;
+  selectedItemId: string | null;
+  onSelectItem: (id: string | null) => void;
+  onAddChild: (targetNodeId: string, childType: string) => void;
+  onDuplicateChild: (targetNodeId: string) => void;
+  onDeleteChild: (targetNodeId: string) => void;
+  onStartChildResize: (
+    e: React.PointerEvent,
+    node: SDUINode,
+    rootItemId: string,
+    direction: string
+  ) => void;
+  childResize: ActiveChildResize | null;
+  isRoot?: boolean;
+}
+
+function RenderInteractiveNode({
+  node,
+  rootItemId,
+  selectedItemId,
+  onSelectItem,
+  onAddChild,
+  onDuplicateChild,
+  onDeleteChild,
+  onStartChildResize,
+  childResize,
+  isRoot = false,
+}: RenderInteractiveNodeProps): React.ReactNode {
+  if (!node) return null;
+
+  const RendererComponent = ComponentMap[node.type];
+  if (!RendererComponent) {
+    return (
+      <div className="p-2 text-xs text-zinc-500 bg-zinc-50 rounded border border-zinc-200">
+        {node.type}
+      </div>
+    );
+  }
+
+  // Render children recursively through RenderInteractiveNode
+  const renderedChildren =
+    node.children && node.children.length > 0
+      ? node.children.map((child, idx) => (
+          <RenderInteractiveNode
+            key={child.id || idx}
+            node={child}
+            rootItemId={rootItemId}
+            selectedItemId={selectedItemId}
+            onSelectItem={onSelectItem}
+            onAddChild={onAddChild}
+            onDuplicateChild={onDuplicateChild}
+            onDeleteChild={onDeleteChild}
+            onStartChildResize={onStartChildResize}
+            childResize={childResize}
+            isRoot={false}
+          />
+        ))
+      : null;
+
+  // Check if this specific node is currently being resized live
+  const isThisResizing = childResize !== null && childResize.childId === node.id;
+  const liveWidth = isThisResizing && childResize ? `${Math.round(childResize.currentWidthPx)}px` : undefined;
+  const liveHeight = isThisResizing && childResize ? `${Math.round(childResize.currentHeightPx)}px` : undefined;
+
+  // Effective container style: if live resizing, override width/height
+  const effectiveContainerStyle = {
+    ...node.containerStyle,
+    ...(liveWidth ? { width: liveWidth } : {}),
+    ...(liveHeight ? { height: liveHeight } : {}),
+  };
+
+  // The actual visual component
+  const content = (
+    <RendererComponent
+      data={node.data || {}}
+      style={{ width: "100%", height: "100%", ...effectiveContainerStyle }}
+      actions={node.actions}
+    >
+      {renderedChildren}
+    </RendererComponent>
+  );
+
+  // If this is the root node of the canvas block, return content directly
+  // (Root selection is handled by the canvas block bounding box)
+  if (isRoot) {
+    return content;
+  }
+
+  // Nested Child: Wrap in interactive selection container
+  const isSelected = selectedItemId === node.id;
+  const allowedChildren = getAllowedChildrenForType(node.type);
+
+  // Wrapper dimensions for nested child
+  const wrapperStyle: React.CSSProperties = {
+    ...(node.containerStyle?.width ? { width: effectiveContainerStyle.width } : {}),
+    ...(node.containerStyle?.height ? { height: effectiveContainerStyle.height } : {}),
+    ...(liveWidth ? { width: liveWidth } : {}),
+    ...(liveHeight ? { height: liveHeight } : {}),
+  };
+
+  return (
+    <div
+      data-node-id={node.id}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (node.id) onSelectItem(node.id);
+      }}
+      onPointerDown={(e) => {
+        // Prevent pointer down from initiating root block move
+        e.stopPropagation();
+      }}
+      style={wrapperStyle}
+      className={`relative transition-all duration-150 ${
+        isSelected
+          ? "ring-2 ring-blue-500 rounded-sm z-30 shadow-xs"
+          : "hover:outline hover:outline-blue-400 hover:outline-dashed hover:outline-1 rounded-sm cursor-pointer"
+      }`}
+    >
+      {/* Floating live dimension tooltip while resizing */}
+      {isThisResizing && childResize && (
+        <div className="absolute -top-7 left-0 z-50 px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-mono font-bold shadow-md pointer-events-none whitespace-nowrap">
+          {Math.round(childResize.currentWidthPx)}px × {Math.round(childResize.currentHeightPx)}px
+        </div>
+      )}
+
+      {/* Floating Action Bar (hidden while actively dragging handle to keep view clear) */}
+      {isSelected && !isThisResizing && (
+        <ChildActionBar
+          node={node}
+          allowedChildren={allowedChildren}
+          onAddChild={(type) => onAddChild(node.id!, type)}
+          onDuplicate={() => onDuplicateChild(node.id!)}
+          onDelete={() => onDeleteChild(node.id!)}
+        />
+      )}
+
+      {/* 8 Resize Handles around selected nested child */}
+      {isSelected && (
+        <ChildResizeHandles
+          onStartResize={(e, dir) => onStartChildResize(e, node, rootItemId, dir)}
+        />
+      )}
+
+      {content}
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 5. Helper Functions: Fluid Drag, Resize & Smart Grid Placement
+// -----------------------------------------------------------------------------
+
+/**
+ * Checks whether two rectangular grid placements overlap each other.
+ */
+export function doPlacementsOverlap(a: GridPlacement, b: GridPlacement): boolean {
+  return (
+    a.colStart < b.colEnd &&
+    a.colEnd > b.colStart &&
+    a.rowStart < b.rowEnd &&
+    a.rowEnd > b.rowStart
+  );
+}
+
+/**
+ * Finds all components in the layout that overlap with a proposed placement.
+ */
+export function findOverlappingComponents(
+  items: CanvasLayoutItem[],
+  targetPlacement: GridPlacement,
+  excludeId: string,
+  device: DeviceType
+): CanvasLayoutItem[] {
+  return items.filter((item) => {
+    if (item.id === excludeId) return false;
+    const place = item.placement?.[device] || getDefaultPlacement(item.type, device, 1);
+    return doPlacementsOverlap(targetPlacement, place);
   });
 }
 
 /**
- * Pure function: Checks whether childType is legally allowed inside parentType
- * using the master SDUI rulebook (src/sdui/validators/rules)
+ * Calculates a live non-overlapping layout preview.
+ * When a component is placed or moved, any overlapping components automatically
+ * shift downwards to make space, preserving their horizontal alignment and dimensions.
  */
-export function validateNesting(
-  parentType: string,
-  childType: string
-): { isValid: boolean; message: string } {
-  // 1. Root Canvas allows all top-level landing page components
-  if (parentType === "root" || parentType === "Canvas" || parentType === "Home") {
-    return {
-      isValid: true,
-      message: `Allowed: '${childType}' can be placed on Canvas root.`,
+export function calculateLayoutPreview(
+  items: CanvasLayoutItem[],
+  activeItemId: string,
+  proposedPlacement: GridPlacement,
+  device: DeviceType
+): Record<string, GridPlacement> {
+  // 1. Initialize placements for all existing items + active item
+  const placements: Record<string, GridPlacement> = {};
+  for (const it of items) {
+    placements[it.id] = {
+      ...(it.placement?.[device] || getDefaultPlacement(it.type, device, 1)),
     };
   }
+  placements[activeItemId] = { ...proposedPlacement };
 
-  // 2. Lookup rule in ALL_RULES
-  const rule = ALL_RULES[parentType];
-  if (!rule) {
-    return {
-      isValid: true,
-      message: `Allowed: '${childType}' placed into '${parentType}'.`,
-    };
-  }
+  // 2. Cascade push downwards to resolve any overlaps
+  let hasCollision = true;
+  let passCount = 0;
+  const maxPasses = (items.length + 2) * 3;
 
-  const allowed = rule.allowedComponents;
+  while (hasCollision && passCount < maxPasses) {
+    hasCollision = false;
+    passCount++;
 
-  // Leaf components with [] cannot have any children
-  if (Array.isArray(allowed) && allowed.length === 0) {
-    return {
-      isValid: false,
-      message: `Blocked: '${parentType}' is a leaf component and cannot contain children.`,
-    };
-  }
+    for (const itemA of items) {
+      const placeA = placements[itemA.id];
+      if (!placeA) continue;
 
-  // Wildcard allowed
-  if (Array.isArray(allowed) && allowed.includes("*")) {
-    return {
-      isValid: true,
-      message: `Allowed: '${parentType}' accepts all component types.`,
-    };
-  }
-
-  // Whitelist check
-  if (Array.isArray(allowed) && allowed.includes(childType)) {
-    return {
-      isValid: true,
-      message: `Allowed: '${childType}' is a valid child of '${parentType}'.`,
-    };
-  }
-
-  const allowedList = Array.isArray(allowed) && allowed.length > 0 ? allowed.join(", ") : "None";
-  return {
-    isValid: false,
-    message: `Blocked: '${childType}' cannot be nested inside '${parentType}'. Allowed: [${allowedList}].`,
-  };
-}
-
-/**
- * Pure function: Inserts an item into the tree at targetParentId and targetIndex.
- */
-export function insertItemInTree(
-  tree: CanvasLayoutItem[],
-  targetParentId: string | null,
-  targetIndex: number,
-  newItem: CanvasLayoutItem
-): CanvasLayoutItem[] {
-  if (targetParentId === null) {
-    const updated = [...tree];
-    const safeIndex = Math.max(0, Math.min(targetIndex, updated.length));
-    updated.splice(safeIndex, 0, newItem);
-    return recalculateGridPositions(updated);
-  }
-
-  const updateRecursive = (list: CanvasLayoutItem[]): CanvasLayoutItem[] => {
-    return list.map((item) => {
-      if (item.id === targetParentId) {
-        const currentChildren = [...(item.children || [])];
-        const safeIndex = Math.max(0, Math.min(targetIndex, currentChildren.length));
-        currentChildren.splice(safeIndex, 0, newItem);
-        return {
-          ...item,
-          children: recalculateGridPositions(currentChildren),
-        };
+      // Check collision against active item (active item stays fixed, existing moves below)
+      if (itemA.id !== activeItemId && placements[activeItemId]) {
+        const placeActive = placements[activeItemId];
+        if (doPlacementsOverlap(placeActive, placeA)) {
+          hasCollision = true;
+          const rowSpan = placeA.rowEnd - placeA.rowStart;
+          const newRowStart = placeActive.rowEnd;
+          placements[itemA.id] = {
+            ...placeA,
+            rowStart: newRowStart,
+            rowEnd: newRowStart + rowSpan,
+          };
+        }
       }
-      if (item.children && item.children.length > 0) {
-        return {
-          ...item,
-          children: updateRecursive(item.children),
-        };
-      }
-      return item;
-    });
-  };
 
-  return recalculateGridPositions(updateRecursive(tree));
-}
+      // Check collision between other items (the one lower down shifts below the upper one)
+      for (const itemB of items) {
+        if (itemA.id === itemB.id) continue;
+        const currentPlaceA = placements[itemA.id];
+        const currentPlaceB = placements[itemB.id];
+        if (!currentPlaceA || !currentPlaceB) continue;
 
-/**
- * Pure function: Moves an existing item to a new parent and index.
- */
-export function moveItemInTree(
-  tree: CanvasLayoutItem[],
-  itemId: string,
-  targetParentId: string | null,
-  targetIndex: number
-): CanvasLayoutItem[] {
-  let extractedItem: CanvasLayoutItem | null = null;
-
-  const removeRecursive = (list: CanvasLayoutItem[]): CanvasLayoutItem[] => {
-    const result: CanvasLayoutItem[] = [];
-    for (const item of list) {
-      if (item.id === itemId) {
-        extractedItem = item;
-      } else {
-        result.push({
-          ...item,
-          children: item.children ? removeRecursive(item.children) : [],
-        });
+        if (doPlacementsOverlap(currentPlaceA, currentPlaceB)) {
+          hasCollision = true;
+          if (currentPlaceA.rowStart >= currentPlaceB.rowStart) {
+            const rowSpanA = currentPlaceA.rowEnd - currentPlaceA.rowStart;
+            const newRowStart = currentPlaceB.rowEnd;
+            placements[itemA.id] = {
+              ...currentPlaceA,
+              rowStart: newRowStart,
+              rowEnd: newRowStart + rowSpanA,
+            };
+          } else {
+            const rowSpanB = currentPlaceB.rowEnd - currentPlaceB.rowStart;
+            const newRowStart = currentPlaceA.rowEnd;
+            placements[itemB.id] = {
+              ...currentPlaceB,
+              rowStart: newRowStart,
+              rowEnd: newRowStart + rowSpanB,
+            };
+          }
+        }
       }
     }
-    return result;
-  };
+  }
 
-  const treeWithoutItem = removeRecursive(tree);
-  if (!extractedItem) return tree;
-
-  return insertItemInTree(treeWithoutItem, targetParentId, targetIndex, extractedItem);
+  return placements;
 }
 
 /**
- * Pure function: Deletes an item by ID from anywhere in the tree.
+ * Automatically recalculates and reflows the layout for a target responsive breakpoint.
+ * - Clamps widths and positions to the target device's column count (Desktop: 24, Tablet: 12, Mobile: 8).
+ * - Accommodates nested children heights.
+ * - Detects and resolves component collisions/overlaps by cascading them downward.
+ * - Preserves visual reading order (top-to-bottom, left-to-right).
+ * - Does NOT overwrite other device layouts (only updates item.placement[targetDevice]).
  */
-export function deleteItemInTree(tree: CanvasLayoutItem[], itemId: string): CanvasLayoutItem[] {
-  const deleteRecursive = (list: CanvasLayoutItem[]): CanvasLayoutItem[] => {
-    return list
-      .filter((item) => item.id !== itemId)
-      .map((item) => ({
-        ...item,
-        children: item.children ? deleteRecursive(item.children) : [],
-      }));
-  };
-
-  return recalculateGridPositions(deleteRecursive(tree));
-}
-
-/**
- * Pure function: Updates an item's width colSpan (25, 33, 50, 100) and recalculates grid rows.
- */
-export function updateSpanInTree(
-  tree: CanvasLayoutItem[],
-  itemId: string,
-  newSpan: number
+export function recalculateLayoutForBreakpoint(
+  items: CanvasLayoutItem[],
+  targetDevice: DeviceType
 ): CanvasLayoutItem[] {
-  const updateRecursive = (list: CanvasLayoutItem[]): CanvasLayoutItem[] => {
-    return list.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, colSpan: newSpan, w: newSpan };
+  if (!items || items.length === 0) return items;
+
+  const maxCols = DEVICE_CONFIGS[targetDevice].columns;
+  const placements: Record<string, GridPlacement> = {};
+
+  // 1. Sort items according to their natural visual reading order
+  // (primarily by desktop rowStart, secondarily by desktop colStart)
+  const sortedItems = [...items].sort((a, b) => {
+    const placeA = a.placement?.[targetDevice] || a.placement?.desktop;
+    const placeB = b.placement?.[targetDevice] || b.placement?.desktop;
+    const rowA = placeA?.rowStart ?? 1;
+    const rowB = placeB?.rowStart ?? 1;
+    if (rowA !== rowB) return rowA - rowB;
+    const colA = a.placement?.desktop?.colStart ?? placeA?.colStart ?? 1;
+    const colB = b.placement?.desktop?.colStart ?? placeB?.colStart ?? 1;
+    return colA - colB;
+  });
+
+  // 2. Load initial placement for each item on targetDevice & clamp boundaries
+  for (const item of sortedItems) {
+    const desktopPlace = item.placement?.desktop;
+    const existingPlace = item.placement?.[targetDevice];
+    const rawPlace = existingPlace || desktopPlace || getDefaultPlacement(item.type, targetDevice, 1);
+
+    // Calculate valid colSpan for target breakpoint
+    let colSpan = Math.max(1, rawPlace.colEnd - rawPlace.colStart);
+    if (colSpan > maxCols) {
+      colSpan = maxCols;
+    }
+
+    // Preserve horizontal placement within the available grid columns
+    const desiredColStart = existingPlace?.colStart ?? desktopPlace?.colStart ?? rawPlace.colStart;
+    const colStart = Math.max(1, Math.min(maxCols - colSpan + 1, desiredColStart));
+    const colEnd = colStart + colSpan;
+
+    // Calculate rowSpan ensuring nested children fit
+    const neededRows = calculateRequiredRootRows(item, targetDevice, maxCols);
+    const rawRowSpan = Math.max(1, rawPlace.rowEnd - rawPlace.rowStart);
+    const rowSpan = Math.max(rawRowSpan, neededRows);
+
+    const rowStart = Math.max(1, rawPlace.rowStart);
+    const rowEnd = rowStart + rowSpan;
+
+    placements[item.id] = { colStart, colEnd, rowStart, rowEnd };
+  }
+
+  // 3. Cascade push downwards to resolve any overlaps
+  let hasCollision = true;
+  let passCount = 0;
+  const maxPasses = (sortedItems.length + 2) * 4;
+
+  while (hasCollision && passCount < maxPasses) {
+    hasCollision = false;
+    passCount++;
+
+    for (let i = 0; i < sortedItems.length; i++) {
+      const itemA = sortedItems[i];
+      const placeA = placements[itemA.id];
+      if (!placeA) continue;
+
+      for (let j = i + 1; j < sortedItems.length; j++) {
+        const itemB = sortedItems[j];
+        const placeB = placements[itemB.id];
+        if (!placeB) continue;
+
+        if (doPlacementsOverlap(placeA, placeB)) {
+          hasCollision = true;
+
+          // Determine which item should shift below based on reading order
+          const shiftBBelowA =
+            placeB.rowStart > placeA.rowStart ||
+            (placeB.rowStart === placeA.rowStart && placeB.colStart >= placeA.colStart);
+
+          if (shiftBBelowA) {
+            const rowSpanB = placeB.rowEnd - placeB.rowStart;
+            const newRowStart = placeA.rowEnd;
+            placements[itemB.id] = {
+              ...placeB,
+              rowStart: newRowStart,
+              rowEnd: newRowStart + rowSpanB,
+            };
+          } else {
+            const rowSpanA = placeA.rowEnd - placeA.rowStart;
+            const newRowStart = placeB.rowEnd;
+            placements[itemA.id] = {
+              ...placeA,
+              rowStart: newRowStart,
+              rowEnd: newRowStart + rowSpanA,
+            };
+          }
+        }
       }
-      if (item.children && item.children.length > 0) {
-        return { ...item, children: updateRecursive(item.children) };
-      }
-      return item;
-    });
+    }
+  }
+
+  // 4. Return items preserving original array order, updating ONLY the targetDevice placement
+  return items.map((item) => ({
+    ...item,
+    placement: {
+      ...item.placement,
+      [targetDevice]:
+        placements[item.id] ||
+        item.placement?.[targetDevice] ||
+        getDefaultPlacement(item.type, targetDevice, 1),
+    },
+  }));
+}
+
+/**
+ * Calculates new grid placement when dragging a block across columns & rows.
+ * Clamps coordinates so the block stays within the canvas boundaries.
+ */
+function calculateMovedPlacement(
+  orig: GridPlacement,
+  deltaCols: number,
+  deltaRows: number,
+  maxCols: number,
+  maxRows: number
+): GridPlacement {
+  const colSpan = orig.colEnd - orig.colStart;
+  const rowSpan = orig.rowEnd - orig.rowStart;
+
+  // Move by delta, and clamp inside grid limits (1 to maxCols, 1 to maxRows)
+  const colStart = Math.max(1, Math.min(maxCols - colSpan + 1, orig.colStart + deltaCols));
+  const rowStart = Math.max(1, Math.min(maxRows - rowSpan + 1, orig.rowStart + deltaRows));
+
+  return {
+    colStart,
+    colEnd: colStart + colSpan,
+    rowStart,
+    rowEnd: rowStart + rowSpan,
   };
-
-  return recalculateGridPositions(updateRecursive(tree));
 }
 
-interface DragFeedbackState {
-  targetId: string;
-  targetName: string;
-  draggedType: string;
-  isValid: boolean;
-  message: string;
-  isInsertionSlot?: boolean;
+/**
+ * Calculates new grid placement when dragging any of the 8 resize handles.
+ * Clamps coordinates so block size never goes below 1x1 or outside canvas limits.
+ */
+function calculateResizedPlacement(
+  orig: GridPlacement,
+  direction: string,
+  deltaCols: number,
+  deltaRows: number,
+  maxCols: number,
+  maxRows: number
+): GridPlacement {
+  let { colStart, colEnd, rowStart, rowEnd } = orig;
+
+  // Dragging right handle (East): change colEnd
+  if (direction.includes("e")) {
+    colEnd = Math.max(colStart + 1, Math.min(maxCols + 1, orig.colEnd + deltaCols));
+  }
+  // Dragging left handle (West): change colStart
+  if (direction.includes("w")) {
+    colStart = Math.max(1, Math.min(orig.colEnd - 1, orig.colStart + deltaCols));
+  }
+  // Dragging bottom handle (South): change rowEnd
+  if (direction.includes("s")) {
+    rowEnd = Math.max(rowStart + 1, Math.min(maxRows + 1, orig.rowEnd + deltaRows));
+  }
+  // Dragging top handle (North): change rowStart
+  if (direction.includes("n")) {
+    rowStart = Math.max(1, Math.min(orig.rowEnd - 1, orig.rowStart + deltaRows));
+  }
+
+  return { colStart, colEnd, rowStart, rowEnd };
 }
+
+/**
+ * Reads allowed children from the validator rule for a given component type.
+ * Returns an array of allowed component type names, or [] if it cannot have children.
+ */
+export function getAllowedChildrenForType(type: string): string[] {
+  const rule = ALL_RULES[type];
+  if (!rule) return [];
+
+  const allowed = rule.allowedChildren || rule.allowedComponents;
+  if (!Array.isArray(allowed) || allowed.length === 0) return [];
+
+  // Wildcard "*" means any component can be added (except Page/Home containers)
+  if (allowed.includes("*")) {
+    return Object.keys(ALL_RULES).filter(
+      (t) => t !== "Home" && t !== "Page" && t !== type
+    );
+  }
+
+  return allowed;
+}
+
+/**
+ * Creates a default child SDUINode with proper initial data and styling.
+ */
+export function createDefaultChildNode(childType: string, themeId: string = "theme1"): SDUINode {
+  const defaults = getAllDefaultComponents(themeId);
+  const found = defaults.find((c) => c.type === childType);
+  if (found && found.config) {
+    return JSON.parse(JSON.stringify(found.config));
+  }
+  return { type: childType, data: {} };
+}
+
+// -----------------------------------------------------------------------------
+// 6. Sub-Component: Selection Bounding Box & 8 Resize Handles
+// -----------------------------------------------------------------------------
+
+interface SelectionBoundingBoxProps {
+  item: CanvasLayoutItem;
+  isResizing?: boolean;
+  onDelete: (id: string, e: React.MouseEvent) => void;
+  onDuplicate: (id: string, e: React.MouseEvent) => void;
+  onLayerChange: (id: string, delta: number, e: React.MouseEvent) => void;
+  onStartResize: (e: React.PointerEvent, direction: string) => void;
+  onAddChild: (parentId: string, childType: string) => void;
+}
+
+function SelectionBoundingBox({
+  item,
+  isResizing = false,
+  onDelete,
+  onDuplicate,
+  onLayerChange,
+  onStartResize,
+  onAddChild,
+}: SelectionBoundingBoxProps) {
+  const allowedChildren = getAllowedChildrenForType(item.type);
+  const [showChildDropdown, setShowChildDropdown] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!showChildDropdown) return;
+    const closeDropdown = () => setShowChildDropdown(false);
+    window.addEventListener("click", closeDropdown);
+    return () => window.removeEventListener("click", closeDropdown);
+  }, [showChildDropdown]);
+
+  return (
+    <>
+      {/* 1. Floating Mini Action Bar (hidden while actively resizing to keep view clear) */}
+      {!isResizing && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="absolute -top-9 left-0 z-50 flex items-center gap-1 bg-zinc-900/95 backdrop-blur-xs text-white px-2 py-0.5 rounded-lg shadow-lg border border-zinc-700/80 text-xs whitespace-nowrap select-none"
+        >
+          <span className="text-[10px] font-semibold text-zinc-300 pr-1.5 border-r border-zinc-700/80">
+            {item.name} <span className="opacity-50 font-mono">z:{item.zIndex ?? 1}</span>
+          </span>
+
+          {/* Task 2: Add Child Dropdown Button (Only shown if validator allows children) */}
+          {allowedChildren.length > 0 && (
+            <div className="relative pr-1 border-r border-zinc-700/80">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowChildDropdown((prev) => !prev);
+                }}
+                title="Add Child Component"
+                className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[10px] transition cursor-pointer shadow-2xs"
+              >
+                <span>+ Add Child</span>
+                <span className="text-[8px] opacity-80">{showChildDropdown ? "▲" : "▼"}</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showChildDropdown && (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  className="absolute top-full left-0 mt-1 z-60 w-48 max-h-56 overflow-y-auto rounded-lg bg-zinc-900/95 backdrop-blur-md border border-zinc-700 shadow-xl py-1 text-xs"
+                >
+                  <div className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800">
+                    Allowed Children ({allowedChildren.length})
+                  </div>
+                  {allowedChildren.map((childType) => (
+                    <button
+                      key={childType}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAddChild(item.id, childType);
+                        setShowChildDropdown(false);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 transition text-[11px] cursor-pointer"
+                    >
+                      <span>{childType}</span>
+                      <span className="text-[10px] text-emerald-400 font-semibold">+ Add</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Bring Forward */}
+          <button
+            type="button"
+            onClick={(e) => onLayerChange(item.id, 1, e)}
+            title="Bring Forward"
+            className="p-1 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white transition cursor-pointer text-[10px]"
+          >
+            ▲
+          </button>
+
+          {/* Send Backward */}
+          <button
+            type="button"
+            onClick={(e) => onLayerChange(item.id, -1, e)}
+            disabled={(item.zIndex ?? 1) <= 1}
+            title="Send Backward"
+            className="p-1 rounded hover:bg-zinc-700 disabled:opacity-30 text-zinc-300 hover:text-white transition cursor-pointer text-[10px]"
+          >
+            ▼
+          </button>
+
+          {/* Duplicate */}
+          <button
+            type="button"
+            onClick={(e) => onDuplicate(item.id, e)}
+            title="Duplicate"
+            className="p-1 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white transition cursor-pointer text-xs ml-0.5"
+          >
+            📋
+          </button>
+
+          {/* Delete */}
+          <button
+            type="button"
+            onClick={(e) => onDelete(item.id, e)}
+            title="Delete"
+            className="p-1 rounded hover:bg-red-900/80 text-red-300 hover:text-red-100 transition cursor-pointer text-xs"
+          >
+            🗑️
+          </button>
+        </div>
+      )}
+
+      {/* 2. Four Corner Handles */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "nw")}
+        title="Resize Top-Left"
+        className="absolute -top-1.5 -left-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-sm shadow-xs cursor-nwse-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "ne")}
+        title="Resize Top-Right"
+        className="absolute -top-1.5 -right-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-sm shadow-xs cursor-nesw-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "sw")}
+        title="Resize Bottom-Left"
+        className="absolute -bottom-1.5 -left-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-sm shadow-xs cursor-nesw-resize z-40 hover:scale-125 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "se")}
+        title="Resize Bottom-Right"
+        className="absolute -bottom-1.5 -right-1.5 h-3 w-3 bg-white border-2 border-blue-600 rounded-sm shadow-xs cursor-nwse-resize z-40 hover:scale-125 transition-transform"
+      />
+
+      {/* 3. Four Edge Handles */}
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "n")}
+        title="Resize Top"
+        className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-2.5 w-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ns-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "s")}
+        title="Resize Bottom"
+        className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-2.5 w-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ns-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "w")}
+        title="Resize Left"
+        className="absolute top-1/2 -left-1.5 -translate-y-1/2 w-2.5 h-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ew-resize z-40 hover:scale-110 transition-transform"
+      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        onPointerDown={(e) => onStartResize(e, "e")}
+        title="Resize Right"
+        className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-4 bg-white border-2 border-blue-600 rounded-xs shadow-xs cursor-ew-resize z-40 hover:scale-110 transition-transform"
+      />
+    </>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 7. Main Component: CanvasPanel
+// -----------------------------------------------------------------------------
 
 export default function CanvasPanel({
   items,
   onItemsChange,
   selectedItemId,
   onSelectItem,
+  device: externalDevice,
+  onDeviceChange,
 }: CanvasPanelProps) {
-  // Visual drag feedback (green or red highlight & banner)
-  const [dragFeedback, setDragFeedback] = useState<DragFeedbackState | null>(null);
+  const [internalDevice, setInternalDevice] = useState<DeviceType>("desktop");
+  const device = externalDevice ?? internalDevice;
+  const setDevice = (nextDev: DeviceType) => {
+    setInternalDevice(nextDev);
+    onDeviceChange?.(nextDev);
+  };
+  const [gridEnabled, setGridEnabled] = useState<boolean>(true);
+  const [rowCount, setRowCount] = useState<number>(DEFAULT_ROWS);
 
-  // Debounce cache ref to avoid 60+ redundant checks per second on mouse move
-  const lastCheckedRef = useRef<{ targetId: string; draggedType: string } | null>(null);
+  // Active Drag or Resize interaction state
+  const interactionRef = useRef<ActiveInteraction | null>(null);
+  const [interaction, setInteraction] = useState<ActiveInteraction | null>(null);
 
-  // ----------------------------------------------------------------------------
-  // 1. Quick-Add from Panel 1 (Toolbox '+' button)
-  // ----------------------------------------------------------------------------
+  // Active Child Resize interaction state
+  const childResizeRef = useRef<ActiveChildResize | null>(null);
+  const [childResize, setChildResize] = useState<ActiveChildResize | null>(null);
+
+  // Live layout preview placements for all items while dragging
+  const [layoutPreview, setLayoutPreview] = useState<Record<string, GridPlacement> | null>(null);
+  const layoutPreviewRef = useRef<Record<string, GridPlacement> | null>(null);
+
+  // Ghost preview block when dragging a new component from the toolbox
+  const [toolboxDragPreview, setToolboxDragPreview] = useState<{
+    type: string;
+    name: string;
+    placement: GridPlacement;
+  } | null>(null);
+
+  // Feature 2: Contextual Grid Visibility
+  // Show grid lines ONLY when actively dragging or resizing
+  const isDragging = interaction?.mode === "move" || toolboxDragPreview !== null;
+  const isResizing = interaction?.mode === "resize" || childResize !== null;
+  const showGrid = gridEnabled && (isDragging || isResizing);
+
+  // Feature 1: Automatically recalculate layout when switching responsive breakpoints
+  const prevDeviceRef = useRef<DeviceType>(device);
+
+  const handleSwitchDevice = (nextDev: DeviceType) => {
+    prevDeviceRef.current = nextDev;
+    setDevice(nextDev);
+
+    const reflowed = recalculateLayoutForBreakpoint(itemsRef.current, nextDev);
+    const maxRow = Math.max(
+      ...reflowed.map((it) => it.placement?.[nextDev]?.rowEnd || 1),
+      DEFAULT_ROWS
+    );
+    if (maxRow > rowCount) {
+      setRowCount(maxRow + 2);
+    }
+    onItemsChange(reflowed);
+  };
+
+  // If device is changed externally (e.g. from parent FourPanelWorkspace), automatically reflow
   useEffect(() => {
-    const handleQuickAdd = (e: CustomEvent<DefaultComponentItem>) => {
+    if (prevDeviceRef.current !== device) {
+      prevDeviceRef.current = device;
+      const reflowed = recalculateLayoutForBreakpoint(itemsRef.current, device);
+      const maxRow = Math.max(
+        ...reflowed.map((it) => it.placement?.[device]?.rowEnd || 1),
+        DEFAULT_ROWS
+      );
+      if (maxRow > rowCount) {
+        setRowCount(maxRow + 2);
+      }
+      onItemsChange(reflowed);
+    }
+  }, [device, rowCount, onItemsChange]);
+
+  // Prevents canvas background click from deselecting immediately after dragging or resizing
+  const hasDraggedRef = useRef<boolean>(false);
+
+  // Keep a ref to items so event listeners always access the freshest array
+  const itemsRef = useRef(items);
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
+  // Ensure all existing items and their nested nodes have unique IDs on mount
+  useEffect(() => {
+    let hasMissingIds = false;
+    const sanitized = items.map((it) => {
+      if (!it.config.id) {
+        hasMissingIds = true;
+      }
+      const updatedConfig = ensureNodeIds(it.config, it.id);
+      return {
+        ...it,
+        config: updatedConfig,
+        children: syncChildrenLayoutItems(updatedConfig),
+      };
+    });
+    if (hasMissingIds) {
+      onItemsChange(sanitized);
+    }
+  }, []);
+
+  const gridRef = useRef<HTMLDivElement>(null);
+  const currentConfig = DEVICE_CONFIGS[device];
+  const totalColumns = currentConfig.columns;
+
+  // ---------------------------------------------------------------------------
+  // Action Handlers: Delete, Duplicate, Layering
+  // ---------------------------------------------------------------------------
+
+  const handleDeleteItem = (id: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    onItemsChange(itemsRef.current.filter((it) => it.id !== id));
+    if (selectedItemId === id) {
+      onSelectItem(null);
+    }
+  };
+
+  const handleDuplicateItem = (id: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const target = itemsRef.current.find((it) => it.id === id);
+    if (!target) return;
+
+    const currentPlace =
+      target.placement?.[device] ||
+      getDefaultPlacement(target.type, device, 1);
+    const rowSpan = currentPlace.rowEnd - currentPlace.rowStart;
+    const newRowStart = currentPlace.rowEnd + 1;
+    const newRowEnd = newRowStart + rowSpan;
+
+    const duplicatedItem: CanvasLayoutItem = {
+      ...target,
+      id: `${target.type.toLowerCase()}-${Date.now()}`,
+      placement: {
+        ...target.placement,
+        [device]: {
+          ...currentPlace,
+          rowStart: newRowStart,
+          rowEnd: newRowEnd,
+        },
+      },
+      zIndex: (target.zIndex ?? 1) + 1,
+    };
+
+    onItemsChange([...itemsRef.current, duplicatedItem]);
+    onSelectItem(duplicatedItem.id);
+  };
+
+  const handleLayerChange = (id: string, delta: number, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    onItemsChange(
+      itemsRef.current.map((it) => {
+        if (it.id === id) {
+          const nextZ = Math.max(1, (it.zIndex ?? 1) + delta);
+          return { ...it, zIndex: nextZ };
+        }
+        return it;
+      })
+    );
+  };
+
+  // ---------------------------------------------------------------------------
+  // Task 2: Nested Child Actions (Add, Duplicate, Delete) with Dynamic Grid Updates
+  // ---------------------------------------------------------------------------
+
+  const handleAddChildToNode = (targetNodeId: string, childType: string) => {
+    const rootItem = findRootItemForNodeId(itemsRef.current, targetNodeId);
+    if (!rootItem) return;
+
+    // Find the target node in tree (could be rootItem.config or a nested child)
+    const targetNode =
+      rootItem.id === targetNodeId
+        ? rootItem.config
+        : findNodeInTree(rootItem.config, targetNodeId);
+    if (!targetNode) return;
+
+    // Verify childType is allowed by validator rules
+    const allowed = getAllowedChildrenForType(targetNode.type);
+    if (!allowed.includes(childType)) return;
+
+    // Create new child node
+    const newChildNode = ensureNodeIds(
+      createDefaultChildNode(childType),
+      `${childType.toLowerCase()}-${Date.now().toString(36)}`
+    );
+
+    // Insert child into tree
+    const updatedConfig =
+      rootItem.id === targetNodeId
+        ? {
+            ...rootItem.config,
+            children: [...(Array.isArray(rootItem.config.children) ? rootItem.config.children : []), newChildNode],
+          }
+        : addChildToNodeRecursive(rootItem.config, targetNodeId, newChildNode);
+
+    // Calculate required root rows for newly added content
+    const currentPlace =
+      rootItem.placement?.[device] ||
+      getDefaultPlacement(rootItem.type, device, 1);
+
+    const neededRows = calculateRequiredRootRows(
+      { ...rootItem, config: updatedConfig },
+      device,
+      totalColumns
+    );
+    const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
+    const finalRows = Math.max(currentRows + 2, neededRows);
+
+    const expandedPlacement: GridPlacement = {
+      ...currentPlace,
+      rowEnd: currentPlace.rowStart + finalRows,
+    };
+
+    // Cascade push downstream components to avoid overlaps
+    const previewPlacements = calculateLayoutPreview(
+      itemsRef.current,
+      rootItem.id,
+      expandedPlacement,
+      device
+    );
+
+    // Auto-expand canvas rows if needed
+    const maxRowEnd = Math.max(
+      ...Object.values(previewPlacements).map((p) => p.rowEnd),
+      DEFAULT_ROWS
+    );
+    if (maxRowEnd > rowCount) {
+      setRowCount(maxRowEnd + 2);
+    }
+
+    // Update items state with non-overlapping placements and updated config
+    const updatedItems = itemsRef.current.map((item) => {
+      const nextPlace =
+        previewPlacements[item.id] ||
+        item.placement?.[device] ||
+        getDefaultPlacement(item.type, device, 1);
+
+      if (item.id === rootItem.id) {
+        return {
+          ...item,
+          placement: {
+            ...item.placement,
+            [device]: nextPlace,
+          },
+          config: updatedConfig,
+          children: syncChildrenLayoutItems(updatedConfig),
+        };
+      }
+
+      return {
+        ...item,
+        placement: {
+          ...item.placement,
+          [device]: nextPlace,
+        },
+      };
+    });
+
+    onItemsChange(updatedItems);
+    if (newChildNode.id) {
+      onSelectItem(newChildNode.id);
+    }
+  };
+
+  const handleDuplicateChildInNode = (targetNodeId: string) => {
+    const rootItem = findRootItemForNodeId(itemsRef.current, targetNodeId);
+    if (!rootItem) return;
+
+    // Duplicate child in tree
+    const updatedConfig = duplicateChildInTree(rootItem.config, targetNodeId);
+
+    // Calculate required root rows
+    const currentPlace =
+      rootItem.placement?.[device] ||
+      getDefaultPlacement(rootItem.type, device, 1);
+
+    const neededRows = calculateRequiredRootRows(
+      { ...rootItem, config: updatedConfig },
+      device,
+      totalColumns
+    );
+    const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
+    const finalRows = Math.max(currentRows + 2, neededRows);
+
+    const expandedPlacement: GridPlacement = {
+      ...currentPlace,
+      rowEnd: currentPlace.rowStart + finalRows,
+    };
+
+    const previewPlacements = calculateLayoutPreview(
+      itemsRef.current,
+      rootItem.id,
+      expandedPlacement,
+      device
+    );
+
+    const maxRowEnd = Math.max(
+      ...Object.values(previewPlacements).map((p) => p.rowEnd),
+      DEFAULT_ROWS
+    );
+    if (maxRowEnd > rowCount) {
+      setRowCount(maxRowEnd + 2);
+    }
+
+    const updatedItems = itemsRef.current.map((item) => {
+      const nextPlace =
+        previewPlacements[item.id] ||
+        item.placement?.[device] ||
+        getDefaultPlacement(item.type, device, 1);
+
+      if (item.id === rootItem.id) {
+        return {
+          ...item,
+          placement: {
+            ...item.placement,
+            [device]: nextPlace,
+          },
+          config: updatedConfig,
+          children: syncChildrenLayoutItems(updatedConfig),
+        };
+      }
+
+      return {
+        ...item,
+        placement: {
+          ...item.placement,
+          [device]: nextPlace,
+        },
+      };
+    });
+
+    onItemsChange(updatedItems);
+  };
+
+  const handleDeleteChildInNode = (targetNodeId: string) => {
+    const rootItem = findRootItemForNodeId(itemsRef.current, targetNodeId);
+    if (!rootItem) return;
+
+    // Remove child from tree
+    const updatedConfig = deleteChildFromTree(rootItem.config, targetNodeId);
+
+    const updatedItems = itemsRef.current.map((item) => {
+      if (item.id === rootItem.id) {
+        return {
+          ...item,
+          config: updatedConfig,
+          children: syncChildrenLayoutItems(updatedConfig),
+        };
+      }
+      return item;
+    });
+
+    onItemsChange(updatedItems);
+    onSelectItem(rootItem.id);
+  };
+
+  // Add child to root item
+  const handleAddChild = (parentId: string, childType: string) => {
+    handleAddChildToNode(parentId, childType);
+  };
+
+  // ---------------------------------------------------------------------------
+  // Step 4: Fluid Drag & Move Engine (Drag anywhere on block body)
+  // ---------------------------------------------------------------------------
+
+  const handleStartMove = (e: React.PointerEvent, item: CanvasLayoutItem) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+    onSelectItem(item.id);
+
+    const currentPlace =
+      item.placement?.[device] ||
+      getDefaultPlacement(item.type, device, 1);
+
+    const newInteraction: ActiveInteraction = {
+      itemId: item.id,
+      mode: "move",
+      startX: e.clientX,
+      startY: e.clientY,
+      origPlacement: currentPlace,
+      currentPlacement: currentPlace,
+    };
+
+    interactionRef.current = newInteraction;
+    setInteraction(newInteraction);
+  };
+
+  // ---------------------------------------------------------------------------
+  // Step 4: Fluid Resize Engine (Drag any of the 8 handles)
+  // ---------------------------------------------------------------------------
+
+  const handleStartResize = (e: React.PointerEvent, item: CanvasLayoutItem, direction: string) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const currentPlace =
+      item.placement?.[device] ||
+      getDefaultPlacement(item.type, device, 1);
+
+    const newInteraction: ActiveInteraction = {
+      itemId: item.id,
+      mode: "resize",
+      direction,
+      startX: e.clientX,
+      startY: e.clientY,
+      origPlacement: currentPlace,
+      currentPlacement: currentPlace,
+    };
+
+    interactionRef.current = newInteraction;
+    setInteraction(newInteraction);
+  };
+
+  // ---------------------------------------------------------------------------
+  // Step 5: Fluid Nested Child Resize Engine (Drag any of the 8 child handles)
+  // ---------------------------------------------------------------------------
+
+  const handleStartChildResize = (
+    e: React.PointerEvent,
+    node: SDUINode,
+    rootItemId: string,
+    direction: string
+  ) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Identify the target element to get initial rendered dimensions
+    const targetEl = (e.currentTarget as HTMLElement).closest("[data-node-id]") as HTMLElement | null;
+    const rect = targetEl ? targetEl.getBoundingClientRect() : null;
+
+    let origWidth = rect?.width || 280;
+    let origHeight = rect?.height || 200;
+
+    if (node.containerStyle?.width && typeof node.containerStyle.width === "string") {
+      const p = parseInt(node.containerStyle.width, 10);
+      if (!isNaN(p) && p > 0) origWidth = p;
+    }
+    if (node.containerStyle?.height && typeof node.containerStyle.height === "string") {
+      const p = parseInt(node.containerStyle.height, 10);
+      if (!isNaN(p) && p > 0) origHeight = p;
+    }
+
+    const newChildResize: ActiveChildResize = {
+      childId: node.id!,
+      rootItemId,
+      direction,
+      startX: e.clientX,
+      startY: e.clientY,
+      origWidthPx: origWidth,
+      origHeightPx: origHeight,
+      currentWidthPx: origWidth,
+      currentHeightPx: origHeight,
+    };
+
+    childResizeRef.current = newChildResize;
+    setChildResize(newChildResize);
+  };
+
+  // ---------------------------------------------------------------------------
+  // Global PointerMove & PointerUp Effect (Real-time Grid & Child Snapping)
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!interaction && !childResize) return;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      // 1. Handle live nested child resizing
+      if (childResizeRef.current) {
+        const active = childResizeRef.current;
+        const deltaX = e.clientX - active.startX;
+        const deltaY = e.clientY - active.startY;
+
+        if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+          hasDraggedRef.current = true;
+        }
+
+        let nextWidth = active.origWidthPx;
+        let nextHeight = active.origHeightPx;
+
+        if (active.direction.includes("e")) {
+          nextWidth = Math.max(60, active.origWidthPx + deltaX);
+        } else if (active.direction.includes("w")) {
+          nextWidth = Math.max(60, active.origWidthPx - deltaX);
+        }
+
+        if (active.direction.includes("s")) {
+          nextHeight = Math.max(30, active.origHeightPx + deltaY);
+        } else if (active.direction.includes("n")) {
+          nextHeight = Math.max(30, active.origHeightPx - deltaY);
+        }
+
+        active.currentWidthPx = nextWidth;
+        active.currentHeightPx = nextHeight;
+        setChildResize({ ...active });
+
+        // Calculate if root item needs to expand its rows on the canvas grid
+        const rootItem = itemsRef.current.find((it) => it.id === active.rootItemId);
+        if (rootItem) {
+          const currentPlace = rootItem.placement?.[device] || getDefaultPlacement(rootItem.type, device, 1);
+          const neededRowSpan = calculateRequiredRootRows(
+            rootItem,
+            device,
+            totalColumns,
+            active.childId,
+            nextWidth,
+            nextHeight
+          );
+
+          const currentRowSpan = currentPlace.rowEnd - currentPlace.rowStart;
+          if (neededRowSpan > currentRowSpan) {
+            const expandedPlacement: GridPlacement = {
+              ...currentPlace,
+              rowEnd: currentPlace.rowStart + neededRowSpan,
+            };
+
+            const preview = calculateLayoutPreview(
+              itemsRef.current,
+              rootItem.id,
+              expandedPlacement,
+              device
+            );
+            setLayoutPreview(preview);
+            layoutPreviewRef.current = preview;
+
+            const maxNeededRow = Math.max(
+              ...Object.values(preview).map((p) => p.rowEnd),
+              DEFAULT_ROWS
+            );
+            if (maxNeededRow > rowCount) {
+              setRowCount(maxNeededRow + 2);
+            }
+          } else {
+            setLayoutPreview(null);
+            layoutPreviewRef.current = null;
+          }
+        }
+        return;
+      }
+
+      // 2. Handle root component move or resize
+      const active = interactionRef.current;
+      if (!active || !gridRef.current) return;
+
+      const rect = gridRef.current.getBoundingClientRect();
+      const cellWidth = (rect.width - (totalColumns - 1) * GRID_GAP_PX) / totalColumns;
+      const stepX = cellWidth + GRID_GAP_PX;
+      const stepY = ROW_HEIGHT_PX + GRID_GAP_PX;
+
+      const deltaX = e.clientX - active.startX;
+      const deltaY = e.clientY - active.startY;
+
+      if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+        hasDraggedRef.current = true;
+      }
+
+      const deltaCols = Math.round(deltaX / stepX);
+      const deltaRows = Math.round(deltaY / stepY);
+
+      let nextPlacement = active.origPlacement;
+
+      if (active.mode === "move") {
+        nextPlacement = calculateMovedPlacement(
+          active.origPlacement,
+          deltaCols,
+          deltaRows,
+          totalColumns,
+          rowCount
+        );
+
+        // Smart Grid Placement: Calculate live layout preview resolving any overlaps
+        const preview = calculateLayoutPreview(
+          itemsRef.current,
+          active.itemId,
+          nextPlacement,
+          device
+        );
+        setLayoutPreview(preview);
+        layoutPreviewRef.current = preview;
+      } else if (active.mode === "resize" && active.direction) {
+        nextPlacement = calculateResizedPlacement(
+          active.origPlacement,
+          active.direction,
+          deltaCols,
+          deltaRows,
+          totalColumns,
+          rowCount
+        );
+      }
+
+      // Synchronously update the ref so pointerup always has the latest coordinates
+      active.currentPlacement = nextPlacement;
+      // Update state for real-time UI rendering
+      setInteraction({ ...active });
+    };
+
+    const handlePointerUp = () => {
+      // 1. If child resize was active:
+      if (childResizeRef.current) {
+        const active = childResizeRef.current;
+        const targetChildId = active.childId;
+        const rootItemId = active.rootItemId;
+        const rootItem = itemsRef.current.find((it) => it.id === rootItemId);
+
+        if (rootItem) {
+          const previewMap = layoutPreviewRef.current;
+
+          // Update the child's containerStyle in the tree
+          const updateStyleInTree = (node: SDUINode): SDUINode => {
+            if (node.id === targetChildId) {
+              const nextStyle: Record<string, any> = { ...(node.containerStyle || {}) };
+              if (active.direction.includes("e") || active.direction.includes("w")) {
+                nextStyle.width = `${Math.round(active.currentWidthPx)}px`;
+              }
+              if (active.direction.includes("s") || active.direction.includes("n")) {
+                nextStyle.height = `${Math.round(active.currentHeightPx)}px`;
+              }
+              return {
+                ...node,
+                containerStyle: nextStyle,
+              };
+            }
+            if (node.children && node.children.length > 0) {
+              return {
+                ...node,
+                children: node.children.map(updateStyleInTree),
+              };
+            }
+            return node;
+          };
+
+          const updatedConfig = updateStyleInTree(rootItem.config);
+
+          if (previewMap) {
+            let maxRowNeeded = rowCount;
+            Object.values(previewMap).forEach((p) => {
+              if (p.rowEnd > maxRowNeeded) maxRowNeeded = p.rowEnd;
+            });
+            if (maxRowNeeded > rowCount) {
+              setRowCount(maxRowNeeded + 2);
+            }
+          }
+
+          onItemsChange(
+            itemsRef.current.map((item) => {
+              const nextPlacement =
+                previewMap?.[item.id] ||
+                item.placement?.[device] ||
+                getDefaultPlacement(item.type, device, 1);
+
+              if (item.id === rootItemId) {
+                return {
+                  ...item,
+                  placement: {
+                    ...item.placement,
+                    [device]: nextPlacement,
+                  },
+                  config: updatedConfig,
+                  children: syncChildrenLayoutItems(updatedConfig),
+                };
+              }
+
+              return {
+                ...item,
+                placement: {
+                  ...item.placement,
+                  [device]: nextPlacement,
+                },
+              };
+            })
+          );
+        }
+
+        setChildResize(null);
+        childResizeRef.current = null;
+        setLayoutPreview(null);
+        layoutPreviewRef.current = null;
+
+        if (hasDraggedRef.current) {
+          setTimeout(() => {
+            hasDraggedRef.current = false;
+          }, 80);
+        }
+        return;
+      }
+
+      // 2. Root interaction:
+      const active = interactionRef.current;
+      if (!active) return;
+
+      const targetId = active.itemId;
+      const previewMap = layoutPreviewRef.current;
+
+      if (previewMap && active.mode === "move") {
+        // Auto-expand section rowCount if items were pushed past current bottom
+        let maxRowNeeded = rowCount;
+        Object.values(previewMap).forEach((p) => {
+          if (p.rowEnd > maxRowNeeded) maxRowNeeded = p.rowEnd;
+        });
+        if (maxRowNeeded > rowCount) {
+          setRowCount(maxRowNeeded + 2);
+        }
+
+        // Commit all resolved preview coordinates
+        onItemsChange(
+          itemsRef.current.map((it) => ({
+            ...it,
+            placement: {
+              ...it.placement,
+              [device]: previewMap[it.id] || it.placement?.[device] || getDefaultPlacement(it.type, device, 1),
+            },
+          }))
+        );
+      } else {
+        // Commit resize coordinates
+        const finalPlacement = active.currentPlacement;
+        onItemsChange(
+          itemsRef.current.map((it) =>
+            it.id === targetId
+              ? {
+                  ...it,
+                  placement: {
+                    ...it.placement,
+                    [device]: finalPlacement,
+                  },
+                }
+              : it
+          )
+        );
+      }
+
+      setLayoutPreview(null);
+      layoutPreviewRef.current = null;
+      interactionRef.current = null;
+      setInteraction(null);
+
+      // Keep hasDragged true briefly so the mouseup click event doesn't deselect the block
+      if (hasDraggedRef.current) {
+        setTimeout(() => {
+          hasDraggedRef.current = false;
+        }, 80);
+      }
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [interaction, childResize, totalColumns, rowCount, device, onItemsChange]);
+
+  // Cancel resize or move on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (childResizeRef.current) {
+          setChildResize(null);
+          childResizeRef.current = null;
+          setLayoutPreview(null);
+          layoutPreviewRef.current = null;
+        }
+        if (interactionRef.current) {
+          setInteraction(null);
+          interactionRef.current = null;
+          setLayoutPreview(null);
+          layoutPreviewRef.current = null;
+        }
+        setToolboxDragPreview(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Quick Add & Drop from ToolboxPanel
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    const handleQuickAdd = (e: CustomEvent<any>) => {
       const comp = e.detail;
       if (!comp) return;
 
-      const span = getDefault100ColSpan(comp.type);
+      const nextRow = itemsRef.current.reduce((max, it) => {
+        const p = it.placement?.[device];
+        return Math.max(max, p?.rowEnd || 1);
+      }, 1);
+
       const newItem: CanvasLayoutItem = {
         id: `${comp.type.toLowerCase()}-${Date.now()}`,
         type: comp.type,
         name: comp.name,
         category: comp.category,
-        col: 0,
-        colSpan: span,
-        row: items.length,
-        x: 0,
-        w: span,
         config: comp.config,
-        children: [],
+        placement: {
+          desktop: getDefaultPlacement(comp.type, "desktop", nextRow),
+          tablet: getDefaultPlacement(comp.type, "tablet", nextRow),
+          mobile: getDefaultPlacement(comp.type, "mobile", nextRow),
+        },
+        zIndex: 1,
       };
 
-      const updated = insertItemInTree(items, null, items.length, newItem);
-      onItemsChange(updated);
+      onItemsChange([...itemsRef.current, newItem]);
       onSelectItem(newItem.id);
     };
 
-    window.addEventListener("add-component-to-canvas" as any, handleQuickAdd as any);
+    window.addEventListener("add-component-to-canvas" as any, handleQuickAdd);
     return () => {
-      window.removeEventListener("add-component-to-canvas" as any, handleQuickAdd as any);
+      window.removeEventListener("add-component-to-canvas" as any, handleQuickAdd);
     };
-  }, [items, onItemsChange, onSelectItem]);
+  }, [device, onItemsChange, onSelectItem]);
 
-  // ----------------------------------------------------------------------------
-  // 2. Debounced Drag-Over Validation (Maintains 60fps)
-  // ----------------------------------------------------------------------------
-  const handleDragOver = useCallback(
-    (
-      e: React.DragEvent,
-      targetId: string,
-      parentType: string,
-      parentName: string,
-      isInsertionSlot: boolean = false
-    ) => {
-      e.preventDefault();
-      e.stopPropagation();
+  // ---------------------------------------------------------------------------
+  // Task 1: Smart Drag Over with Live Non-Overlapping Layout Preview
+  // ---------------------------------------------------------------------------
 
-      const activePayload = getActiveDragPayload();
-      const draggedType = activePayload?.type || "Component";
-
-      // Debounce: Skip if already checked this exact target and component type
-      if (
-        lastCheckedRef.current?.targetId === targetId &&
-        lastCheckedRef.current?.draggedType === draggedType
-      ) {
-        return;
-      }
-
-      const validation = validateNesting(parentType, draggedType);
-      lastCheckedRef.current = { targetId, draggedType };
-
-      setDragFeedback({
-        targetId,
-        targetName: parentName,
-        draggedType,
-        isValid: validation.isValid,
-        message: isInsertionSlot
-          ? `Insert '${draggedType}' at this position`
-          : validation.message,
-        isInsertionSlot,
-      });
-    },
-    []
-  );
-
-  const handleDragLeave = useCallback((e: React.DragEvent, targetId: string) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    e.stopPropagation();
+    e.dataTransfer.dropEffect = "copy";
 
-    if (lastCheckedRef.current?.targetId === targetId) {
-      lastCheckedRef.current = null;
-      setDragFeedback(null);
+    let payload = getActiveDragPayload();
+    if (!payload) {
+      try {
+        const raw = e.dataTransfer.getData("application/json");
+        if (raw) payload = JSON.parse(raw);
+      } catch {}
     }
-  }, []);
 
-  // ----------------------------------------------------------------------------
-  // 3. Drop Handler: Inserts at Top, Middle, Bottom, or Nests into Parent
-  // ----------------------------------------------------------------------------
-  const handleDrop = useCallback(
-    (
-      e: React.DragEvent,
-      targetParentId: string | null = null,
-      parentType: string = "root",
-      targetIndex: number = -1
-    ) => {
-      e.preventDefault();
-      e.stopPropagation();
+    if (!payload || !payload.type || !gridRef.current) return;
 
-      const payload = getActiveDragPayload();
-      lastCheckedRef.current = null;
-      setDragFeedback(null);
+    const rect = gridRef.current.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
 
-      if (!payload || !payload.type) return;
+    const cellWidth = (rect.width - (totalColumns - 1) * GRID_GAP_PX) / totalColumns;
+    const cellHeight = ROW_HEIGHT_PX + GRID_GAP_PX;
 
-      // Validate: Reject drop if disallowed by rulebook!
-      const validation = validateNesting(parentType, payload.type);
-      if (!validation.isValid) {
-        return;
-      }
+    const dropCol = Math.max(1, Math.min(totalColumns, Math.floor(relX / (cellWidth + GRID_GAP_PX)) + 1));
+    const dropRow = Math.max(1, Math.min(rowCount, Math.floor(relY / cellHeight) + 1));
 
-      // Case A: Moving an existing canvas component
-      if (payload.isExisting && payload.itemId) {
-        const updated = moveItemInTree(
-          items,
-          payload.itemId,
-          targetParentId,
-          targetIndex === -1 ? 9999 : targetIndex
-        );
-        onItemsChange(updated);
-        onSelectItem(payload.itemId);
-        setActiveDragPayload(null);
-        return;
-      }
+    const defaultPlace = getDefaultPlacement(payload.type, device, dropRow);
+    const colSpan = defaultPlace.colEnd - defaultPlace.colStart;
+    const rowSpan = defaultPlace.rowEnd - defaultPlace.rowStart;
+    const safeColEnd = Math.min(totalColumns + 1, dropCol + colSpan);
+    const safeColStart = Math.max(1, safeColEnd - colSpan);
 
-      // Case B: Inserting a new component from Toolbox
-      const span = getDefault100ColSpan(payload.type);
-      const newItem: CanvasLayoutItem = {
-        id: `${payload.type.toLowerCase()}-${Date.now()}`,
-        type: payload.type,
-        name: payload.name || payload.type,
-        category: payload.category || "General",
-        col: 0,
-        colSpan: span,
-        row: items.length,
-        x: 0,
-        w: span,
-        config: payload.config || { type: payload.type, data: {} },
-        children: [],
-      };
+    const proposedPlacement: GridPlacement = {
+      colStart: safeColStart,
+      colEnd: safeColEnd,
+      rowStart: dropRow,
+      rowEnd: dropRow + rowSpan,
+    };
 
-      const updated = insertItemInTree(
-        items,
-        targetParentId,
-        targetIndex === -1 ? (targetParentId === null ? items.length : 9999) : targetIndex,
-        newItem
-      );
+    // Calculate smart collision layout preview
+    const preview = calculateLayoutPreview(
+      itemsRef.current,
+      "__new_drag_item__",
+      proposedPlacement,
+      device
+    );
 
-      onItemsChange(updated);
-      onSelectItem(newItem.id);
-      setActiveDragPayload(null);
-    },
-    [items, onItemsChange, onSelectItem]
-  );
+    setLayoutPreview(preview);
+    layoutPreviewRef.current = preview;
 
-  // ----------------------------------------------------------------------------
-  // 4. Drag Start for existing canvas items (to allow reordering anywhere)
-  // ----------------------------------------------------------------------------
-  const handleDragStartExisting = (e: React.DragEvent, item: CanvasLayoutItem) => {
-    e.stopPropagation();
-    setActiveDragPayload({
-      source: "canvas-item",
-      id: item.id,
-      itemId: item.id,
-      isExisting: true,
-      type: item.type,
-      name: item.name,
-      category: item.category,
-      config: item.config,
+    setToolboxDragPreview({
+      type: payload.type,
+      name: payload.name || payload.type,
+      placement: proposedPlacement,
     });
-    e.dataTransfer.setData("text/plain", item.id);
-    e.dataTransfer.effectAllowed = "move";
   };
 
-  // ----------------------------------------------------------------------------
-  // 5. Actions: Span toggle, Reorder, Delete, Clear
-  // ----------------------------------------------------------------------------
-  const handleSetSpan = (itemId: string, newSpan: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    onItemsChange(updateSpanInTree(items, itemId, newSpan));
+  const handleDragLeave = (e: React.DragEvent) => {
+    // If dragging leaves the canvas area, cancel preview and restore original layout
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setLayoutPreview(null);
+      layoutPreviewRef.current = null;
+      setToolboxDragPreview(null);
+    }
   };
 
-  const handleMove = (index: number, direction: "up" | "down", e: React.MouseEvent) => {
-    e.stopPropagation();
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= items.length) return;
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    let payload = getActiveDragPayload();
 
-    const reordered = [...items];
-    const [moved] = reordered.splice(index, 1);
-    reordered.splice(targetIndex, 0, moved);
-    onItemsChange(recalculateGridPositions(reordered));
+    if (!payload) {
+      try {
+        const raw = e.dataTransfer.getData("application/json");
+        if (raw) payload = JSON.parse(raw);
+      } catch {}
+    }
+
+    if (!payload || !payload.type) {
+      setLayoutPreview(null);
+      layoutPreviewRef.current = null;
+      setToolboxDragPreview(null);
+      return;
+    }
+
+    const proposed = toolboxDragPreview?.placement || getDefaultPlacement(payload.type, device, 1);
+    const finalPlacements = layoutPreviewRef.current || {};
+
+    // 1. Shift existing items to their non-overlapping preview positions
+    const updatedExistingItems = itemsRef.current.map((it) => ({
+      ...it,
+      placement: {
+        ...it.placement,
+        [device]: finalPlacements[it.id] || it.placement?.[device] || getDefaultPlacement(it.type, device, 1),
+      },
+    }));
+
+    // 2. Create the newly placed item with IDs on all nested nodes
+    const rawConfig = payload.config || { type: payload.type, data: {} };
+    const configWithIds = ensureNodeIds(rawConfig, `${payload.type.toLowerCase()}-${Date.now()}`);
+
+    const newItem: CanvasLayoutItem = {
+      id: configWithIds.id || `${payload.type.toLowerCase()}-${Date.now()}`,
+      type: payload.type,
+      name: payload.name || payload.type,
+      category: payload.category || "General",
+      config: configWithIds,
+      children: syncChildrenLayoutItems(configWithIds),
+      placement: {
+        desktop: getDefaultPlacement(payload.type, "desktop", proposed.rowStart),
+        tablet: getDefaultPlacement(payload.type, "tablet", proposed.rowStart),
+        mobile: getDefaultPlacement(payload.type, "mobile", proposed.rowStart),
+        [device]: proposed,
+      },
+      zIndex: 1,
+    };
+
+    // Auto expand rowCount if pushed down past section
+    let maxRowNeeded = rowCount;
+    Object.values(finalPlacements).forEach((p) => {
+      if (p.rowEnd > maxRowNeeded) maxRowNeeded = p.rowEnd;
+    });
+    if (proposed.rowEnd > maxRowNeeded) maxRowNeeded = proposed.rowEnd;
+    if (maxRowNeeded > rowCount) {
+      setRowCount(maxRowNeeded + 2);
+    }
+
+    onItemsChange([...updatedExistingItems, newItem]);
+    onSelectItem(newItem.id);
+
+    // Reset preview states
+    setLayoutPreview(null);
+    layoutPreviewRef.current = null;
+    setToolboxDragPreview(null);
   };
 
-  const handleDelete = (itemId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    onItemsChange(deleteItemInTree(items, itemId));
-    if (selectedItemId === itemId) {
+  const handleAddRows = () => {
+    setRowCount((prev) => Math.min(prev + 4, 60));
+  };
+
+  const handleRemoveRows = () => {
+    setRowCount((prev) => Math.max(prev - 4, 10));
+  };
+
+  const handleClear = () => {
+    if (itemsRef.current.length === 0) return;
+    if (confirm("Clear all components from the canvas?")) {
+      onItemsChange([]);
       onSelectItem(null);
     }
   };
 
-  const handleClearCanvas = () => {
-    if (items.length === 0) return;
-    onItemsChange([]);
-    onSelectItem(null);
-  };
-
-  // Convert colSpan to Tailwind width class for responsive display
-  const getWidthClass = (span: number) => {
-    if (span <= 25) return "w-full md:w-[calc(25%-8px)] min-w-[210px] flex-1";
-    if (span <= 33) return "w-full md:w-[calc(33.333%-8px)] min-w-[210px] flex-1";
-    if (span <= 50) return "w-full md:w-[calc(50%-8px)] min-w-[220px] flex-1";
-    return "w-full";
-  };
-
-  // ----------------------------------------------------------------------------
-  // 6. Recursive Component Card Renderer
-  // ----------------------------------------------------------------------------
-  const renderItemCard = (
-    item: CanvasLayoutItem,
-    index: number,
-    parentId: string | null = null,
-    parentType: string = "root",
-    depth: number = 0
-  ) => {
-    const isSelected = selectedItemId === item.id;
-    const isItemTarget = dragFeedback?.targetId === item.id;
-    const widthClass = getWidthClass(item.colSpan);
-
-    // Rule inspection: does this component allow children?
-    const rule = ALL_RULES[item.type];
-    const allowedList = rule?.allowedComponents;
-    const canAcceptChildren = Array.isArray(allowedList) && allowedList.length > 0;
-
-    const insertionBeforeId = `insert-before-${item.id}`;
-    const isInsertionTarget = dragFeedback?.targetId === insertionBeforeId;
-
-    return (
-      <React.Fragment key={item.id}>
-        {/* ==================================================================== */}
-        {/* Insertion Slot Before Component (Allows dropping anywhere in middle)  */}
-        {/* ==================================================================== */}
-        <div
-          onDragOver={(e) => handleDragOver(e, insertionBeforeId, parentType, item.name, true)}
-          onDragLeave={(e) => handleDragLeave(e, insertionBeforeId)}
-          onDrop={(e) => handleDrop(e, parentId, parentType, index)}
-          className={`w-full transition-all duration-200 flex items-center justify-center my-0.5 ${
-            isInsertionTarget
-              ? "h-8 bg-emerald-100/80 border-2 border-dashed border-emerald-500 rounded-lg text-emerald-800 text-[11px] font-bold shadow-sm"
-              : "h-2 hover:h-4 opacity-0 hover:opacity-100 hover:bg-emerald-50 rounded"
-          }`}
-        >
-          {isInsertionTarget && (
-            <span className="flex items-center gap-1">
-              <span>➕</span>
-              <span>Insert here before {item.name}</span>
-            </span>
-          )}
-        </div>
-
-        {/* ==================================================================== */}
-        {/* Component Card                                                       */}
-        {/* ==================================================================== */}
-        <div
-          draggable
-          onDragStart={(e) => handleDragStartExisting(e, item)}
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelectItem(item.id);
-          }}
-          onDragOver={(e) => handleDragOver(e, item.id, item.type, item.name, false)}
-          onDragLeave={(e) => handleDragLeave(e, item.id)}
-          onDrop={(e) => handleDrop(e, item.id, item.type, -1)}
-          className={`${widthClass} relative group rounded-xl border bg-white p-3 transition-all cursor-pointer shadow-2xs ${
-            isSelected
-              ? "border-zinc-900 ring-2 ring-zinc-900/15 shadow-sm"
-              : "border-zinc-200/90 hover:border-zinc-400"
-          } ${
-            isItemTarget
-              ? dragFeedback?.isValid
-                ? "border-2 border-emerald-500 bg-emerald-50/70 ring-4 ring-emerald-400/20"
-                : "border-2 border-red-500 bg-red-50/70 ring-4 ring-red-400/20"
-              : ""
-          }`}
-        >
-          {/* Floating Nesting Drag Feedback Banner */}
-          {isItemTarget && dragFeedback && (
-            <div
-              className={`absolute -top-3 left-3 z-30 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md animate-pop-in ${
-                dragFeedback.isValid ? "bg-emerald-600 text-white" : "bg-red-600 text-white"
-              }`}
-            >
-              <span>{dragFeedback.isValid ? "✓" : "✕"}</span>
-              <span>{dragFeedback.message}</span>
-            </div>
-          )}
-
-          {/* Component Header Strip */}
-          <div className="flex items-center justify-between gap-1.5 mb-2">
-            <div className="flex items-center gap-1.5 min-w-0">
-              <span className="text-sm shrink-0 cursor-grab active:cursor-grabbing" title="Drag to reorder">
-                🧩
-              </span>
-              <span className="text-xs font-bold text-zinc-900 truncate">
-                {item.name}
-              </span>
-              <span className="rounded bg-zinc-100 text-zinc-600 text-[9px] font-semibold px-1.5 py-0.2 shrink-0">
-                {item.category}
-              </span>
-              <span className="rounded bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-[9px] font-mono px-1 py-0.2 shrink-0 hidden sm:inline">
-                R{item.row + 1}:C{item.col}
-              </span>
-            </div>
-
-            {/* Action Controls: Move Up/Down, Delete */}
-            <div className="flex items-center gap-1 shrink-0 opacity-80 group-hover:opacity-100 transition">
-              <button
-                type="button"
-                onClick={(e) => handleMove(index, "up", e)}
-                disabled={index === 0}
-                title="Move Up"
-                className="p-1 rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 disabled:opacity-30 cursor-pointer text-[10px]"
-              >
-                ▲
-              </button>
-              <button
-                type="button"
-                onClick={(e) => handleMove(index, "down", e)}
-                disabled={index === items.length - 1}
-                title="Move Down"
-                className="p-1 rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 disabled:opacity-30 cursor-pointer text-[10px]"
-              >
-                ▼
-              </button>
-              <button
-                type="button"
-                onClick={(e) => handleDelete(item.id, e)}
-                title="Delete component"
-                className="p-1 rounded text-zinc-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer text-xs"
-              >
-                🗑️
-              </button>
-            </div>
-          </div>
-
-          {/* 100-Column Width Selector Pills (25%, 33%, 50%, 100%) */}
-          <div className="flex flex-col gap-1.5 pt-1.5 border-t border-zinc-100 text-[10px]">
-            <div className="flex items-center justify-between gap-1">
-              <span className="text-zinc-500 font-mono text-[9px] font-medium">
-                {item.colSpan} / 100 Cols ({item.colSpan}%)
-              </span>
-              <div className="flex items-center gap-1">
-                {[
-                  { label: "25%", span: 25 },
-                  { label: "33%", span: 33 },
-                  { label: "50%", span: 50 },
-                  { label: "100%", span: 100 },
-                ].map((w) => (
-                  <button
-                    key={w.span}
-                    type="button"
-                    onClick={(e) => handleSetSpan(item.id, w.span, e)}
-                    className={`px-1.5 py-0.5 rounded text-[9px] font-semibold transition cursor-pointer ${
-                      item.colSpan === w.span
-                        ? "bg-zinc-900 text-white shadow-2xs"
-                        : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
-                    }`}
-                  >
-                    {w.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            {/* Visual 100-Column Grid Allocation Bar */}
-            <div className="w-full bg-zinc-100 h-1 rounded-full overflow-hidden">
-              <div
-                className="bg-emerald-500 h-full rounded-full transition-all duration-300"
-                style={{ width: `${Math.min(100, item.colSpan)}%` }}
-              />
-            </div>
-          </div>
-
-          {/* ================================================================== */}
-          {/* Recursive Nested Children Area (if component can hold children)     */}
-          {/* ================================================================== */}
-          {canAcceptChildren && (
-            <div className="mt-2.5 pt-2 border-t border-zinc-100">
-              <div className="flex items-center justify-between mb-1.5 px-0.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                  📦 Inner Components ({item.children?.length || 0}):
-                </span>
-                <span className="text-[9px] font-mono text-zinc-400 truncate max-w-[140px]">
-                  {allowedList?.includes("*") ? "Allows All" : `Allows: ${allowedList?.slice(0, 3).join(", ")}`}
-                </span>
-              </div>
-
-              {/* Render Nested Children Recursively */}
-              <div className="space-y-1.5 pl-2 border-l-2 border-zinc-200">
-                {item.children && item.children.length > 0 ? (
-                  item.children.map((child, childIdx) =>
-                    renderItemCard(child, childIdx, item.id, item.type, depth + 1)
-                  )
-                ) : (
-                  /* Dedicated Dropzone inside empty container */
-                  <div
-                    onDragOver={(e) => handleDragOver(e, `${item.id}-inner-dropzone`, item.type, item.name, false)}
-                    onDragLeave={(e) => handleDragLeave(e, `${item.id}-inner-dropzone`)}
-                    onDrop={(e) => handleDrop(e, item.id, item.type, 0)}
-                    className={`p-3 rounded-lg border-2 border-dashed transition-all text-center flex flex-col items-center justify-center gap-1 ${
-                      dragFeedback?.targetId === `${item.id}-inner-dropzone`
-                        ? dragFeedback.isValid
-                          ? "border-emerald-500 bg-emerald-50 text-emerald-800"
-                          : "border-red-500 bg-red-50 text-red-800"
-                        : "border-zinc-200 bg-zinc-50/70 text-zinc-400 hover:border-zinc-300"
-                    }`}
-                  >
-                    <span className="text-[11px] font-bold">
-                      {dragFeedback?.targetId === `${item.id}-inner-dropzone`
-                        ? dragFeedback.isValid
-                          ? `✓ Drop to place inside ${item.name}`
-                          : "✕ Not allowed inside this component"
-                        : `📥 Drop child components here`}
-                    </span>
-                    <span className="text-[9px] font-mono opacity-80">
-                      {allowedList?.includes("*") ? "Accepts any component" : `Allowed: [${allowedList?.join(", ")}]`}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </React.Fragment>
-    );
-  };
-
-  const isRootTarget = dragFeedback?.targetId === "canvas-root";
-  const isTopSlotTarget = dragFeedback?.targetId === "insert-root-top";
-  const isBottomSlotTarget = dragFeedback?.targetId === "insert-root-bottom";
-
   return (
-    <div className="h-full flex flex-col rounded-xl border border-zinc-200/90 bg-white shadow-2xs overflow-hidden select-none">
+    <div className="h-full flex-1 flex flex-col rounded-xl border border-zinc-200/90 bg-white shadow-2xs overflow-hidden select-none">
       {/* ==================================================================== */}
-      {/* 1. Canvas Top Header Strip                                           */}
+      {/* Top Toolbar: Viewport & Grid Controls                                */}
       {/* ==================================================================== */}
-      <div className="h-10 shrink-0 px-3.5 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/70">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-zinc-600 text-xs">📝</span>
-          <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-800 truncate">
-            Landing Page Canvas
+      <div className="h-11 shrink-0 px-3 border-b border-zinc-200/80 bg-zinc-50/70 flex items-center justify-between gap-2">
+        {/* Left: Title */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-zinc-600 text-xs">🎨</span>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-800">
+            Canvas
           </h2>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          <span className="rounded bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 text-[9px] font-bold text-emerald-800">
-            100 Cols
-          </span>
+        {/* Center: Device Viewport Switcher */}
+        <div className="flex items-center bg-zinc-200/70 p-0.5 rounded-lg text-xs">
+          {(["desktop", "tablet", "mobile"] as DeviceType[]).map((dev) => {
+            const conf = DEVICE_CONFIGS[dev];
+            const isActive = device === dev;
+            return (
+              <button
+                key={dev}
+                type="button"
+                onClick={() => handleSwitchDevice(dev)}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer ${
+                  isActive
+                    ? "bg-white text-zinc-900 shadow-2xs font-bold"
+                    : "text-zinc-600 hover:text-zinc-900"
+                }`}
+              >
+                <span>{conf.icon}</span>
+                <span className="hidden sm:inline">{conf.label}</span>
+                <span className="text-[10px] opacity-70">({conf.columns})</span>
+              </button>
+            );
+          })}
+        </div>
 
-          <span className="rounded bg-zinc-200/80 px-1.5 py-0.5 text-[9px] font-bold text-zinc-600">
-            {items.length} {items.length === 1 ? "block" : "blocks"}
-          </span>
+        {/* Right: Grid Toggle & Clear */}
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setGridEnabled((v) => !v)}
+            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer border ${
+              gridEnabled
+                ? "bg-blue-50 border-blue-200 text-blue-700"
+                : "bg-white border-zinc-200 text-zinc-500 hover:bg-zinc-50"
+            }`}
+            title={gridEnabled ? "Grid appears during drag & resize interactions" : "Grid overlay disabled"}
+          >
+            <span>▦ Grid: {gridEnabled ? "On" : "Off"}</span>
+          </button>
 
           {items.length > 0 && (
             <button
               type="button"
-              onClick={handleClearCanvas}
-              title="Clear all components from canvas"
-              className="text-[10px] text-zinc-400 hover:text-red-600 font-medium px-1.5 py-0.5 rounded hover:bg-red-50 transition cursor-pointer"
+              onClick={handleClear}
+              className="px-2 py-1 rounded-md text-[11px] font-semibold text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition cursor-pointer"
             >
               Clear
             </button>
           )}
-
-          <span className="rounded bg-zinc-200/70 px-1.5 py-0.5 text-[9px] font-bold text-zinc-600">
-            Panel 2
-          </span>
         </div>
       </div>
 
       {/* ==================================================================== */}
-      {/* 2. Drag & Drop Helper Sub-header                                     */}
-      {/* ==================================================================== */}
-      <div className="px-3 py-1.5 border-b border-zinc-100 bg-zinc-50/40 flex items-center justify-between text-[10px] text-zinc-500">
-        <span>Drag components from Panel 1 or click &apos;+&apos;</span>
-        <span className="font-mono text-zinc-400">Insert Anywhere • 100-Col Grid</span>
-      </div>
-
-      {/* ==================================================================== */}
-      {/* 3. The 100-Column Canvas Drop Area                                   */}
+      {/* Canvas Workspace Area                                                */}
       {/* ==================================================================== */}
       <div
-        onDragOver={(e) => handleDragOver(e, "canvas-root", "root", "Canvas Root", false)}
-        onDragLeave={(e) => handleDragLeave(e, "canvas-root")}
-        onDrop={(e) => handleDrop(e, null, "root", -1)}
-        onClick={() => onSelectItem(null)}
-        className={`flex-1 p-3 overflow-y-auto transition-all relative ${
-          isRootTarget
-            ? dragFeedback?.isValid
-              ? "bg-emerald-50/50 ring-2 ring-emerald-500/40"
-              : "bg-red-50/50 ring-2 ring-red-500/40"
-            : "bg-zinc-50/30"
-        }`}
+        className="flex-1 overflow-auto bg-[#eef1f6] p-4 sm:p-8 flex flex-col items-center"
+        onClick={() => {
+          if (hasDraggedRef.current) return;
+          onSelectItem(null);
+        }}
       >
-        {/* Floating Root Drag Feedback Banner */}
-        {isRootTarget && dragFeedback && (
+        {/* The Website Page Section Sheet */}
+        <div
+          style={{
+            width: `${currentConfig.widthPx}px`,
+            maxWidth: "100%",
+            transition: "width 0.3s ease",
+          }}
+          className="relative bg-white rounded-xl border border-zinc-200/90 shadow-md shrink-0"
+        >
+          {/* Section Inner Content Container */}
           <div
-            className={`sticky top-0 z-40 mb-2 py-1 px-3 rounded-lg text-xs font-bold shadow-sm flex items-center justify-between transition-all ${
-              dragFeedback.isValid ? "bg-emerald-600 text-white" : "bg-red-600 text-white"
-            }`}
+            className="relative p-6"
+            style={{
+              minHeight: `${rowCount * (ROW_HEIGHT_PX + GRID_GAP_PX)}px`,
+            }}
           >
-            <span>{dragFeedback.isValid ? "✓ Allowed" : "✕ Blocked"}</span>
-            <span className="text-[11px] font-normal opacity-90 truncate ml-2">
-              {dragFeedback.message}
+            {/* 1. Squarespace Fluid Engine Rounded Cells Grid Overlay (Contextual: Shows only during drag/resize) */}
+            {showGrid && (
+              <div
+                className="absolute inset-6 pointer-events-none grid transition-opacity duration-150 animate-in fade-in"
+                style={{
+                  gridTemplateColumns: `repeat(${totalColumns}, minmax(0, 1fr))`,
+                  gridAutoRows: `${ROW_HEIGHT_PX}px`,
+                  gap: `${GRID_GAP_PX}px`,
+                }}
+              >
+                {Array.from({ length: rowCount * totalColumns }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="rounded-[6px] border border-blue-200/60 bg-blue-50/20"
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* 2. Real SDUI Components Layer */}
+            <div
+              ref={gridRef}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              className="relative z-20 grid min-h-full"
+              style={{
+                gridTemplateColumns: `repeat(${totalColumns}, minmax(0, 1fr))`,
+                gridAutoRows: `${ROW_HEIGHT_PX}px`,
+                gap: `${GRID_GAP_PX}px`,
+                minHeight: `${rowCount * (ROW_HEIGHT_PX + GRID_GAP_PX)}px`,
+              }}
+            >
+              {/* Live Preview Ghost Box when dragging from Toolbox */}
+              {toolboxDragPreview && (
+                <div
+                  style={{
+                    gridColumn: `${toolboxDragPreview.placement.colStart} / ${toolboxDragPreview.placement.colEnd}`,
+                    gridRow: `${toolboxDragPreview.placement.rowStart} / ${toolboxDragPreview.placement.rowEnd}`,
+                  }}
+                  className="rounded-lg border-2 border-dashed border-blue-500 bg-blue-500/10 text-blue-700 flex flex-col items-center justify-center p-2 text-xs font-semibold pointer-events-none z-30 shadow-xs animate-pulse select-none"
+                >
+                  <span className="text-xs font-bold">+ Insert {toolboxDragPreview.name}</span>
+                  <span className="text-[10px] font-mono opacity-70">
+                    Col {toolboxDragPreview.placement.colStart}–{toolboxDragPreview.placement.colEnd - 1} • Row {toolboxDragPreview.placement.rowStart}–{toolboxDragPreview.placement.rowEnd - 1}
+                  </span>
+                </div>
+              )}
+
+              {items.map((item) => {
+                // If this item is being actively dragged or resized, use real-time coordinates
+                const isInteractingThis = interaction?.itemId === item.id;
+                const savedPlacement =
+                  item.placement?.[device] ||
+                  getDefaultPlacement(item.type, device, 1);
+                const placement = isInteractingThis
+                  ? interaction.currentPlacement
+                  : layoutPreview?.[item.id] || savedPlacement;
+
+                const isSelected = selectedItemId === item.id;
+
+                return (
+                  <div
+                    key={item.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectItem(item.id);
+                    }}
+                    onPointerDown={(e) => handleStartMove(e, item)}
+                    style={{
+                      gridColumn: `${placement.colStart} / ${placement.colEnd}`,
+                      gridRow: `${placement.rowStart} / ${placement.rowEnd}`,
+                      zIndex: isSelected || isInteractingThis ? 60 : item.zIndex ?? 1,
+                    }}
+                    className={`relative group flex flex-col justify-center select-none ${
+                      isInteractingThis
+                        ? "ring-2 ring-blue-500 shadow-xl opacity-90 cursor-grabbing z-50"
+                        : "transition-all duration-200 ease-out " +
+                          (isSelected
+                            ? "ring-2 ring-blue-500 rounded-sm shadow-xs cursor-grab"
+                            : "hover:ring-1 hover:ring-blue-300/80 rounded-sm cursor-pointer")
+                    }`}
+                  >
+                    {/* Floating coordinate tooltip while dragging or resizing */}
+                    {isInteractingThis && (
+                      <div className="absolute -top-7 left-2 z-50 px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-mono font-bold shadow-md pointer-events-none whitespace-nowrap">
+                        Col {placement.colStart} → {placement.colEnd - 1} • Row {placement.rowStart} → {placement.rowEnd - 1}
+                      </div>
+                    )}
+
+                    {/* Real SDUI Component with Interactive Child Selection */}
+                    <div className="w-full h-full">
+                      <RenderInteractiveNode
+                        node={item.config}
+                        rootItemId={item.id}
+                        selectedItemId={selectedItemId}
+                        onSelectItem={onSelectItem}
+                        onAddChild={handleAddChildToNode}
+                        onDuplicateChild={handleDuplicateChildInNode}
+                        onDeleteChild={handleDeleteChildInNode}
+                        onStartChildResize={handleStartChildResize}
+                        childResize={childResize}
+                        isRoot={true}
+                      />
+                    </div>
+
+                    {/* Step 3: Selection Bounding Box & 8 Resize Handles */}
+                    {isSelected && interaction?.mode !== "move" && (
+                      <SelectionBoundingBox
+                        item={item}
+                        isResizing={isInteractingThis && interaction?.mode === "resize"}
+                        onDelete={handleDeleteItem}
+                        onDuplicate={handleDuplicateItem}
+                        onLayerChange={handleLayerChange}
+                        onStartResize={(e, dir) => handleStartResize(e, item, dir)}
+                        onAddChild={handleAddChild}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Section Height Adjuster */}
+          <div className="border-t border-zinc-100 bg-zinc-50/60 px-4 py-2 flex items-center justify-between text-xs text-zinc-500">
+            <span className="font-mono text-[11px]">
+              Rows: <strong className="text-zinc-800">{rowCount}</strong>
             </span>
-          </div>
-        )}
 
-        {/* Empty Canvas Placeholder */}
-        {items.length === 0 ? (
-          <div
-            className={`w-full h-full min-h-[320px] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center p-6 text-center transition-all ${
-              isRootTarget && dragFeedback?.isValid
-                ? "border-emerald-500 bg-emerald-50/60"
-                : "border-zinc-300 bg-white"
-            }`}
-          >
-            <div className="h-12 w-12 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-400 mb-3 shadow-2xs">
-              <span className="text-xl">➕</span>
-            </div>
-            <p className="text-xs font-bold text-zinc-800">Landing Page Canvas is Empty</p>
-            <p className="text-[11px] text-zinc-400 mt-1 max-w-[260px] leading-relaxed">
-              Drag components from <strong>Panel 1 (Components)</strong> and drop them here to build your landing page.
-            </p>
-            <div className="mt-3 flex items-center gap-1.5 text-[9px] font-mono text-zinc-400">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              <span>100-Column Virtual Grid • Drop Anywhere &amp; Deep Nesting</span>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={handleRemoveRows}
+                disabled={rowCount <= 10}
+                title="Decrease section height (-4 rows)"
+                className="px-2 py-0.5 rounded border border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-700 disabled:opacity-40 text-xs font-semibold cursor-pointer"
+              >
+                - Less Rows
+              </button>
+              <button
+                type="button"
+                onClick={handleAddRows}
+                title="Increase section height (+4 rows)"
+                className="px-2.5 py-0.5 rounded border border-zinc-300 bg-white hover:bg-zinc-100 text-zinc-900 font-semibold text-xs flex items-center gap-1 cursor-pointer shadow-2xs"
+              >
+                <span>+</span>
+                <span>Add Rows</span>
+              </button>
             </div>
           </div>
-        ) : (
-          <div className="space-y-1">
-            {/* ================================================================ */}
-            {/* Top Insertion Zone: Insert at the very beginning of the page     */}
-            {/* ================================================================ */}
-            <div
-              onDragOver={(e) => handleDragOver(e, "insert-root-top", "root", "Top of Page", true)}
-              onDragLeave={(e) => handleDragLeave(e, "insert-root-top")}
-              onDrop={(e) => handleDrop(e, null, "root", 0)}
-              className={`w-full transition-all duration-200 flex items-center justify-center ${
-                isTopSlotTarget
-                  ? "h-9 bg-emerald-100/90 border-2 border-dashed border-emerald-600 rounded-lg text-emerald-800 text-[11px] font-bold shadow-sm"
-                  : "h-2 hover:h-4 opacity-0 hover:opacity-100 hover:bg-emerald-50 rounded"
-              }`}
-            >
-              {isTopSlotTarget && (
-                <span className="flex items-center gap-1.5">
-                  <span>⬆️</span>
-                  <span>Insert at the very top of Landing Page</span>
-                </span>
-              )}
-            </div>
-
-            {/* Placed Components Flow */}
-            <div className="flex flex-wrap gap-2.5 items-start">
-              {items.map((item, index) => renderItemCard(item, index, null, "root", 0))}
-            </div>
-
-            {/* ================================================================ */}
-            {/* Bottom Insertion Zone: Insert at the very end of the page        */}
-            {/* ================================================================ */}
-            <div
-              onDragOver={(e) => handleDragOver(e, "insert-root-bottom", "root", "End of Page", true)}
-              onDragLeave={(e) => handleDragLeave(e, "insert-root-bottom")}
-              onDrop={(e) => handleDrop(e, null, "root", items.length)}
-              className={`w-full transition-all duration-200 flex items-center justify-center mt-2 ${
-                isBottomSlotTarget
-                  ? "h-9 bg-emerald-100/90 border-2 border-dashed border-emerald-600 rounded-lg text-emerald-800 text-[11px] font-bold shadow-sm"
-                  : "h-3 hover:h-6 opacity-0 hover:opacity-100 hover:bg-emerald-50 rounded"
-              }`}
-            >
-              {isBottomSlotTarget && (
-                <span className="flex items-center gap-1.5">
-                  <span>⬇️</span>
-                  <span>Insert at the bottom of Landing Page</span>
-                </span>
-              )}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

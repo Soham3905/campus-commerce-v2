@@ -37,14 +37,14 @@ export interface GridPlacement {
 
 export interface SDUIAction {
   type:
-    | "API_CALL"
-    | "COPY_TO_CLIPBOARD"
-    | "NAVIGATE"
-    | "OPEN_BOTTOM_SHEET"
-    | "SHOW_CONTEXT_MENU"
-    | "SHOW_IMAGE_MODAL"
-    | "SHOW_IMAGE_PREVIEW"
-    | string;
+  | "API_CALL"
+  | "COPY_TO_CLIPBOARD"
+  | "NAVIGATE"
+  | "OPEN_BOTTOM_SHEET"
+  | "SHOW_CONTEXT_MENU"
+  | "SHOW_IMAGE_MODAL"
+  | "SHOW_IMAGE_PREVIEW"
+  | string;
   actionName?: string;
   endpoint?: string;
   value?: string;
@@ -84,6 +84,7 @@ export interface SDUIActions {
 // -----------------------------------------------------------------------------
 
 export interface SDUINode {
+  id?: string;
   type: string;
   containerStyle?: React.CSSProperties | Record<string, any>;
   placement?: Partial<Record<DeviceType, GridPlacement>>;

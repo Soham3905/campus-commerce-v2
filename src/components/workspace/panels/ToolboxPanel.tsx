@@ -238,11 +238,10 @@ export default function ToolboxPanel() {
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat)}
-            className={`px-2 py-0.5 rounded text-[10px] font-semibold transition shrink-0 cursor-pointer ${
-              selectedCategory === cat
+            className={`px-2 py-0.5 rounded text-[10px] font-semibold transition shrink-0 cursor-pointer ${selectedCategory === cat
                 ? "bg-zinc-900 text-white shadow-2xs"
                 : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80"
-            }`}
+              }`}
           >
             {cat}
           </button>
@@ -270,11 +269,10 @@ export default function ToolboxPanel() {
                   onDragStart={(e) => handleDragStart(e, comp)}
                   onDragEnd={handleDragEnd}
                   title={`Drag ${comp.name} to Canvas`}
-                  className={`group relative flex flex-col items-center justify-center p-2 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${
-                    isDragging
+                  className={`group relative flex flex-col items-center justify-center p-2 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${isDragging
                       ? "opacity-50 border-emerald-500 bg-emerald-50 scale-95"
                       : "border-zinc-200/80 bg-zinc-50/50 hover:bg-white hover:border-zinc-300 hover:shadow-xs active:scale-95"
-                  }`}
+                    }`}
                 >
                   {/* Shortcut Button: Click '+' to add to canvas without dragging */}
                   <button

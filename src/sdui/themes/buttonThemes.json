@@ -13,7 +13,6 @@
         "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
         "backgroundColor": "#C4185F",
         "marginTop": "auto",
-        "width": "calc(100% - 52px)",
         "alignSelf": "flex-end",
         "display": "flex",
         "alignItems": "center",

@@ -9,7 +9,7 @@
         "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
         "backgroundColor": "#FFFFFF",
         "flex": "0 0 auto",
-        "height": "300px",
+        "height": "516px",
         "minHeight": "300px",
         "maxHeight": "516px",
         "alignSelf": "stretch",

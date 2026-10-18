@@ -134,7 +134,7 @@ async function executeOptionAction(option: { action?: SDUIAction }) {
 // -----------------------------------------------------------------------------
 // Component Registry Map (Links JSON `type` string to React Component)
 // -----------------------------------------------------------------------------
-const ComponentMap: Record<string, React.ComponentType<any>> = {
+export const ComponentMap: Record<string, React.ComponentType<any>> = {
   Home: HomeRenderer,
   Image: ImageRenderer,
   Title: TitleRenderer,

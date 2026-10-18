@@ -7,6 +7,7 @@ import type { SDUINode } from "@/sdui/types";
 interface PreviewPanelProps {
   layoutItems?: CanvasLayoutItem[];
   activeThemeId?: string;
+  onClose?: () => void;
 }
 
 /**
@@ -30,6 +31,7 @@ interface PreviewPanelProps {
 export default function PreviewPanel({
   layoutItems = [],
   activeThemeId = "theme1",
+  onClose,
 }: PreviewPanelProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [iframeKey, setIframeKey] = useState<number>(0);
@@ -185,6 +187,17 @@ export default function PreviewPanel({
           <span className="rounded bg-zinc-200/70 px-1.5 py-0.5 text-[9px] font-bold text-zinc-600">
             Panel 4
           </span>
+
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              title="Close Preview Panel (Esc)"
+              className="p-1 rounded text-zinc-400 hover:text-zinc-700 hover:bg-zinc-200/80 transition cursor-pointer text-xs font-bold leading-none ml-1 flex items-center justify-center w-5 h-5 active:scale-95"
+            >
+              ✕
+            </button>
+          )}
         </div>
       </div>
 

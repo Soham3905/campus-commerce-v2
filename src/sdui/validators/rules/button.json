@@ -3,10 +3,7 @@
   "displayName": "Button",
   "category": "Atoms",
   "isCompulsory": false,
-  "allowedComponents": [
-    "Text",
-    "Icon"
-  ],
+  "allowedComponents": [],
   "minValue": 0,
   "maxValue": 2,
   "allowedActions": [

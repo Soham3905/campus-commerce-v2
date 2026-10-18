@@ -100,7 +100,6 @@ export default function WelcomePage() {
             <FourPanelWorkspace
               activeThemeName={activeTheme?.name || "Theme 1"}
               activeThemeId={activeThemeId}
-              onOpenThemeSlider={() => handleOpenThemeSlider(false)}
             />
           </main>
         ) : (
