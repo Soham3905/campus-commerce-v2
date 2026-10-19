@@ -6,6 +6,7 @@ import { ComponentMap } from "@/sdui/SDUIRenderer";
 import { ALL_RULES } from "@/sdui/validators/rules";
 import { getAllDefaultComponents } from "@/sdui/themes";
 import { getActiveDragPayload } from "../dragState";
+import FloatingToolbar from "./FloatingToolbar";
 
 /**
  * ==============================================================================
@@ -127,9 +128,37 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       colSpan = Math.min(6, maxCols);
       rowSpan = 2;
       break;
+    case "Header":
+    case "SearchBar":
+    case "StoryRow":
+    case "CategoryGrid":
+    case "Carousel":
     case "HeroBanner":
+    case "CouponCode":
+    case "CountDownTimer":
+    case "ProductList":
+    case "ProductGrid":
+    case "Footer":
+    case "NavBar":
+    case "Page":
+    case "Home":
       colSpan = maxCols;
-      rowSpan = 7;
+      rowSpan =
+        type === "Header"
+          ? 3
+          : type === "SearchBar"
+          ? 3
+          : type === "StoryRow"
+          ? 4
+          : type === "HeroBanner" || type === "Carousel"
+          ? 7
+          : type === "ProductList" || type === "ProductGrid"
+          ? 9
+          : type === "CategoryGrid"
+          ? 6
+          : type === "Footer"
+          ? 6
+          : 4;
       break;
     case "ProductCard":
       colSpan = Math.min(8, maxCols);
@@ -139,20 +168,11 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       colSpan = Math.min(8, maxCols);
       rowSpan = 6;
       break;
-    case "SearchBar":
-      colSpan = Math.min(16, maxCols);
-      rowSpan = 2;
-      break;
     case "Badge":
     case "Label":
     case "Icon":
       colSpan = Math.min(4, maxCols);
       rowSpan = 1;
-      break;
-    case "ProductList":
-    case "CategoryGrid":
-      colSpan = maxCols;
-      rowSpan = 8;
       break;
     default:
       colSpan = Math.min(8, maxCols);
@@ -497,118 +517,6 @@ function ChildResizeHandles({ onStartResize }: ChildResizeHandlesProps) {
 /**
  * Floating mini action bar for a selected nested child component.
  */
-interface ChildActionBarProps {
-  node: SDUINode;
-  allowedChildren: string[];
-  onAddChild: (type: string) => void;
-  onDuplicate: () => void;
-  onDelete: () => void;
-}
-
-function ChildActionBar({
-  node,
-  allowedChildren,
-  onAddChild,
-  onDuplicate,
-  onDelete,
-}: ChildActionBarProps) {
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  useEffect(() => {
-    if (!showDropdown) return;
-    const close = () => setShowDropdown(false);
-    window.addEventListener("click", close);
-    return () => window.removeEventListener("click", close);
-  }, [showDropdown]);
-
-  // Position nicely: inside container corner for cards/boxes, right above for buttons/labels
-  const isContainer =
-    allowedChildren.length > 0 || node.type === "ProductCard" || node.type === "Box";
-  const positionClass = isContainer ? "top-1.5 left-1.5" : "-top-7 left-0";
-
-  return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      onPointerDown={(e) => e.stopPropagation()}
-      className={`absolute ${positionClass} z-50 flex items-center gap-1 bg-zinc-900/95 backdrop-blur-xs text-white px-2 py-0.5 rounded shadow-lg border border-zinc-700/80 text-[10px] whitespace-nowrap select-none`}
-    >
-      <span className="font-semibold text-zinc-300 pr-1 border-r border-zinc-700/80">
-        {node.type}
-      </span>
-
-      {/* + Add Child button (only shown if validator allows children) */}
-      {allowedChildren.length > 0 && (
-        <div className="relative pr-1 border-r border-zinc-700/80">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowDropdown((prev) => !prev);
-            }}
-            title="Add Child"
-            className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[9px] cursor-pointer shadow-2xs"
-          >
-            <span>+ Add Child</span>
-            <span className="text-[7px]">{showDropdown ? "▲" : "▼"}</span>
-          </button>
-
-          {showDropdown && (
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="absolute top-full left-0 mt-1 z-60 w-44 max-h-48 overflow-y-auto rounded bg-zinc-900/95 backdrop-blur-md border border-zinc-700 shadow-xl py-1 text-xs"
-            >
-              <div className="px-2 py-0.5 text-[8px] font-bold uppercase text-zinc-400 border-b border-zinc-800">
-                Allowed Children ({allowedChildren.length})
-              </div>
-              {allowedChildren.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAddChild(type);
-                    setShowDropdown(false);
-                  }}
-                  className="w-full text-left px-2 py-1 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 text-[10px] cursor-pointer"
-                >
-                  <span>{type}</span>
-                  <span className="text-emerald-400 font-semibold">+ Add</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Duplicate */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDuplicate();
-        }}
-        title="Duplicate Child"
-        className="p-0.5 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white cursor-pointer"
-      >
-        📋
-      </button>
-
-      {/* Delete */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-        title="Delete Child"
-        className="p-0.5 rounded hover:bg-red-900/80 text-red-300 hover:text-red-100 cursor-pointer"
-      >
-        🗑️
-      </button>
-    </div>
-  );
-}
-
 /**
  * Recursive SDUI Component Renderer with Interactive Child Selection & Resizing.
  */
@@ -628,6 +536,9 @@ interface RenderInteractiveNodeProps {
   ) => void;
   childResize: ActiveChildResize | null;
   isRoot?: boolean;
+  items: CanvasLayoutItem[];
+  device: DeviceType;
+  onMoveItem?: (id: string, direction: "up" | "down" | "left" | "right") => void;
 }
 
 function RenderInteractiveNode({
@@ -641,6 +552,9 @@ function RenderInteractiveNode({
   onStartChildResize,
   childResize,
   isRoot = false,
+  items,
+  device,
+  onMoveItem,
 }: RenderInteractiveNodeProps): React.ReactNode {
   if (!node) return null;
 
@@ -669,6 +583,9 @@ function RenderInteractiveNode({
             onStartChildResize={onStartChildResize}
             childResize={childResize}
             isRoot={false}
+            items={items}
+            device={device}
+            onMoveItem={onMoveItem}
           />
         ))
       : null;
@@ -705,6 +622,7 @@ function RenderInteractiveNode({
   // Nested Child: Wrap in interactive selection container
   const isSelected = selectedItemId === node.id;
   const allowedChildren = getAllowedChildrenForType(node.type);
+  const canMove = isSelected && node.id ? getCanMoveDirections(items, node.id, device) : { canUp: false, canDown: false, canLeft: false, canRight: false };
 
   // Wrapper dimensions for nested child
   const wrapperStyle: React.CSSProperties = {
@@ -740,11 +658,19 @@ function RenderInteractiveNode({
         </div>
       )}
 
-      {/* Floating Action Bar (hidden while actively dragging handle to keep view clear) */}
+      {/* Floating Action Bar (Squarespace-style FloatingToolbar) */}
       {isSelected && !isThisResizing && (
-        <ChildActionBar
-          node={node}
+        <FloatingToolbar
+          title={node.type}
+          type={node.type}
+          isRoot={false}
+          canMoveUp={canMove.canUp}
+          canMoveDown={canMove.canDown}
+          canMoveLeft={canMove.canLeft}
+          canMoveRight={canMove.canRight}
           allowedChildren={allowedChildren}
+          positionBelow={true}
+          onMove={(dir) => onMoveItem && node.id && onMoveItem(node.id, dir)}
           onAddChild={(type) => onAddChild(node.id!, type)}
           onDuplicate={() => onDuplicateChild(node.id!)}
           onDelete={() => onDeleteChild(node.id!)}
@@ -876,6 +802,224 @@ export function calculateLayoutPreview(
 
   return placements;
 }
+
+/**
+ * Determines which directional movements (Up, Down, Left, Right) are valid
+ * for a selected component (root block or nested child).
+ */
+export function getCanMoveDirections(
+  items: CanvasLayoutItem[],
+  targetId: string,
+  device: DeviceType
+): { canUp: boolean; canDown: boolean; canLeft: boolean; canRight: boolean } {
+  // 1. Check if target is a root-level item
+  const rootItem = items.find((it) => it.id === targetId);
+  if (rootItem) {
+    const maxCols = DEVICE_CONFIGS[device].columns;
+    const placement =
+      rootItem.placement?.[device] ||
+      getDefaultPlacement(rootItem.type, device, 1);
+
+    return {
+      canLeft: placement.colStart > 1,
+      canRight: placement.colEnd <= maxCols,
+      canUp: placement.rowStart > 1,
+      canDown: true,
+    };
+  }
+
+  // 2. Check if target is a nested child
+  const parentRoot = findRootItemForNodeId(items, targetId);
+  if (parentRoot) {
+    const parentNode = findParentNodeInTree(parentRoot.config, targetId);
+    if (parentNode && Array.isArray(parentNode.children)) {
+      const idx = parentNode.children.findIndex((c) => c.id === targetId);
+      if (idx !== -1) {
+        return {
+          canLeft: idx > 0,
+          canUp: idx > 0,
+          canRight: idx < parentNode.children.length - 1,
+          canDown: idx < parentNode.children.length - 1,
+        };
+      }
+    }
+  }
+
+  return { canUp: false, canDown: false, canLeft: false, canRight: false };
+}
+
+/**
+ * Executes a directional movement (Up, Down, Left, Right) for a component.
+ * - For root items: updates grid placement and cascades collisions via calculateLayoutPreview.
+ * - For nested children: reorders the child among siblings in its parent node.
+ */
+export function moveComponentDirection(
+  items: CanvasLayoutItem[],
+  targetId: string,
+  direction: "up" | "down" | "left" | "right",
+  device: DeviceType
+): CanvasLayoutItem[] {
+  // ---------------------------------------------------------------------------
+  // Case A: Root-Level Block Movement
+  // ---------------------------------------------------------------------------
+  const rootIndex = items.findIndex((it) => it.id === targetId);
+  if (rootIndex !== -1) {
+    const rootItem = items[rootIndex];
+    const maxCols = DEVICE_CONFIGS[device].columns;
+    const currentPlace =
+      rootItem.placement?.[device] ||
+      getDefaultPlacement(rootItem.type, device, 1);
+    const colSpan = currentPlace.colEnd - currentPlace.colStart;
+    const rowSpan = currentPlace.rowEnd - currentPlace.rowStart;
+
+    let proposedPlacement: GridPlacement = { ...currentPlace };
+
+    if (direction === "left") {
+      if (currentPlace.colStart <= 1) return items;
+      const newColStart = Math.max(1, currentPlace.colStart - 1);
+      proposedPlacement = {
+        ...currentPlace,
+        colStart: newColStart,
+        colEnd: newColStart + colSpan,
+      };
+    } else if (direction === "right") {
+      if (currentPlace.colEnd > maxCols) return items;
+      const newColEnd = Math.min(maxCols + 1, currentPlace.colEnd + 1);
+      proposedPlacement = {
+        ...currentPlace,
+        colStart: newColEnd - colSpan,
+        colEnd: newColEnd,
+      };
+    } else if (direction === "up") {
+      if (currentPlace.rowStart <= 1) return items;
+      // Find root items located above this one
+      const itemsAbove = items.filter(
+        (it) =>
+          it.id !== targetId &&
+          (it.placement?.[device]?.rowEnd ?? 0) <= currentPlace.rowStart
+      );
+
+      if (itemsAbove.length > 0) {
+        // Swap vertical slot with closest item above
+        const closestAbove = [...itemsAbove].sort(
+          (a, b) =>
+            (b.placement?.[device]?.rowEnd ?? 0) -
+            (a.placement?.[device]?.rowEnd ?? 0)
+        )[0];
+        const abovePlacement =
+          closestAbove.placement?.[device] ||
+          getDefaultPlacement(closestAbove.type, device, 1);
+        proposedPlacement = {
+          ...currentPlace,
+          rowStart: abovePlacement.rowStart,
+          rowEnd: abovePlacement.rowStart + rowSpan,
+        };
+      } else {
+        const newRowStart = Math.max(1, currentPlace.rowStart - 1);
+        proposedPlacement = {
+          ...currentPlace,
+          rowStart: newRowStart,
+          rowEnd: newRowStart + rowSpan,
+        };
+      }
+    } else if (direction === "down") {
+      // Find root items located below this one
+      const itemsBelow = items.filter(
+        (it) =>
+          it.id !== targetId &&
+          (it.placement?.[device]?.rowStart ?? 0) >= currentPlace.rowEnd
+      );
+
+      if (itemsBelow.length > 0) {
+        const closestBelow = [...itemsBelow].sort(
+          (a, b) =>
+            (a.placement?.[device]?.rowStart ?? 0) -
+            (b.placement?.[device]?.rowStart ?? 0)
+        )[0];
+        const belowPlacement =
+          closestBelow.placement?.[device] ||
+          getDefaultPlacement(closestBelow.type, device, 1);
+        proposedPlacement = {
+          ...currentPlace,
+          rowStart: belowPlacement.rowEnd,
+          rowEnd: belowPlacement.rowEnd + rowSpan,
+        };
+      } else {
+        proposedPlacement = {
+          ...currentPlace,
+          rowStart: currentPlace.rowStart + 1,
+          rowEnd: currentPlace.rowEnd + 1,
+        };
+      }
+    }
+
+    // Run collision cascading engine
+    const previewPlacements = calculateLayoutPreview(
+      items,
+      rootItem.id,
+      proposedPlacement,
+      device
+    );
+
+    return items.map((it) => {
+      const nextPlace =
+        previewPlacements[it.id] ||
+        it.placement?.[device] ||
+        getDefaultPlacement(it.type, device, 1);
+      return {
+        ...it,
+        placement: {
+          ...it.placement,
+          [device]: nextPlace,
+        },
+      };
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Case B: Nested Child Component Reordering
+  // ---------------------------------------------------------------------------
+  const parentRoot = findRootItemForNodeId(items, targetId);
+  if (!parentRoot) return items;
+
+  const parentNode = findParentNodeInTree(parentRoot.config, targetId);
+  if (!parentNode || !Array.isArray(parentNode.children)) return items;
+
+  const siblings = [...parentNode.children];
+  const idx = siblings.findIndex((c) => c.id === targetId);
+  if (idx === -1) return items;
+
+  if (direction === "up" || direction === "left") {
+    if (idx === 0) return items;
+    const temp = siblings[idx];
+    siblings[idx] = siblings[idx - 1];
+    siblings[idx - 1] = temp;
+  } else if (direction === "down" || direction === "right") {
+    if (idx === siblings.length - 1) return items;
+    const temp = siblings[idx];
+    siblings[idx] = siblings[idx + 1];
+    siblings[idx + 1] = temp;
+  }
+
+  const updatedParent = {
+    ...parentNode,
+    children: siblings,
+  };
+
+  const updatedRootConfig = updateNodeInTree(parentRoot.config, updatedParent);
+
+  return items.map((it) => {
+    if (it.id === parentRoot.id) {
+      return {
+        ...it,
+        config: updatedRootConfig,
+        children: syncChildrenLayoutItems(updatedRootConfig),
+      };
+    }
+    return it;
+  });
+}
+
 
 /**
  * Automatically recalculates and reflows the layout for a target responsive breakpoint.
@@ -1096,134 +1240,53 @@ export function createDefaultChildNode(childType: string, themeId: string = "the
 
 interface SelectionBoundingBoxProps {
   item: CanvasLayoutItem;
+  device: DeviceType;
+  items: CanvasLayoutItem[];
   isResizing?: boolean;
-  onDelete: (id: string, e: React.MouseEvent) => void;
-  onDuplicate: (id: string, e: React.MouseEvent) => void;
-  onLayerChange: (id: string, delta: number, e: React.MouseEvent) => void;
+  onDelete: (id: string, e?: React.MouseEvent) => void;
+  onDuplicate: (id: string, e?: React.MouseEvent) => void;
   onStartResize: (e: React.PointerEvent, direction: string) => void;
   onAddChild: (parentId: string, childType: string) => void;
+  onMove: (id: string, direction: "up" | "down" | "left" | "right") => void;
 }
 
 function SelectionBoundingBox({
   item,
+  device,
+  items,
   isResizing = false,
   onDelete,
   onDuplicate,
-  onLayerChange,
   onStartResize,
   onAddChild,
+  onMove,
 }: SelectionBoundingBoxProps) {
   const allowedChildren = getAllowedChildrenForType(item.type);
-  const [showChildDropdown, setShowChildDropdown] = useState(false);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    if (!showChildDropdown) return;
-    const closeDropdown = () => setShowChildDropdown(false);
-    window.addEventListener("click", closeDropdown);
-    return () => window.removeEventListener("click", closeDropdown);
-  }, [showChildDropdown]);
+  const currentPlacement =
+    item.placement?.[device] ||
+    getDefaultPlacement(item.type, device, 1);
+  const positionBelow = currentPlacement.rowStart <= 3;
+  const canMove = getCanMoveDirections(items, item.id, device);
 
   return (
     <>
-      {/* 1. Floating Mini Action Bar (hidden while actively resizing to keep view clear) */}
+      {/* 1. Floating Action Bar (Squarespace-style FloatingToolbar) */}
       {!isResizing && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          onPointerDown={(e) => e.stopPropagation()}
-          className="absolute -top-9 left-0 z-50 flex items-center gap-1 bg-zinc-900/95 backdrop-blur-xs text-white px-2 py-0.5 rounded-lg shadow-lg border border-zinc-700/80 text-xs whitespace-nowrap select-none"
-        >
-          <span className="text-[10px] font-semibold text-zinc-300 pr-1.5 border-r border-zinc-700/80">
-            {item.name} <span className="opacity-50 font-mono">z:{item.zIndex ?? 1}</span>
-          </span>
-
-          {/* Task 2: Add Child Dropdown Button (Only shown if validator allows children) */}
-          {allowedChildren.length > 0 && (
-            <div className="relative pr-1 border-r border-zinc-700/80">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowChildDropdown((prev) => !prev);
-                }}
-                title="Add Child Component"
-                className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-[10px] transition cursor-pointer shadow-2xs"
-              >
-                <span>+ Add Child</span>
-                <span className="text-[8px] opacity-80">{showChildDropdown ? "▲" : "▼"}</span>
-              </button>
-
-              {/* Dropdown Menu */}
-              {showChildDropdown && (
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  className="absolute top-full left-0 mt-1 z-60 w-48 max-h-56 overflow-y-auto rounded-lg bg-zinc-900/95 backdrop-blur-md border border-zinc-700 shadow-xl py-1 text-xs"
-                >
-                  <div className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800">
-                    Allowed Children ({allowedChildren.length})
-                  </div>
-                  {allowedChildren.map((childType) => (
-                    <button
-                      key={childType}
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onAddChild(item.id, childType);
-                        setShowChildDropdown(false);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 transition text-[11px] cursor-pointer"
-                    >
-                      <span>{childType}</span>
-                      <span className="text-[10px] text-emerald-400 font-semibold">+ Add</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Bring Forward */}
-          <button
-            type="button"
-            onClick={(e) => onLayerChange(item.id, 1, e)}
-            title="Bring Forward"
-            className="p-1 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white transition cursor-pointer text-[10px]"
-          >
-            ▲
-          </button>
-
-          {/* Send Backward */}
-          <button
-            type="button"
-            onClick={(e) => onLayerChange(item.id, -1, e)}
-            disabled={(item.zIndex ?? 1) <= 1}
-            title="Send Backward"
-            className="p-1 rounded hover:bg-zinc-700 disabled:opacity-30 text-zinc-300 hover:text-white transition cursor-pointer text-[10px]"
-          >
-            ▼
-          </button>
-
-          {/* Duplicate */}
-          <button
-            type="button"
-            onClick={(e) => onDuplicate(item.id, e)}
-            title="Duplicate"
-            className="p-1 rounded hover:bg-zinc-700 text-zinc-300 hover:text-white transition cursor-pointer text-xs ml-0.5"
-          >
-            📋
-          </button>
-
-          {/* Delete */}
-          <button
-            type="button"
-            onClick={(e) => onDelete(item.id, e)}
-            title="Delete"
-            className="p-1 rounded hover:bg-red-900/80 text-red-300 hover:text-red-100 transition cursor-pointer text-xs"
-          >
-            🗑️
-          </button>
-        </div>
+        <FloatingToolbar
+          title={item.name}
+          type={item.type}
+          isRoot={true}
+          canMoveUp={canMove.canUp}
+          canMoveDown={canMove.canDown}
+          canMoveLeft={canMove.canLeft}
+          canMoveRight={canMove.canRight}
+          allowedChildren={allowedChildren}
+          positionBelow={positionBelow}
+          onMove={(dir) => onMove(item.id, dir)}
+          onAddChild={(childType) => onAddChild(item.id, childType)}
+          onDuplicate={() => onDuplicate(item.id)}
+          onDelete={() => onDelete(item.id)}
+        />
       )}
 
       {/* 2. Four Corner Handles */}
@@ -1422,7 +1485,9 @@ export default function CanvasPanel({
   // ---------------------------------------------------------------------------
 
   const handleDeleteItem = (id: string, e?: React.MouseEvent) => {
-    e?.stopPropagation();
+    if (e && typeof e.stopPropagation === "function") {
+      e.stopPropagation();
+    }
     onItemsChange(itemsRef.current.filter((it) => it.id !== id));
     if (selectedItemId === id) {
       onSelectItem(null);
@@ -1430,7 +1495,9 @@ export default function CanvasPanel({
   };
 
   const handleDuplicateItem = (id: string, e?: React.MouseEvent) => {
-    e?.stopPropagation();
+    if (e && typeof e.stopPropagation === "function") {
+      e.stopPropagation();
+    }
     const target = itemsRef.current.find((it) => it.id === id);
     if (!target) return;
 
@@ -1460,7 +1527,9 @@ export default function CanvasPanel({
   };
 
   const handleLayerChange = (id: string, delta: number, e?: React.MouseEvent) => {
-    e?.stopPropagation();
+    if (e && typeof e.stopPropagation === "function") {
+      e.stopPropagation();
+    }
     onItemsChange(
       itemsRef.current.map((it) => {
         if (it.id === id) {
@@ -1470,6 +1539,14 @@ export default function CanvasPanel({
         return it;
       })
     );
+  };
+
+  const handleMoveItem = (
+    id: string,
+    direction: "up" | "down" | "left" | "right"
+  ) => {
+    const updated = moveComponentDirection(itemsRef.current, id, direction, device);
+    onItemsChange(updated);
   };
 
   // ---------------------------------------------------------------------------
@@ -2475,6 +2552,9 @@ export default function CanvasPanel({
                         onStartChildResize={handleStartChildResize}
                         childResize={childResize}
                         isRoot={true}
+                        items={items}
+                        device={device}
+                        onMoveItem={handleMoveItem}
                       />
                     </div>
 
@@ -2482,12 +2562,14 @@ export default function CanvasPanel({
                     {isSelected && interaction?.mode !== "move" && (
                       <SelectionBoundingBox
                         item={item}
+                        device={device}
+                        items={items}
                         isResizing={isInteractingThis && interaction?.mode === "resize"}
                         onDelete={handleDeleteItem}
                         onDuplicate={handleDuplicateItem}
-                        onLayerChange={handleLayerChange}
                         onStartResize={(e, dir) => handleStartResize(e, item, dir)}
                         onAddChild={handleAddChild}
+                        onMove={handleMoveItem}
                       />
                     )}
                   </div>

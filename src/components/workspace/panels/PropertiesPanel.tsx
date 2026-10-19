@@ -2,42 +2,27 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import type { CanvasLayoutItem } from "./CanvasPanel";
-import { getAllowedChildrenForType, syncChildrenLayoutItems } from "./CanvasPanel";
+import {
+  getAllowedChildrenForType,
+  syncChildrenLayoutItems,
+  getDefaultPlacement,
+  DEVICE_CONFIGS,
+} from "./CanvasPanel";
+import type { DeviceType, GridPlacement } from "@/sdui/types";
+import { ALL_RULES } from "@/sdui/validators/rules";
+import { validate } from "@/sdui/validators/validator";
 
-interface PropertiesPanelProps {
+export interface PropertiesPanelProps {
   selectedItem: CanvasLayoutItem | null;
   onUpdateItem: (updated: CanvasLayoutItem) => void;
   onDeselect?: () => void;
   onSelectItem?: (id: string | null) => void;
   onAddChild?: (targetNodeId: string, childType: string) => void;
   onDeleteChild?: (targetNodeId: string) => void;
+  device?: DeviceType;
 }
 
-/**
- * ==============================================================================
- * 🎓 Beginner Guide: Panel 3 (Properties Panel)
- * ==============================================================================
- * 
- * 1. WHAT IS THIS PANEL?
- *    This panel lets users customize and style any component selected on the Canvas.
- *    Even if a user knows ZERO JSON or coding, they can visually:
- *    - Edit text, headings, buttons, prices, and image URLs.
- *    - Pick background colors and text colors with instant visual swatches.
- *    - Adjust border-radius (corners), padding (spacing), font-size, and text alignment.
- *    - Configure click actions / URLs (e.g. navigation links).
- *    - Adjust the 100-column grid width (25%, 33%, 50%, 100%).
- * 
- * 2. TWO EDIT MODES:
- *    - 📝 Values Tab: Visual, beginner-friendly form controls.
- *    - 💻 JSON Tab: Raw SDUI schema editor with live syntax validation for advanced users.
- * 
- * 3. REAL-TIME SYNC:
- *    Every change updates the component state in Redux / Canvas, and immediately
- *    reflects live in Panel 4 (Live Phone / Desktop Preview).
- * ==============================================================================
- */
-
-// Preset palette colors for fast one-click styling
+// Preset color palette for quick styling
 const COLOR_PRESETS = [
   { label: "White", value: "#ffffff" },
   { label: "Dark Slate", value: "#0f172a" },
@@ -45,7 +30,7 @@ const COLOR_PRESETS = [
   { label: "Emerald", value: "#059669" },
   { label: "Indigo", value: "#4f46e5" },
   { label: "Amber", value: "#d97706" },
-  { label: "Rose Red", value: "#e11d48" },
+  { label: "Rose", value: "#e11d48" },
   { label: "Transparent", value: "transparent" },
 ];
 
@@ -65,23 +50,30 @@ export default function PropertiesPanel({
   onSelectItem,
   onAddChild,
   onDeleteChild,
+  device = "desktop",
 }: PropertiesPanelProps) {
-  // Mode Tab: "values" | "json"
-  const [activeTab, setActiveTab] = useState<"values" | "json">("values");
+  // Mode Tab: "visual" | "json"
+  const [activeTab, setActiveTab] = useState<"visual" | "json">("visual");
 
-  // Sub-section tab inside Values mode: "content" | "style" | "layout"
+  // Visual sub-tabs: "content" | "style" | "layout"
   const [activeSection, setActiveSection] = useState<"content" | "style" | "layout">("content");
 
-  // Raw JSON editor state
+  // Raw JSON state
   const [jsonText, setJsonText] = useState("");
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // New custom property key & value state
+  // Custom property field inputs
   const [newPropKey, setNewPropKey] = useState("");
   const [newPropVal, setNewPropVal] = useState("");
   const [showAddProp, setShowAddProp] = useState(false);
   const [showAddChildDropdown, setShowAddChildDropdown] = useState(false);
+
+  // Validator rule for selected component
+  const currentRule = useMemo(() => {
+    if (!selectedItem) return null;
+    return ALL_RULES[selectedItem.type] || null;
+  }, [selectedItem?.type]);
 
   // Allowed children from validator rules
   const allowedChildren = useMemo(() => {
@@ -89,7 +81,7 @@ export default function PropertiesPanel({
     return getAllowedChildrenForType(selectedItem.type);
   }, [selectedItem?.type]);
 
-  // Existing children list strictly synced with config tree
+  // Children synced with SDUI config tree
   const childrenList = useMemo(() => {
     if (!selectedItem || !selectedItem.config) return [];
     return syncChildrenLayoutItems(selectedItem.config);
@@ -106,9 +98,23 @@ export default function PropertiesPanel({
     }
   }, [selectedItem?.id, selectedItem?.config]);
 
-  // ----------------------------------------------------------------------------
-  // Helper 1: Update Data Field (e.g. title, price, imageUrl, label)
-  // ----------------------------------------------------------------------------
+  // Current styles
+  const currentStyles = selectedItem?.config?.containerStyle || {};
+
+  // ---------------------------------------------------------------------------
+  // Helper: Update Component Display Name
+  // ---------------------------------------------------------------------------
+  const handleNameChange = (name: string) => {
+    if (!selectedItem) return;
+    onUpdateItem({
+      ...selectedItem,
+      name,
+    });
+  };
+
+  // ---------------------------------------------------------------------------
+  // Helper: Update Data Field (e.g. title, price, imageUrl, label)
+  // ---------------------------------------------------------------------------
   const handleDataChange = (key: string, value: any) => {
     if (!selectedItem) return;
 
@@ -127,9 +133,9 @@ export default function PropertiesPanel({
     });
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 2: Remove a Data Field
-  // ----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Helper: Remove Data Field
+  // ---------------------------------------------------------------------------
   const handleRemoveDataField = (key: string) => {
     if (!selectedItem) return;
 
@@ -145,79 +151,85 @@ export default function PropertiesPanel({
     });
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 3: Update Container Style (e.g. backgroundColor, color, borderRadius)
-  // ----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Helper: Update Container Style
+  // If setting a solid backgroundColor, also clear preset backgroundImage so color is visible
+  // ---------------------------------------------------------------------------
   const handleStyleChange = (styleKey: string, value: string) => {
     if (!selectedItem) return;
 
     const currentStyle = selectedItem.config.containerStyle || {};
-    const updatedConfig = {
-      ...selectedItem.config,
-      containerStyle: {
-        ...currentStyle,
-        [styleKey]: value,
-      },
+    const newStyle: Record<string, any> = {
+      ...currentStyle,
+      [styleKey]: value,
     };
+
+    if (styleKey === "backgroundColor") {
+      newStyle.backgroundImage = "none";
+    }
+
+    if (value === "") {
+      delete newStyle[styleKey];
+    }
 
     onUpdateItem({
       ...selectedItem,
-      config: updatedConfig,
+      config: {
+        ...selectedItem.config,
+        containerStyle: newStyle,
+      },
     });
   };
 
-  // ----------------------------------------------------------------------------
-  // ----------------------------------------------------------------------------
-  // Helper 4: Update 24-Column Grid Width for Root Components
-  // ----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Helper: Update Breakpoint-Aware Grid Column Span
+  // ---------------------------------------------------------------------------
+  const activeDevice = device || "desktop";
+  const maxCols = DEVICE_CONFIGS[activeDevice]?.columns || 24;
+
+  const currentPlacement: GridPlacement = useMemo(() => {
+    if (!selectedItem) return { colStart: 1, colEnd: 25, rowStart: 1, rowEnd: 4 };
+    return (
+      selectedItem.placement?.[activeDevice] ||
+      getDefaultPlacement(selectedItem.type, activeDevice, 1)
+    );
+  }, [selectedItem, activeDevice]);
+
+  const currentColSpan = Math.max(
+    1,
+    currentPlacement.colEnd - currentPlacement.colStart
+  );
+
   const handleGridSpanChange = (span: number) => {
     if (!selectedItem || !selectedItem.placement) return;
-    const currentPlace =
-      selectedItem.placement.desktop || {
-        colStart: 1,
-        colEnd: 25,
-        rowStart: 1,
-        rowEnd: 4,
-      };
 
-    const maxCols = 24;
     const clampedSpan = Math.max(1, Math.min(maxCols, span));
-    const safeColStart = Math.min(currentPlace.colStart, maxCols - clampedSpan + 1);
+    const safeColStart = Math.min(currentPlacement.colStart, maxCols - clampedSpan + 1);
+
+    const newPlacement: GridPlacement = {
+      ...currentPlacement,
+      colStart: safeColStart,
+      colEnd: safeColStart + clampedSpan,
+    };
 
     onUpdateItem({
       ...selectedItem,
       placement: {
         ...selectedItem.placement,
-        desktop: {
-          ...currentPlace,
-          colStart: safeColStart,
-          colEnd: safeColStart + clampedSpan,
-        },
+        [activeDevice]: newPlacement,
       },
     });
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 5: Update Component Title / Display Name
-  // ----------------------------------------------------------------------------
-  const handleNameChange = (name: string) => {
-    if (!selectedItem) return;
-    onUpdateItem({
-      ...selectedItem,
-      name,
-    });
-  };
-
-  // Helper: extract URL string from string or SDUIAction
+  // ---------------------------------------------------------------------------
+  // Helper: Update Action Navigation / Tap Link
+  // ---------------------------------------------------------------------------
   const getActionUrl = (action: any): string => {
     if (!action) return "";
     if (typeof action === "string") return action;
     return action.route || action.value || action.endpoint || "";
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 6: Update Action Link / URL (e.g. onTap navigation)
-  // ----------------------------------------------------------------------------
   const handleActionChange = (actionType: string, url: string) => {
     if (!selectedItem) return;
 
@@ -228,15 +240,17 @@ export default function PropertiesPanel({
         ...selectedItem.config,
         actions: {
           ...currentActions,
-          [actionType]: url ? { type: "NAVIGATE", route: url } : undefined,
+          [actionType]: url.trim()
+            ? { type: "NAVIGATE", route: url.trim() }
+            : undefined,
         },
       },
     });
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 7: Add a custom property without writing JSON
-  // ----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Helper: Add Custom Property
+  // ---------------------------------------------------------------------------
   const handleAddCustomProperty = () => {
     if (!newPropKey.trim()) return;
     handleDataChange(newPropKey.trim(), newPropVal.trim());
@@ -245,19 +259,39 @@ export default function PropertiesPanel({
     setShowAddProp(false);
   };
 
-  // ----------------------------------------------------------------------------
-  // Helper 8: Apply & Format Raw JSON
-  // ----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Helper: Apply Raw JSON with Schema Validation
+  // ---------------------------------------------------------------------------
   const handleApplyJson = () => {
     if (!selectedItem) return;
 
     try {
       const parsed = JSON.parse(jsonText);
+
+      if (!parsed || typeof parsed !== "object") {
+        setJsonError("Invalid JSON: Root must be an object");
+        return;
+      }
+
+      const targetType = parsed.type || selectedItem.type;
+      const rule = ALL_RULES[targetType];
+
+      // Validate against registered SDUI rule
+      if (rule) {
+        const validation = validate(parsed, rule);
+        if (!validation.isValid) {
+          setJsonError(validation.errors.join("; "));
+          return;
+        }
+      }
+
+      // Valid: Commit change
       onUpdateItem({
         ...selectedItem,
-        type: parsed.type || selectedItem.type,
+        type: targetType,
         config: parsed,
       });
+
       setJsonError(null);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2000);
@@ -276,164 +310,136 @@ export default function PropertiesPanel({
     }
   };
 
-  // Extract all data keys currently present
+  // Extract all content data keys (merging rule fields and existing config data)
   const dataKeys = useMemo(() => {
-    if (!selectedItem?.config?.data) return [];
-    return Object.keys(selectedItem.config.data);
-  }, [selectedItem?.config?.data]);
+    if (!selectedItem) return [];
+    const fromConfig = Object.keys(selectedItem.config.data || {});
+    const fromRule = currentRule?.fields ? Object.keys(currentRule.fields) : [];
+    return Array.from(new Set([...fromRule, ...fromConfig]));
+  }, [selectedItem, currentRule]);
 
-  const currentStyles = selectedItem?.config?.containerStyle || {};
-  const currentActions = selectedItem?.config?.actions || {};
+  // Current tap action URL
+  const currentTapUrl = useMemo(() => {
+    if (!selectedItem?.config?.actions) return "";
+    return getActionUrl(selectedItem.config.actions.onTap);
+  }, [selectedItem?.config?.actions]);
 
   return (
-    <div className="h-full flex flex-col rounded-xl border border-zinc-200/90 bg-white shadow-2xs overflow-hidden select-none">
-      {/* ====================================================================== */}
-      {/* 1. Panel Header                                                        */}
-      {/* ====================================================================== */}
-      <div className="h-10 shrink-0 px-3.5 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/70">
+    <div className="flex flex-col h-full w-full bg-white rounded-xl border border-zinc-200/90 shadow-2xs overflow-hidden select-none">
+      {/* 1. Header Bar */}
+      <div className="shrink-0 h-11 border-b border-zinc-200/80 px-3 flex items-center justify-between bg-zinc-50/50">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-zinc-600 text-xs">⚙️</span>
-          <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-800 truncate">
-            Properties
-          </h2>
+          <span className="text-xs font-bold text-zinc-900 truncate">
+            {selectedItem ? selectedItem.name || selectedItem.type : "Inspector"}
+          </span>
+          {selectedItem && (
+            <span className="rounded bg-zinc-200/70 px-1.5 py-0.5 text-[10px] font-mono text-zinc-600 shrink-0">
+              {selectedItem.type}
+            </span>
+          )}
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          {selectedItem && (
-            <button
-              type="button"
-              onClick={onDeselect}
-              title="Deselect component"
-              className="text-[10px] text-zinc-400 hover:text-zinc-700 transition px-1 rounded cursor-pointer"
-            >
-              ✕ Clear
-            </button>
-          )}
-          <span className="rounded bg-zinc-200/70 px-1.5 py-0.5 text-[9px] font-bold text-zinc-600">
-            Panel 3
-          </span>
-        </div>
+        {selectedItem && onDeselect && (
+          <button
+            type="button"
+            onClick={onDeselect}
+            title="Deselect component"
+            className="text-[11px] text-zinc-400 hover:text-zinc-800 transition px-1.5 py-0.5 rounded cursor-pointer"
+          >
+            ✕ Deselect
+          </button>
+        )}
       </div>
 
-      {/* ====================================================================== */}
-      {/* 2. Top Tabs: Values vs JSON                                            */}
-      {/* ====================================================================== */}
-      <div className="shrink-0 flex border-b border-zinc-100 px-3 pt-1.5 gap-2 bg-zinc-50/30">
+      {/* 2. Mode Selector: Visual Editor vs Raw JSON */}
+      <div className="shrink-0 flex border-b border-zinc-200/70 px-3 pt-1.5 gap-3 bg-zinc-50/30">
         <button
           type="button"
-          onClick={() => setActiveTab("values")}
-          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer ${activeTab === "values"
+          onClick={() => setActiveTab("visual")}
+          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
+            activeTab === "visual"
               ? "border-zinc-900 text-zinc-900"
               : "border-transparent text-zinc-400 hover:text-zinc-600"
-            }`}
+          }`}
         >
-          📝 Visual Editor
+          Visual Editor
         </button>
         <button
           type="button"
           onClick={() => setActiveTab("json")}
-          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer flex items-center gap-1 ${activeTab === "json"
+          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer flex items-center gap-1.5 ${
+            activeTab === "json"
               ? "border-zinc-900 text-zinc-900"
               : "border-transparent text-zinc-400 hover:text-zinc-600"
-            }`}
+          }`}
         >
-          <span>💻 Raw JSON</span>
+          <span>Raw JSON</span>
           {jsonError && (
-            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
           )}
         </button>
       </div>
 
-      {/* ====================================================================== */}
-      {/* 3. Panel Body                                                          */}
-      {/* ====================================================================== */}
+      {/* 3. Panel Body */}
       <div className="flex-1 overflow-y-auto p-3">
         {!selectedItem ? (
-          /* Empty State: No component selected */
-          <div className="w-full h-full min-h-[240px] rounded-xl border-2 border-dashed border-zinc-200/90 bg-zinc-50/40 flex flex-col items-center justify-center p-6 text-center">
-            <div className="h-10 w-10 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-400 mb-2.5">
-              <span className="text-xl">👆</span>
-            </div>
-            <p className="text-xs font-semibold text-zinc-700">
-              No Component Selected
-            </p>
-            <p className="text-[11px] text-zinc-400 mt-1 max-w-[200px] leading-relaxed">
-              Click on any component on <strong>Panel 2 (Canvas)</strong> to edit its texts, colors, styling, and grid width here.
+          /* Empty State */
+          <div className="w-full h-full min-h-[220px] rounded-xl border border-dashed border-zinc-200 bg-zinc-50/50 flex flex-col items-center justify-center p-6 text-center">
+            <span className="text-2xl mb-1.5">🎯</span>
+            <p className="text-xs font-bold text-zinc-700">No Component Selected</p>
+            <p className="text-[11px] text-zinc-400 mt-1 max-w-[180px]">
+              Click any element on the canvas to configure its content, styling, and layout.
             </p>
           </div>
-        ) : activeTab === "values" ? (
-          /* ================================================================== */
-          /* VALUES TAB: Visual Controls (No JSON Knowledge Needed!)             */
-          /* ================================================================== */
+        ) : activeTab === "visual" ? (
+          /* Visual Editor Mode */
           <div className="space-y-3.5">
-            {/* Component Summary Pill */}
-            <div className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200/90 flex items-center justify-between">
-              <div className="min-w-0 pr-2">
-                <span className="text-xs font-bold text-zinc-900 block truncate">
-                  {selectedItem.name || selectedItem.type}
-                </span>
-                <span className="text-[9px] text-zinc-400 font-mono block truncate">
-                  Type: {selectedItem.type} • {selectedItem.category}
-                </span>
-              </div>
-              {selectedItem.placement?.desktop ? (
-                <span className="rounded bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 text-[9px] shrink-0">
-                  {selectedItem.placement.desktop.colEnd - selectedItem.placement.desktop.colStart} / 24 Cols
-                </span>
-              ) : selectedItem.placement ? (
-                <span className="rounded bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 text-[9px] shrink-0">
-                  Root Block
-                </span>
-              ) : (
-                <span className="rounded bg-blue-100 text-blue-800 font-bold px-2 py-0.5 text-[9px] shrink-0">
-                  Nested Child
-                </span>
-              )}
-            </div>
-
-            {/* Sub-Section Switcher (Content | Style | Layout) */}
-            <div className="grid grid-cols-3 gap-1 p-1 rounded-lg bg-zinc-100 text-[11px] font-semibold">
+            {/* Visual Sub-tabs: Content | Style | Layout */}
+            <div className="grid grid-cols-3 gap-1 p-0.5 rounded-lg bg-zinc-100 text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setActiveSection("content")}
-                className={`py-1 rounded-md transition text-center cursor-pointer ${activeSection === "content"
-                    ? "bg-white text-zinc-900 shadow-2xs"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
+                  activeSection === "content"
+                    ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                  }`}
+                }`}
               >
-                📄 Content
+                Content
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSection("style")}
-                className={`py-1 rounded-md transition text-center cursor-pointer ${activeSection === "style"
-                    ? "bg-white text-zinc-900 shadow-2xs"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
+                  activeSection === "style"
+                    ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                  }`}
+                }`}
               >
-                🎨 Style
+                Style
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSection("layout")}
-                className={`py-1 rounded-md transition text-center cursor-pointer ${activeSection === "layout"
-                    ? "bg-white text-zinc-900 shadow-2xs"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
+                  activeSection === "layout"
+                    ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                  }`}
+                }`}
               >
-                📐 Layout
+                Layout
               </button>
             </div>
 
-            {/* -------------------------------------------------------------- */}
-            {/* SUB-SECTION 1: CONTENT & DATA FIELDS                           */}
-            {/* -------------------------------------------------------------- */}
+            {/* ============================================================== */}
+            {/* SUB-SECTION 1: CONTENT                                         */}
+            {/* ============================================================== */}
             {activeSection === "content" && (
-              <div className="space-y-3 animate-fade-in">
-                {/* Component Name / Title */}
+              <div className="space-y-3">
+                {/* Component Name */}
                 <div>
                   <label className="text-[11px] font-semibold text-zinc-600 block mb-1">
-                    Component Display Name
+                    Display Name
                   </label>
                   <input
                     type="text"
@@ -443,121 +449,138 @@ export default function PropertiesPanel({
                   />
                 </div>
 
-                {/* Dynamic Data Fields (Renders ALL properties in config.data) */}
+                {/* Dynamic Content Properties */}
                 <div className="space-y-2.5 pt-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                      Content Properties ({dataKeys.length})
-                    </label>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                      Properties ({dataKeys.length})
+                    </span>
                     <button
                       type="button"
                       onClick={() => setShowAddProp(!showAddProp)}
-                      className="text-[10px] text-emerald-700 hover:text-emerald-800 font-semibold cursor-pointer"
+                      className="text-[10px] text-zinc-600 hover:text-zinc-900 font-semibold cursor-pointer"
                     >
-                      {showAddProp ? "Cancel" : "+ Add Property"}
+                      {showAddProp ? "Cancel" : "+ Add Field"}
                     </button>
                   </div>
 
-                  {/* Add Custom Property Form */}
+                  {/* Add Field Inline Form */}
                   {showAddProp && (
-                    <div className="p-2.5 rounded-lg border border-emerald-200 bg-emerald-50/50 space-y-2">
-                      <div className="text-[10px] font-bold text-emerald-900">
-                        Add New Property
-                      </div>
-                      <div className="grid grid-cols-2 gap-1.5">
-                        <input
-                          type="text"
-                          placeholder="Property name (e.g. discount)"
-                          value={newPropKey}
-                          onChange={(e) => setNewPropKey(e.target.value)}
-                          className="rounded border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Value (e.g. 20% OFF)"
-                          value={newPropVal}
-                          onChange={(e) => setNewPropVal(e.target.value)}
-                          className="rounded border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800"
-                        />
-                      </div>
+                    <div className="p-2.5 rounded-lg bg-zinc-50 border border-zinc-200 space-y-2">
+                      <input
+                        type="text"
+                        placeholder="Field key (e.g. badge, author)"
+                        value={newPropKey}
+                        onChange={(e) => setNewPropKey(e.target.value)}
+                        className="w-full rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 font-mono"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Field value"
+                        value={newPropVal}
+                        onChange={(e) => setNewPropVal(e.target.value)}
+                        className="w-full rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800"
+                      />
                       <button
                         type="button"
                         onClick={handleAddCustomProperty}
-                        className="w-full py-1 rounded bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 cursor-pointer"
+                        className="w-full py-1 rounded bg-zinc-900 text-white text-[11px] font-bold cursor-pointer hover:bg-zinc-800"
                       >
-                        Add to Component
+                        Add Field
                       </button>
                     </div>
                   )}
 
-                  {dataKeys.length === 0 && !showAddProp && (
-                    <div className="p-3 rounded-lg border border-dashed border-zinc-200 bg-zinc-50 text-center">
-                      <p className="text-[11px] text-zinc-500">
-                        No content properties defined yet.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          handleDataChange("text", "Sample Text");
-                        }}
-                        className="mt-1.5 px-2.5 py-1 rounded bg-zinc-900 text-white text-[10px] font-semibold cursor-pointer"
-                      >
-                        + Add Default Text
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Render all existing properties */}
+                  {/* Dynamic inputs */}
                   {dataKeys.map((key) => {
-                    const rawVal = selectedItem.config.data?.[key];
-                    const strVal = typeof rawVal === "object" ? JSON.stringify(rawVal) : String(rawVal ?? "");
-                    const isDescription = key.toLowerCase().includes("desc") || key.toLowerCase().includes("subtitle");
-                    const isImage = key.toLowerCase().includes("image") || key.toLowerCase().includes("src");
+                    const rawVal = selectedItem.config?.data?.[key];
+                    const val = rawVal !== undefined ? rawVal : "";
+                    const lowerKey = key.toLowerCase();
+                    const isLongText =
+                      lowerKey.includes("description") ||
+                      lowerKey.includes("details") ||
+                      lowerKey.includes("reviewtext");
+                    const isImage =
+                      lowerKey.includes("image") ||
+                      lowerKey.includes("iconurl") ||
+                      lowerKey.includes("banner") ||
+                      lowerKey === "src";
+                    const isNumber =
+                      typeof val === "number" ||
+                      lowerKey.includes("price") ||
+                      lowerKey.includes("rating") ||
+                      lowerKey.includes("count") ||
+                      lowerKey.includes("score");
+                    const isBoolean = typeof val === "boolean";
 
                     return (
                       <div key={key} className="space-y-1">
                         <div className="flex items-center justify-between">
-                          <label className="text-[11px] font-semibold text-zinc-700 capitalize">
+                          <label className="text-[11px] font-medium text-zinc-700 capitalize">
                             {key.replace(/([A-Z])/g, " $1")}
                           </label>
                           <button
                             type="button"
                             onClick={() => handleRemoveDataField(key)}
-                            title="Remove this property"
-                            className="text-zinc-400 hover:text-red-500 text-[10px]"
+                            className="text-[10px] text-zinc-400 hover:text-red-500 cursor-pointer"
+                            title="Remove field"
                           >
                             ✕
                           </button>
                         </div>
 
-                        {isDescription ? (
+                        {isBoolean ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(val)}
+                              onChange={(e) => handleDataChange(key, e.target.checked)}
+                              className="h-4 w-4 rounded accent-zinc-900 cursor-pointer"
+                            />
+                            <span className="text-xs text-zinc-600">
+                              {val ? "Enabled" : "Disabled"}
+                            </span>
+                          </div>
+                        ) : isLongText ? (
                           <textarea
-                            rows={2}
-                            value={strVal}
+                            rows={3}
+                            value={val}
                             onChange={(e) => handleDataChange(key, e.target.value)}
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400 resize-none"
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            value={strVal}
-                            onChange={(e) => handleDataChange(key, e.target.value)}
-                            placeholder={`Enter ${key}...`}
                             className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
                           />
-                        )}
-
-                        {/* Image Preview Thumbnail if URL */}
-                        {isImage && strVal && (
-                          <div className="mt-1 h-12 w-20 rounded border border-zinc-200 overflow-hidden bg-zinc-100 flex items-center justify-center">
-                            <img
-                              src={strVal}
-                              alt="Preview"
-                              className="h-full w-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = "none";
-                              }}
+                        ) : isNumber ? (
+                          <input
+                            type="number"
+                            value={val}
+                            onChange={(e) =>
+                              handleDataChange(
+                                key,
+                                e.target.value === "" ? "" : Number(e.target.value)
+                              )
+                            }
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                          />
+                        ) : (
+                          <div className="space-y-1">
+                            <input
+                              type="text"
+                              value={val}
+                              onChange={(e) => handleDataChange(key, e.target.value)}
+                              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
                             />
+                            {isImage && val && typeof val === "string" && (
+                              <div className="relative h-14 w-full rounded border border-zinc-200 overflow-hidden bg-zinc-50 flex items-center justify-center">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={val}
+                                  alt="Preview"
+                                  className="h-full w-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLElement).style.display = "none";
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -565,46 +588,39 @@ export default function PropertiesPanel({
                   })}
                 </div>
 
-                {/* Click / Navigation Action */}
-                <div className="pt-2 border-t border-zinc-100 space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                    Tap Action / Link
+                {/* Tap Action / Link Navigation */}
+                <div className="pt-2 border-t border-zinc-100 space-y-1">
+                  <label className="text-[11px] font-semibold text-zinc-700 block">
+                    Tap Action / URL
                   </label>
                   <input
                     type="text"
-                    value={getActionUrl(currentActions.onTap)}
+                    placeholder="e.g. /cart, https://..., tel:..."
+                    value={currentTapUrl}
                     onChange={(e) => handleActionChange("onTap", e.target.value)}
-                    placeholder="e.g. /products/clothing or https://..."
-                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-mono text-zinc-800 focus:outline-none focus:border-zinc-400"
                   />
-                  <span className="text-[9px] text-zinc-400 block">
-                    Triggered when user clicks or taps this component.
-                  </span>
                 </div>
 
-                {/* Component Children Section */}
-                {(childrenList.length > 0 || allowedChildren.length > 0) && (
-                  <div className="pt-2.5 border-t border-zinc-100 space-y-2">
+                {/* Allowed Children Section */}
+                {allowedChildren.length > 0 && (
+                  <div className="pt-2 border-t border-zinc-100 space-y-2">
                     <div className="flex items-center justify-between">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                         Children ({childrenList.length})
-                      </label>
-
-                      {allowedChildren.length > 0 && (
+                      </span>
+                      {onAddChild && (
                         <div className="relative">
                           <button
                             type="button"
-                            onClick={() => setShowAddChildDropdown((v) => !v)}
-                            className="text-[10px] text-emerald-700 hover:text-emerald-800 font-semibold cursor-pointer"
+                            onClick={() => setShowAddChildDropdown(!showAddChildDropdown)}
+                            className="text-[11px] text-zinc-700 hover:text-zinc-900 font-semibold cursor-pointer"
                           >
                             {showAddChildDropdown ? "Close" : "+ Add Child"}
                           </button>
 
                           {showAddChildDropdown && (
-                            <div className="absolute right-0 top-full mt-1 z-50 w-44 max-h-48 overflow-y-auto rounded-lg bg-zinc-900/95 backdrop-blur-md border border-zinc-700 shadow-xl py-1 text-xs">
-                              <div className="px-2 py-0.5 text-[8px] font-bold uppercase text-zinc-400 border-b border-zinc-800">
-                                Allowed Children ({allowedChildren.length})
-                              </div>
+                            <div className="absolute right-0 top-full mt-1 z-50 w-44 max-h-48 overflow-y-auto rounded-lg bg-zinc-900 border border-zinc-700 shadow-xl py-1 text-xs">
                               {allowedChildren.map((type) => (
                                 <button
                                   key={type}
@@ -615,10 +631,10 @@ export default function PropertiesPanel({
                                     }
                                     setShowAddChildDropdown(false);
                                   }}
-                                  className="w-full text-left px-2 py-1 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 text-[10px] cursor-pointer"
+                                  className="w-full text-left px-2.5 py-1.5 flex items-center justify-between text-zinc-200 hover:text-white hover:bg-zinc-800 text-[11px] cursor-pointer"
                                 >
                                   <span>{type}</span>
-                                  <span className="text-emerald-400 font-semibold">+ Add</span>
+                                  <span className="text-emerald-400 font-semibold">+</span>
                                 </button>
                               ))}
                             </div>
@@ -628,9 +644,7 @@ export default function PropertiesPanel({
                     </div>
 
                     {/* Children List */}
-                    {childrenList.length === 0 ? (
-                      <p className="text-[11px] text-zinc-400 italic">No children inside this component.</p>
-                    ) : (
+                    {childrenList.length > 0 && (
                       <div className="space-y-1">
                         {childrenList.map((ch, idx) => (
                           <div
@@ -643,21 +657,19 @@ export default function PropertiesPanel({
                                 if (onSelectItem && ch.id) onSelectItem(ch.id);
                               }}
                               className="flex items-center gap-1.5 text-zinc-700 hover:text-blue-600 font-semibold text-[11px] cursor-pointer truncate text-left flex-1"
-                              title={`Select ${ch.type}`}
                             >
                               <span className="text-zinc-400">└</span>
                               <span className="font-bold">{ch.type}</span>
-                              <span className="text-[9px] text-zinc-400 font-mono">({ch.id ? ch.id.slice(0, 12) : "child"}...)</span>
                             </button>
 
                             {onDeleteChild && ch.id && (
                               <button
                                 type="button"
                                 onClick={() => onDeleteChild(ch.id)}
-                                title="Delete this child"
+                                title="Delete child"
                                 className="text-zinc-400 hover:text-red-500 text-[10px] px-1 cursor-pointer"
                               >
-                                🗑️
+                                ✕
                               </button>
                             )}
                           </div>
@@ -669,28 +681,27 @@ export default function PropertiesPanel({
               </div>
             )}
 
-            {/* -------------------------------------------------------------- */}
-            {/* SUB-SECTION 2: STYLE & APPEARANCE (Colors, Radius, Padding)    */}
-            {/* -------------------------------------------------------------- */}
+            {/* ============================================================== */}
+            {/* SUB-SECTION 2: STYLE                                           */}
+            {/* ============================================================== */}
             {activeSection === "style" && (
-              <div className="space-y-3.5 animate-fade-in">
+              <div className="space-y-3.5">
                 {/* 1. Background Color */}
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1">
                     <label className="text-[11px] font-semibold text-zinc-700">
                       Background Color
                     </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
+                    <span className="text-[10px] font-mono text-zinc-400">
                       {currentStyles.backgroundColor || "default"}
                     </span>
                   </div>
 
-                  {/* Color Swatch Picker */}
                   <div className="flex items-center gap-1.5 mb-2">
                     <input
                       type="color"
                       value={
-                        currentStyles.backgroundColor && currentStyles.backgroundColor.startsWith("#")
+                        currentStyles.backgroundColor?.startsWith("#")
                           ? currentStyles.backgroundColor
                           : "#ffffff"
                       }
@@ -713,15 +724,16 @@ export default function PropertiesPanel({
                         key={p.label}
                         type="button"
                         onClick={() => handleStyleChange("backgroundColor", p.value)}
-                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${currentStyles.backgroundColor === p.value
-                            ? "border-zinc-900 ring-1 ring-zinc-900"
-                            : "border-zinc-200 hover:border-zinc-400"
-                          }`}
+                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${
+                          currentStyles.backgroundColor === p.value
+                            ? "border-zinc-900 ring-1 ring-zinc-900 bg-zinc-50"
+                            : "border-zinc-200 hover:border-zinc-400 bg-white"
+                        }`}
                       >
                         <span
-                          className="h-2.5 w-2.5 rounded-full border border-black/10"
+                          className="h-2 w-2 rounded-full border border-black/10"
                           style={{ backgroundColor: p.value }}
-                        ></span>
+                        />
                         <span>{p.label}</span>
                       </button>
                     ))}
@@ -730,11 +742,11 @@ export default function PropertiesPanel({
 
                 {/* 2. Text Color */}
                 <div className="pt-2 border-t border-zinc-100">
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1">
                     <label className="text-[11px] font-semibold text-zinc-700">
                       Text Color
                     </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
+                    <span className="text-[10px] font-mono text-zinc-400">
                       {currentStyles.color || "inherit"}
                     </span>
                   </div>
@@ -743,7 +755,7 @@ export default function PropertiesPanel({
                     <input
                       type="color"
                       value={
-                        currentStyles.color && currentStyles.color.startsWith("#")
+                        currentStyles.color?.startsWith("#")
                           ? currentStyles.color
                           : "#18181b"
                       }
@@ -759,179 +771,305 @@ export default function PropertiesPanel({
                     />
                   </div>
 
+                  {/* Preset Swatches */}
                   <div className="flex flex-wrap gap-1">
                     {TEXT_COLOR_PRESETS.map((p) => (
                       <button
                         key={p.label}
                         type="button"
                         onClick={() => handleStyleChange("color", p.value)}
-                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${currentStyles.color === p.value
-                            ? "border-zinc-900 ring-1 ring-zinc-900"
-                            : "border-zinc-200 hover:border-zinc-400"
-                          }`}
+                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${
+                          currentStyles.color === p.value
+                            ? "border-zinc-900 ring-1 ring-zinc-900 bg-zinc-50"
+                            : "border-zinc-200 hover:border-zinc-400 bg-white"
+                        }`}
                       >
                         <span
-                          className="h-2.5 w-2.5 rounded-full border border-black/10"
+                          className="h-2 w-2 rounded-full border border-black/10"
                           style={{ backgroundColor: p.value }}
-                        ></span>
+                        />
                         <span>{p.label}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* 3. Border Radius (Corner Roundness) */}
+                {/* 3. Typography & Font Size */}
                 <div className="pt-2 border-t border-zinc-100">
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-[11px] font-semibold text-zinc-700">
-                      Corner Roundness
-                    </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {currentStyles.borderRadius || "default"}
-                    </span>
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Font Size
+                  </label>
+                  <div className="grid grid-cols-5 gap-1 mb-1.5">
+                    {["12px", "14px", "16px", "20px", "24px"].map((fs) => (
+                      <button
+                        key={fs}
+                        type="button"
+                        onClick={() => handleStyleChange("fontSize", fs)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.fontSize === fs
+                            ? "bg-zinc-900 text-white"
+                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                        }`}
+                      >
+                        {fs}
+                      </button>
+                    ))}
                   </div>
 
-                  <div className="grid grid-cols-4 gap-1">
+                  {/* Font Weight */}
+                  <label className="text-[11px] font-semibold text-zinc-700 block mt-2 mb-1">
+                    Font Weight
+                  </label>
+                  <div className="grid grid-cols-5 gap-1 mb-1.5">
                     {[
-                      { label: "Sharp", value: "0px" },
-                      { label: "Rounded", value: "8px" },
-                      { label: "Smooth", value: "16px" },
-                      { label: "Pill", value: "9999px" },
-                    ].map((r) => (
+                      { label: "400", val: "400" },
+                      { label: "500", val: "500" },
+                      { label: "600", val: "600" },
+                      { label: "700", val: "700" },
+                      { label: "800", val: "800" },
+                    ].map((fw) => (
                       <button
-                        key={r.label}
+                        key={fw.val}
                         type="button"
-                        onClick={() => handleStyleChange("borderRadius", r.value)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.borderRadius === r.value
-                            ? "bg-zinc-900 text-white shadow-2xs"
+                        onClick={() => handleStyleChange("fontWeight", fw.val)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.fontWeight === fw.val
+                            ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                        }`}
                       >
-                        {r.label}
+                        {fw.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Text Alignment */}
+                  <label className="text-[11px] font-semibold text-zinc-700 block mt-2 mb-1">
+                    Alignment
+                  </label>
+                  <div className="grid grid-cols-3 gap-1">
+                    {["left", "center", "right"].map((ta) => (
+                      <button
+                        key={ta}
+                        type="button"
+                        onClick={() => handleStyleChange("textAlign", ta)}
+                        className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${
+                          currentStyles.textAlign === ta
+                            ? "bg-zinc-900 text-white"
+                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                        }`}
+                      >
+                        {ta}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* 4. Padding (Spacing inside component) */}
+                {/* 4. Padding & Margin */}
                 <div className="pt-2 border-t border-zinc-100">
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-[11px] font-semibold text-zinc-700">
-                      Inner Padding
-                    </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {currentStyles.padding || "default"}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-1">
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Padding
+                  </label>
+                  <div className="grid grid-cols-4 gap-1 mb-2">
                     {[
-                      { label: "None", value: "0px" },
-                      { label: "Compact", value: "8px" },
-                      { label: "Normal", value: "16px" },
-                      { label: "Spacious", value: "24px" },
+                      { label: "0px", val: "0px" },
+                      { label: "8px", val: "8px" },
+                      { label: "16px", val: "16px" },
+                      { label: "24px", val: "24px" },
                     ].map((p) => (
                       <button
-                        key={p.label}
+                        key={p.val}
                         type="button"
-                        onClick={() => handleStyleChange("padding", p.value)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.padding === p.value
-                            ? "bg-zinc-900 text-white shadow-2xs"
+                        onClick={() => handleStyleChange("padding", p.val)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.padding === p.val
+                            ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                        }`}
                       >
                         {p.label}
                       </button>
                     ))}
                   </div>
+
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Margin
+                  </label>
+                  <div className="grid grid-cols-4 gap-1">
+                    {[
+                      { label: "0px", val: "0px" },
+                      { label: "4px", val: "4px" },
+                      { label: "8px", val: "8px" },
+                      { label: "16px", val: "16px" },
+                    ].map((m) => (
+                      <button
+                        key={m.val}
+                        type="button"
+                        onClick={() => handleStyleChange("margin", m.val)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.margin === m.val
+                            ? "bg-zinc-900 text-white"
+                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                        }`}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                {/* 5. Typography Size & Alignment */}
+                {/* 5. Border Radius & Border */}
                 <div className="pt-2 border-t border-zinc-100">
                   <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
-                    Font Size &amp; Alignment
+                    Corner Radius
                   </label>
-                  <div className="grid grid-cols-4 gap-1 mb-2">
+                  <div className="grid grid-cols-5 gap-1 mb-2">
                     {[
-                      { label: "12px", value: "12px" },
-                      { label: "14px", value: "14px" },
-                      { label: "16px", value: "16px" },
-                      { label: "20px", value: "20px" },
-                    ].map((fs) => (
+                      { label: "0", val: "0px" },
+                      { label: "8px", val: "8px" },
+                      { label: "16px", val: "16px" },
+                      { label: "24px", val: "24px" },
+                      { label: "Full", val: "9999px" },
+                    ].map((r) => (
                       <button
-                        key={fs.label}
+                        key={r.val}
                         type="button"
-                        onClick={() => handleStyleChange("fontSize", fs.value)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.fontSize === fs.value
-                            ? "bg-zinc-900 text-white shadow-2xs"
+                        onClick={() => handleStyleChange("borderRadius", r.val)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.borderRadius === r.val
+                            ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                        }`}
                       >
-                        {fs.label}
+                        {r.label}
                       </button>
                     ))}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-1">
-                    {[
-                      { label: "Left", value: "left" },
-                      { label: "Center", value: "center" },
-                      { label: "Right", value: "right" },
-                    ].map((ta) => (
+                  {/* Border Width */}
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Border Width
+                  </label>
+                  <div className="grid grid-cols-4 gap-1">
+                    {["0px", "1px", "2px", "4px"].map((bw) => (
                       <button
-                        key={ta.label}
+                        key={bw}
                         type="button"
-                        onClick={() => handleStyleChange("textAlign", ta.value)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.textAlign === ta.value
-                            ? "bg-zinc-900 text-white shadow-2xs"
+                        onClick={() => {
+                          handleStyleChange("borderWidth", bw);
+                          if (!currentStyles.borderStyle && bw !== "0px") {
+                            handleStyleChange("borderStyle", "solid");
+                          }
+                        }}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.borderWidth === bw
+                            ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                        }`}
                       >
-                        {ta.label}
+                        {bw}
                       </button>
                     ))}
                   </div>
                 </div>
+
+                {/* 6. Elevation / Shadow */}
+                <div className="pt-2 border-t border-zinc-100">
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Shadow
+                  </label>
+                  <div className="grid grid-cols-4 gap-1">
+                    {[
+                      { label: "None", val: "none" },
+                      { label: "Soft", val: "0 1px 3px rgba(0,0,0,0.08)" },
+                      { label: "Card", val: "0 4px 12px rgba(0,0,0,0.12)" },
+                      { label: "Large", val: "0 10px 25px rgba(0,0,0,0.15)" },
+                    ].map((sh) => (
+                      <button
+                        key={sh.label}
+                        type="button"
+                        onClick={() => handleStyleChange("boxShadow", sh.val)}
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                          currentStyles.boxShadow === sh.val ||
+                          (!currentStyles.boxShadow && sh.val === "none")
+                            ? "bg-zinc-900 text-white"
+                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                        }`}
+                      >
+                        {sh.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 7. Image Fit (If Image component or has image) */}
+                {(selectedItem.type.toLowerCase().includes("image") ||
+                  currentStyles.objectFit) && (
+                  <div className="pt-2 border-t border-zinc-100">
+                    <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                      Image Object Fit
+                    </label>
+                    <div className="grid grid-cols-3 gap-1">
+                      {["cover", "contain", "fill"].map((fit) => (
+                        <button
+                          key={fit}
+                          type="button"
+                          onClick={() => handleStyleChange("objectFit", fit)}
+                          className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${
+                            currentStyles.objectFit === fit
+                              ? "bg-zinc-900 text-white"
+                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                          }`}
+                        >
+                          {fit}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            {/* -------------------------------------------------------------- */}
-            {/* SUB-SECTION 3: LAYOUT & DIMENSIONS (Width, Height, Grid)       */}
-            {/* -------------------------------------------------------------- */}
+            {/* ============================================================== */}
+            {/* SUB-SECTION 3: LAYOUT                                          */}
+            {/* ============================================================== */}
             {activeSection === "layout" && (
-              <div className="space-y-3.5 animate-fade-in">
-                {/* 1. Root Canvas Grid Width (Only shown for root items placed on grid) */}
-                {selectedItem.placement?.desktop ? (
+              <div className="space-y-3.5">
+                {/* 1. Grid Column Span (Root Blocks) */}
+                {selectedItem.placement?.[activeDevice] && (
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-[11px] font-semibold text-zinc-700">
-                        Canvas Grid Columns (Desktop: 24 Cols)
+                      <label className="text-[11px] font-semibold text-zinc-700 capitalize">
+                        {activeDevice} Grid Columns ({maxCols} Max)
                       </label>
                       <span className="text-xs font-mono font-bold text-zinc-900">
-                        {selectedItem.placement.desktop.colEnd - selectedItem.placement.desktop.colStart} / 24 Cols
+                        {currentColSpan} / {maxCols} Cols
                       </span>
                     </div>
 
-                    {/* Preset Quick Width Buttons */}
+                    {/* Presets based on device columns */}
                     <div className="grid grid-cols-4 gap-1 mb-2">
                       {[
-                        { label: "25% (6 cols)", span: 6 },
-                        { label: "33% (8 cols)", span: 8 },
-                        { label: "50% (12 cols)", span: 12 },
-                        { label: "100% (24 cols)", span: 24 },
+                        { label: "25%", span: Math.max(1, Math.round(maxCols * 0.25)) },
+                        {
+                          label: maxCols === 24 ? "33%" : "50%",
+                          span: maxCols === 24 ? 8 : Math.round(maxCols * 0.5),
+                        },
+                        {
+                          label: maxCols === 24 ? "50%" : "75%",
+                          span: maxCols === 24 ? 12 : Math.round(maxCols * 0.75),
+                        },
+                        { label: "100%", span: maxCols },
                       ].map((p) => {
-                        const currentSpan =
-                          selectedItem.placement!.desktop!.colEnd -
-                          selectedItem.placement!.desktop!.colStart;
-                        const isActive = currentSpan === p.span;
+                        const isActive = currentColSpan === p.span;
                         return (
                           <button
-                            key={p.span}
+                            key={p.label}
                             type="button"
                             onClick={() => handleGridSpanChange(p.span)}
-                            className={`py-1.5 px-1 text-center rounded text-[10px] font-semibold transition cursor-pointer ${
+                            className={`py-1.5 text-center rounded text-[10px] font-semibold transition cursor-pointer ${
                               isActive
-                                ? "bg-zinc-900 text-white shadow-2xs"
+                                ? "bg-zinc-900 text-white"
                                 : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
                             }`}
                           >
@@ -941,60 +1079,54 @@ export default function PropertiesPanel({
                       })}
                     </div>
 
-                    {/* Range Slider for custom 1-24 span */}
+                    {/* Stepper / Slider */}
                     <input
                       type="range"
                       min="1"
-                      max="24"
+                      max={maxCols}
                       step="1"
-                      value={
-                        selectedItem.placement.desktop.colEnd -
-                        selectedItem.placement.desktop.colStart
-                      }
+                      value={currentColSpan}
                       onChange={(e) => handleGridSpanChange(Number(e.target.value))}
                       className="w-full accent-zinc-900 cursor-pointer"
                     />
-                    <div className="flex justify-between text-[9px] text-zinc-400 font-mono mt-0.5">
-                      <span>1 col</span>
-                      <span>12 cols (50%)</span>
-                      <span>24 cols (Full)</span>
-                    </div>
                   </div>
-                ) : null}
+                )}
 
-                {/* 2. Component Width (CSS Pixel / Percentage Dimension) */}
-                <div className={selectedItem.placement ? "pt-2.5 border-t border-zinc-100" : ""}>
-                  <div className="flex items-center justify-between mb-1.5">
+                {/* 2. CSS Width */}
+                <div className="pt-2 border-t border-zinc-100">
+                  <div className="flex items-center justify-between mb-1">
                     <label className="text-[11px] font-semibold text-zinc-700">
-                      Component Width
+                      Width
                     </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {currentStyles.width || "Default"}
+                    <span className="text-[10px] font-mono text-zinc-400">
+                      {currentStyles.width || "auto"}
                     </span>
                   </div>
 
-                  {/* Preset Width Buttons */}
-                  <div className="grid grid-cols-3 gap-1 mb-2">
+                  <div className="grid grid-cols-3 gap-1 mb-1.5">
                     {[
-                      { label: "Auto (Fit)", value: "auto" },
-                      { label: "100% (Full)", value: "100%" },
-                      { label: "200px", value: "200px" },
-                      { label: "280px (Card)", value: "280px" },
-                      { label: "340px", value: "340px" },
-                      { label: "400px", value: "400px" },
+                      { label: "Auto", val: "auto" },
+                      { label: "100%", val: "100%" },
+                      { label: "280px", val: "280px" },
+                      { label: "340px", val: "340px" },
+                      { label: "400px", val: "400px" },
+                      { label: "Custom", val: "" },
                     ].map((w) => {
                       const isActive =
-                        currentStyles.width === w.value ||
-                        (!currentStyles.width && w.value === "auto");
+                        currentStyles.width === w.val ||
+                        (!currentStyles.width && w.val === "auto");
                       return (
                         <button
                           key={w.label}
                           type="button"
-                          onClick={() => handleStyleChange("width", w.value === "auto" ? "" : w.value)}
-                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${isActive
-                              ? "bg-zinc-900 text-white shadow-2xs"
+                          onClick={() =>
+                            handleStyleChange("width", w.val === "auto" ? "" : w.val)
+                          }
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                            isActive
+                              ? "bg-zinc-900 text-white"
                               : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                            }`}
+                          }`}
                         >
                           {w.label}
                         </button>
@@ -1002,62 +1134,48 @@ export default function PropertiesPanel({
                     })}
                   </div>
 
-                  {/* Custom Width Text Input */}
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      placeholder="e.g. 280px, 320px, 100%..."
-                      value={currentStyles.width || ""}
-                      onChange={(e) => handleStyleChange("width", e.target.value)}
-                      className="flex-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800 focus:outline-none focus:border-zinc-400"
-                    />
-                    {currentStyles.width && (
-                      <button
-                        type="button"
-                        onClick={() => handleStyleChange("width", "")}
-                        className="text-[10px] text-zinc-400 hover:text-red-500 px-1 cursor-pointer"
-                      >
-                        Reset
-                      </button>
-                    )}
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="e.g. 280px, 100%, max-content"
+                    value={currentStyles.width || ""}
+                    onChange={(e) => handleStyleChange("width", e.target.value)}
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800"
+                  />
                 </div>
 
-                {/* 3. Component Height Dimension */}
-                <div className="pt-2.5 border-t border-zinc-100">
-                  <div className="flex items-center justify-between mb-1.5">
+                {/* 3. CSS Height */}
+                <div className="pt-2 border-t border-zinc-100">
+                  <div className="flex items-center justify-between mb-1">
                     <label className="text-[11px] font-semibold text-zinc-700">
-                      Component Height
+                      Height
                     </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {currentStyles.height || currentStyles.minHeight || "auto"}
+                    <span className="text-[10px] font-mono text-zinc-400">
+                      {currentStyles.height || "auto"}
                     </span>
                   </div>
 
-                  {/* Preset Height Buttons */}
-                  <div className="grid grid-cols-3 gap-1 mb-2">
+                  <div className="grid grid-cols-4 gap-1 mb-1.5">
                     {[
-                      { label: "Auto (Fit)", value: "auto" },
-                      { label: "44px (Compact)", value: "44px" },
-                      { label: "80px (Badge)", value: "80px" },
-                      { label: "160px (Medium)", value: "160px" },
-                      { label: "260px (Banner)", value: "260px" },
-                      { label: "320px (Card)", value: "320px" },
-                      { label: "380px (Hero)", value: "380px" },
-                      { label: "500px (Large)", value: "500px" },
+                      { label: "Auto", val: "auto" },
+                      { label: "44px", val: "44px" },
+                      { label: "120px", val: "120px" },
+                      { label: "260px", val: "260px" },
                     ].map((h) => {
                       const isActive =
-                        currentStyles.height === h.value ||
-                        (!currentStyles.height && h.value === "auto");
+                        currentStyles.height === h.val ||
+                        (!currentStyles.height && h.val === "auto");
                       return (
                         <button
                           key={h.label}
                           type="button"
-                          onClick={() => handleStyleChange("height", h.value === "auto" ? "" : h.value)}
-                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${isActive
-                              ? "bg-zinc-900 text-white shadow-2xs"
+                          onClick={() =>
+                            handleStyleChange("height", h.val === "auto" ? "" : h.val)
+                          }
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                            isActive
+                              ? "bg-zinc-900 text-white"
                               : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                            }`}
+                          }`}
                         >
                           {h.label}
                         </button>
@@ -1065,82 +1183,60 @@ export default function PropertiesPanel({
                     })}
                   </div>
 
-                  {/* Custom Height Text Input */}
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      placeholder="e.g. 180px, 250px, auto..."
-                      value={currentStyles.height || ""}
-                      onChange={(e) => handleStyleChange("height", e.target.value)}
-                      className="flex-1 rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800 focus:outline-none focus:border-zinc-400"
-                    />
-                    {currentStyles.height && (
-                      <button
-                        type="button"
-                        onClick={() => handleStyleChange("height", "")}
-                        className="text-[10px] text-zinc-400 hover:text-red-500 px-1 cursor-pointer"
-                      >
-                        Reset
-                      </button>
-                    )}
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="e.g. 180px, auto..."
+                    value={currentStyles.height || ""}
+                    onChange={(e) => handleStyleChange("height", e.target.value)}
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800"
+                  />
                 </div>
 
                 {/* 4. Minimum Height */}
-                <div className="pt-2.5 border-t border-zinc-100">
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-[11px] font-semibold text-zinc-700">
-                      Minimum Height (minHeight)
-                    </label>
-                    <span className="text-[10px] font-mono text-zinc-500">
-                      {currentStyles.minHeight || "none"}
-                    </span>
-                  </div>
+                <div className="pt-2 border-t border-zinc-100">
+                  <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                    Min Height
+                  </label>
                   <input
                     type="text"
                     placeholder="e.g. 60px, 120px..."
                     value={currentStyles.minHeight || ""}
                     onChange={(e) => handleStyleChange("minHeight", e.target.value)}
-                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800 focus:outline-none focus:border-zinc-400"
+                    className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-mono text-zinc-800"
                   />
                 </div>
 
-                {/* 5. Layout Position Info Card */}
-                {selectedItem.placement?.desktop ? (
-                  <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1.5 text-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">
-                      Grid Coordinates (Desktop: 24 Columns)
-                    </span>
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-zinc-600">Columns:</span>
-                      <span className="font-mono font-bold text-zinc-900">
-                        Col {selectedItem.placement.desktop.colStart} → {selectedItem.placement.desktop.colEnd - 1} ({selectedItem.placement.desktop.colEnd - selectedItem.placement.desktop.colStart} cols)
-                      </span>
+                {/* 5. Flex Gap for Containers */}
+                {childrenList.length > 0 && (
+                  <div className="pt-2 border-t border-zinc-100">
+                    <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                      Child Spacing (Gap)
+                    </label>
+                    <div className="grid grid-cols-4 gap-1">
+                      {["0px", "8px", "16px", "24px"].map((g) => (
+                        <button
+                          key={g}
+                          type="button"
+                          onClick={() => handleStyleChange("gap", g)}
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
+                            currentStyles.gap === g
+                              ? "bg-zinc-900 text-white"
+                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                          }`}
+                        >
+                          {g}
+                        </button>
+                      ))}
                     </div>
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-zinc-600">Rows:</span>
-                      <span className="font-mono font-bold text-zinc-900">
-                        Row {selectedItem.placement.desktop.rowStart} → {selectedItem.placement.desktop.rowEnd - 1} ({selectedItem.placement.desktop.rowEnd - selectedItem.placement.desktop.rowStart} rows)
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-3 rounded-xl bg-blue-50/60 border border-blue-200/80 space-y-1.5 text-xs">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block">
-                      Nested Child Layout
-                    </span>
-                    <p className="text-[11px] text-zinc-600 leading-relaxed">
-                      This component is nested inside a parent container. Its position is managed by the parent container, and its dimensions are controlled by the width and height settings above.
-                    </p>
                   </div>
                 )}
               </div>
             )}
           </div>
         ) : (
-          /* ================================================================== */
-          /* JSON TAB: Raw JSON Editor (For Advanced Users)                     */
-          /* ================================================================== */
+          /* ============================================================== */
+          /* RAW JSON MODE                                                   */
+          /* ============================================================== */
           <div className="h-full flex flex-col space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
@@ -1149,22 +1245,22 @@ export default function PropertiesPanel({
               <button
                 type="button"
                 onClick={handleFormatJson}
-                className="text-[10px] text-zinc-500 hover:text-zinc-900 font-semibold cursor-pointer"
+                className="text-[10px] text-zinc-600 hover:text-zinc-900 font-semibold cursor-pointer"
               >
                 Format JSON
               </button>
             </div>
 
-            {/* Error Notification */}
+            {/* Error Banner */}
             {jsonError && (
-              <div className="p-2 rounded-lg bg-red-50 border border-red-200 text-red-700 text-[10px] font-mono">
+              <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-[11px] font-mono leading-relaxed">
                 ⚠️ {jsonError}
               </div>
             )}
 
-            {/* Success Notification */}
+            {/* Success Banner */}
             {saveSuccess && (
-              <div className="p-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold text-center">
+              <div className="p-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold text-center">
                 ✓ JSON applied successfully!
               </div>
             )}
@@ -1181,7 +1277,7 @@ export default function PropertiesPanel({
               spellCheck={false}
             />
 
-            {/* Action Bar */}
+            {/* Actions */}
             <div className="flex items-center justify-between pt-1">
               <button
                 type="button"

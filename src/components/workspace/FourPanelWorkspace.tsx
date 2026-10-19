@@ -27,6 +27,7 @@ import {
 } from "./panels/CanvasPanel";
 import { ALL_RULES } from "@/sdui/validators/rules";
 import type { DeviceType, GridPlacement } from "@/sdui/types";
+import { THEMES_REGISTRY } from "@/sdui/themeBundle";
 
 interface FourPanelWorkspaceProps {
   activeThemeName?: string;
@@ -35,6 +36,44 @@ interface FourPanelWorkspaceProps {
 }
 
 type MobileActivePanel = 1 | 2 | 3 | 4;
+
+/**
+ * Helper to convert an SDUI theme tree into initial canvas layout items
+ */
+function getInitialLayoutFromTheme(themeId: string): CanvasLayoutItem[] {
+  const schema = THEMES_REGISTRY[themeId] || THEMES_REGISTRY["theme1"];
+  if (!schema) return [];
+  const pageNode =
+    (Array.isArray(schema.children) && schema.children.find((c: any) => c.type === "Page")) ||
+    schema;
+  const blocks = Array.isArray(pageNode.children) ? pageNode.children : [];
+
+  let currentRow = 1;
+  return blocks.map((rawBlock: any, idx: number) => {
+    const blockWithIds = ensureNodeIds(rawBlock, `block-${idx}`);
+    const id = blockWithIds.id || `root-${blockWithIds.type.toLowerCase()}-${idx}`;
+    const desktopDef = getDefaultPlacement(blockWithIds.type, "desktop", currentRow);
+    const rowSpan = Math.max(1, desktopDef.rowEnd - desktopDef.rowStart);
+
+    const placement: Record<DeviceType, GridPlacement> = {
+      desktop: desktopDef,
+      tablet: getDefaultPlacement(blockWithIds.type, "tablet", currentRow),
+      mobile: getDefaultPlacement(blockWithIds.type, "mobile", currentRow),
+    };
+    currentRow += rowSpan;
+
+    return {
+      id,
+      type: blockWithIds.type,
+      name: blockWithIds.type,
+      category: ALL_RULES[blockWithIds.type]?.category || "Component",
+      placement,
+      config: { ...blockWithIds, id },
+      children: syncChildrenLayoutItems(blockWithIds),
+      zIndex: idx + 1,
+    };
+  });
+}
 
 /**
  * Helper to recursively find a component by its unique ID
@@ -140,6 +179,111 @@ export default function FourPanelWorkspace({
   // Shared layout items placed on the canvas
   const [layoutItems, setLayoutItems] = useState<CanvasLayoutItem[]>([]);
 
+  // Load from localStorage or initialize with active theme blocks
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const storageKey = `campus_workspace_items_${activeThemeId}`;
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // If cached layout has outdated narrow header (< 20 cols), upgrade to full width layout
+          const hasNarrowHeader = parsed.some(
+            (it: any) => it.type === "Header" && (it.placement?.desktop?.colEnd || 0) < 20
+          );
+          if (!hasNarrowHeader) {
+            setLayoutItems(parsed);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to parse saved layout items", e);
+      }
+    }
+    const initial = getInitialLayoutFromTheme(activeThemeId);
+    if (initial.length > 0) {
+      setLayoutItems(initial);
+    }
+  }, [activeThemeId]);
+
+  // Persist layout items to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (layoutItems.length > 0) {
+      const storageKey = `campus_workspace_items_${activeThemeId}`;
+      localStorage.setItem(storageKey, JSON.stringify(layoutItems));
+    }
+  }, [layoutItems, activeThemeId]);
+
+  // History stacks for undo & redo
+  const [history, setHistory] = useState<CanvasLayoutItem[][]>([]);
+  const [future, setFuture] = useState<CanvasLayoutItem[][]>([]);
+
+  // Helper to update layout while recording undo history
+  const setLayoutItemsWithHistory = useCallback(
+    (action: CanvasLayoutItem[] | ((prev: CanvasLayoutItem[]) => CanvasLayoutItem[])) => {
+      setLayoutItems((current) => {
+        const next = typeof action === "function" ? action(current) : action;
+        if (next !== current) {
+          setHistory((prevH) => [...prevH.slice(-30), current]);
+          setFuture([]);
+        }
+        return next;
+      });
+    },
+    []
+  );
+
+  const handleUndo = useCallback(() => {
+    setHistory((prevH) => {
+      if (prevH.length === 0) return prevH;
+      const previous = prevH[prevH.length - 1];
+      const newHistory = prevH.slice(0, prevH.length - 1);
+      setLayoutItems((current) => {
+        setFuture((prevF) => [current, ...prevF]);
+        return previous;
+      });
+      return newHistory;
+    });
+  }, []);
+
+  const handleRedo = useCallback(() => {
+    setFuture((prevF) => {
+      if (prevF.length === 0) return prevF;
+      const next = prevF[0];
+      const newFuture = prevF.slice(1);
+      setLayoutItems((current) => {
+        setHistory((prevH) => [...prevH, current]);
+        return next;
+      });
+      return newFuture;
+    });
+  }, []);
+
+  // Keyboard shortcut listener for Ctrl+Z and Ctrl+Y
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+        if (e.shiftKey) {
+          e.preventDefault();
+          handleRedo();
+        } else {
+          e.preventDefault();
+          handleUndo();
+        }
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+        e.preventDefault();
+        handleRedo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleUndo, handleRedo]);
+
   // Selected item ID on the canvas (can be a root block or any nested child)
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -177,7 +321,6 @@ export default function FourPanelWorkspace({
   // Handler for selecting a component from Canvas
   const handleSelectItem = useCallback((id: string | null) => {
     setSelectedItemId(id);
-    // On small screens, automatically switch to Panel 3 (Props) when a component is clicked
     if (id && typeof window !== "undefined" && window.innerWidth < 1024) {
       setMobilePanel(3);
     }
@@ -186,7 +329,7 @@ export default function FourPanelWorkspace({
   // Handler for updating a component's values, styles, or JSON from PropertiesPanel
   const handleUpdateItem = useCallback(
     (updated: CanvasLayoutItem) => {
-      setLayoutItems((prev) => {
+      setLayoutItemsWithHistory((prev) => {
         // 1. Check if updated item is a root-level component
         const isRoot = prev.some((it) => it.id === updated.id);
 
@@ -201,25 +344,25 @@ export default function FourPanelWorkspace({
             DEVICE_CONFIGS[device].columns
           );
 
-          const currentPlace =
+          // Use updated placement if provided (e.g. from grid span change), otherwise current
+          const targetPlacement =
+            updated.placement?.[device] ||
             rootItem.placement?.[device] ||
             getDefaultPlacement(rootItem.type, device, 1);
-          const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
+          const currentRows = targetPlacement.rowEnd - targetPlacement.rowStart;
           const finalRows = Math.max(currentRows, neededRows);
 
-          let previewPlacements: Record<string, GridPlacement> = {};
-          if (finalRows > currentRows) {
-            const expandedPlacement: GridPlacement = {
-              ...currentPlace,
-              rowEnd: currentPlace.rowStart + finalRows,
-            };
-            previewPlacements = calculateLayoutPreview(
-              prev,
-              rootItem.id,
-              expandedPlacement,
-              device
-            );
-          }
+          const finalPlacement: GridPlacement = {
+            ...targetPlacement,
+            rowEnd: targetPlacement.rowStart + finalRows,
+          };
+
+          const previewPlacements = calculateLayoutPreview(
+            prev,
+            rootItem.id,
+            finalPlacement,
+            device
+          );
 
           return prev.map((item) => {
             const nextPlace =
@@ -233,7 +376,8 @@ export default function FourPanelWorkspace({
                 ...updated,
                 placement: {
                   ...item.placement,
-                  [device]: nextPlace,
+                  ...updated.placement,
+                  [device]: previewPlacements[item.id] || finalPlacement,
                 },
                 config: updatedConfig,
                 children: syncChildrenLayoutItems(updatedConfig),
@@ -467,8 +611,34 @@ export default function FourPanelWorkspace({
           </span>
         </div>
 
-        {/* Right: Play / Live Preview Button */}
+        {/* Right: Undo / Redo & Play / Live Preview Button */}
         <div className="flex items-center gap-2">
+          {/* Undo / Redo Group */}
+          <div className="flex items-center bg-zinc-100 rounded-lg p-0.5 border border-zinc-200">
+            <button
+              type="button"
+              onClick={handleUndo}
+              disabled={history.length === 0}
+              title="Undo (Ctrl+Z)"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-md text-zinc-600 hover:text-zinc-900 hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer shadow-xs disabled:shadow-none"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a5 5 0 015 5v2m0 0l-4-4m4 4l4-4" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={handleRedo}
+              disabled={future.length === 0}
+              title="Redo (Ctrl+Y)"
+              className="inline-flex items-center justify-center w-7 h-7 rounded-md text-zinc-600 hover:text-zinc-900 hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition cursor-pointer shadow-xs disabled:shadow-none"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 10h-10a5 5 0 00-5 5v2m0 0l4-4m-4 4l-4-4" />
+              </svg>
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={handleTogglePreview}
@@ -579,7 +749,7 @@ export default function FourPanelWorkspace({
         >
           <CanvasPanel
             items={layoutItems}
-            onItemsChange={setLayoutItems}
+            onItemsChange={setLayoutItemsWithHistory}
             selectedItemId={selectedItemId}
             onSelectItem={handleSelectItem}
             device={device}
@@ -600,6 +770,7 @@ export default function FourPanelWorkspace({
             onSelectItem={handleSelectItem}
             onAddChild={handleAddChild}
             onDeleteChild={handleDeleteChild}
+            device={device}
           />
         </div>
 

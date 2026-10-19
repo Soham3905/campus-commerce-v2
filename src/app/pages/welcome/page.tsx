@@ -9,21 +9,17 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   openSlider,
   validateThemesBackend,
-  setHasAppliedTheme,
   setIsThemeExisted,
 } from "@/store/slices/themeSlice";
 
 /**
  * ==============================================================================
- * Route: /pages/welcome (Welcome Page & Theme Studio Workspace)
+ * Route: /pages/welcome (Theme Studio 4-Panel Workspace)
  * ==============================================================================
  * Flow:
- * 1. Initial First-Time State: Shows welcome popup & starter card.
- * 2. User selects theme and clicks "Apply Theme" -> Forms Redux cluster and sets isThemeExisted = true.
- * 3. Once a theme exists:
- *    - The introductory welcome popup NEVER appears again.
- *    - Clicking "Welcome" in the navigation directly lands on the 4-Panel Workshop!
- * 4. Users can change themes at any time from within the 4-panel workshop toolbar.
+ * 1. User selects theme and clicks "Apply Theme" in ThemeSlider -> Forms Redux cluster and sets isThemeExisted = true.
+ * 2. 4-Panel Workshop is unlocked and rendered.
+ * 3. Users can change themes at any time from within the 4-panel workshop toolbar.
  * ==============================================================================
  */
 export default function WelcomePage() {
@@ -38,14 +34,13 @@ export default function WelcomePage() {
   } = useAppSelector((state) => state.theme);
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
 
   // Check if a theme has been applied / already exists
   const isThemeSelected = isThemeExisted || hasAppliedTheme || appliedThemeCluster !== null;
 
   const activeTheme = availableThemes.find((t) => t.id === activeThemeId) || availableThemes[0];
 
-  // On initial mount: only show the welcome popup if NO theme exists yet!
+  // On initial mount: if theme exists in storage, restore it; otherwise auto-open Theme Slider
   useEffect(() => {
     if (typeof window !== "undefined") {
       const persistedExisted =
@@ -54,29 +49,19 @@ export default function WelcomePage() {
 
       if (persistedExisted) {
         dispatch(setIsThemeExisted(true));
-        setShowPopup(false);
       } else if (!isThemeSelected) {
-        setShowPopup(true);
+        // Automatically prompt the user to select a theme
+        handleOpenThemeSlider();
       }
     }
   }, [dispatch, isThemeSelected]);
 
-  // When a theme is selected, ensure the popup is immediately closed
-  useEffect(() => {
-    if (isThemeSelected) {
-      setShowPopup(false);
-    }
-  }, [isThemeSelected]);
-
   // Check 1: Validate themes on the backend before opening the ThemeSlider
-  const handleOpenThemeSlider = async (closeWelcomePopup: boolean = false) => {
+  const handleOpenThemeSlider = async () => {
     try {
       await dispatch(validateThemesBackend()).unwrap();
     } catch (e) {
       console.warn("Backend validation note:", e);
-    }
-    if (closeWelcomePopup) {
-      setShowPopup(false);
     }
     dispatch(openSlider());
   };
@@ -94,7 +79,7 @@ export default function WelcomePage() {
           onCloseMobile={() => setIsMobileSidebarOpen(false)}
         />
 
-        {/* Dynamic Content: 4 Panels Workspace (when theme existed) OR Starter Welcome Card (first time only) */}
+        {/* Dynamic Content: 4 Panels Workspace (when theme selected) OR Prompt to Select Theme */}
         {isThemeSelected ? (
           <main className="flex-1 w-full h-[calc(100vh-3.5rem)] flex flex-col overflow-hidden">
             <FourPanelWorkspace
@@ -103,90 +88,34 @@ export default function WelcomePage() {
             />
           </main>
         ) : (
-          <main className="flex-1 p-6 lg:p-8 w-full space-y-4">
-            <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs max-w-xl space-y-4">
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">
-              Welcome
-                </h1>
-            <p className="text-sm text-zinc-600">
-              Welcome to the website. Use the buttons below if you want to view the welcome message or select a theme again.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-2.5 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowPopup(true)}
-                  className="rounded-lg border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-50 active:scale-95 transition shadow-2xs cursor-pointer"
-                >
-                  👋 View Welcome Message
-                </button>
-
-                <button
-                  type="button"
-                  disabled={isValidating}
-                  onClick={() => handleOpenThemeSlider(false)}
-                  className="rounded-lg bg-zinc-900 px-3.5 py-2 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-95 transition shadow-2xs cursor-pointer flex items-center gap-1.5"
-                >
-                  {isValidating ? "⚙️ Validating..." : "🎨 Select Theme"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => dispatch(setIsThemeExisted(true))}
-                  className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs font-semibold text-zinc-600 hover:bg-zinc-100 active:scale-95 transition cursor-pointer"
-                >
-                  Open 4 Panels &rarr;
-                </button>
+          <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-8 w-full bg-[#f4f5f7]">
+            <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-xs max-w-md w-full text-center space-y-5">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-zinc-100 flex items-center justify-center text-2xl shadow-2xs">
+                🎨
               </div>
+              <div className="space-y-1.5">
+                <h1 className="text-xl font-bold tracking-tight text-zinc-900">
+                  Select a Theme to Begin
+                </h1>
+                <p className="text-xs text-zinc-500 leading-relaxed">
+                  Please choose and apply a theme from the Theme Studio to start building your theme page.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                disabled={isValidating}
+                onClick={() => handleOpenThemeSlider()}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-98 transition shadow-xs cursor-pointer"
+              >
+                {isValidating ? "⚙️ Validating Themes..." : "🎨 Select Theme"}
+              </button>
             </div>
           </main>
         )}
       </div>
 
-      {/* 3. Welcome Popup Modal (Only shown first time before a theme is selected) */}
-      {showPopup && !isThemeSelected && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-overlay-in"
-          onClick={() => !isValidating && setShowPopup(false)}
-        >
-          <div
-            className="w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-6 shadow-xl animate-pop-in space-y-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="space-y-2">
-              <h2 className="text-base font-semibold text-zinc-900">
-                Welcome! 👋
-              </h2>
-              <p className="text-sm text-zinc-600 leading-relaxed">
-                Thank you for visiting our website! We&apos;re glad to have you here. Before you get started, choose a theme that suits your style and personalize your experience.
-              </p>
-            </div>
-
-            <div className="flex justify-between items-center pt-2">
-              <button
-                type="button"
-                onClick={() => setShowPopup(false)}
-                className="text-xs text-zinc-400 hover:text-zinc-700 font-medium cursor-pointer"
-              >
-                Dismiss
-              </button>
-
-              <button
-                type="button"
-                disabled={isValidating}
-                onClick={() => handleOpenThemeSlider(true)}
-                className="rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 active:scale-95 transition cursor-pointer"
-              >
-                {isValidating ? "Validating..." : "Proceed & Choose Theme"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 4. Theme Selection Popup (Opens when user clicks Proceed or Select Theme) */}
+      {/* 3. Theme Selection Modal */}
       <ThemeSlider />
     </div>
   );
