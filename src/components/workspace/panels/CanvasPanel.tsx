@@ -121,12 +121,12 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       rowSpan = 1;
       break;
     case "Button":
-      colSpan = Math.min(4, maxCols);
-      rowSpan = 2;
+      colSpan = Math.min(3, maxCols);
+      rowSpan = 1;
       break;
     case "HeaderButton":
       colSpan = Math.min(6, maxCols);
-      rowSpan = 2;
+      rowSpan = 1;
       break;
     case "Header":
     case "SearchBar":
@@ -166,12 +166,22 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       break;
     case "Image":
       colSpan = Math.min(8, maxCols);
-      rowSpan = 6;
+      rowSpan = 5;
+      break;
+    case "StoryCircle":
+      colSpan = Math.min(3, maxCols);
+      rowSpan = 2;
       break;
     case "Badge":
+      colSpan = Math.min(2, maxCols);
+      rowSpan = 1;
+      break;
     case "Label":
-    case "Icon":
       colSpan = Math.min(4, maxCols);
+      rowSpan = 1;
+      break;
+    case "Icon":
+      colSpan = Math.min(1, maxCols);
       rowSpan = 1;
       break;
     default:

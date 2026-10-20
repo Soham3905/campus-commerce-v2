@@ -12,23 +12,55 @@ import type { BaseRendererProps } from "../types";
  * Receives standard props: { children, style, data, actions, ... }
  */
 export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const {
+    height,
+    minHeight,
+    flex,
+    flexShrink,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    whiteSpace,
+    textOverflow,
+    ...cleanStyle
+  } = (style || {}) as any;
+
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
+      className="no-scrollbar"
       style={{
-        padding: "8px 12px",
-        borderRadius: 12,
-        backgroundColor: "#f8fafc",
-        border: "1px solid #e5e7eb",
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
-        gap: 6,
-        ...style
+        justifyContent: "center",
+        gap: "6px",
+        width: "100%",
+        height: "100%",
+        padding: "6px 12px",
+        border: "none",
+        backgroundColor: "transparent",
+        color: cleanStyle.color || "inherit",
+        fontSize: "12px",
+        fontWeight: "600",
+        cursor: "pointer",
+        boxSizing: "border-box",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        overflowWrap: "anywhere",
+        wordBreak: "break-word",
+        textAlign: "center",
+        ...cleanStyle,
       }}
     >
-      <span style={{ fontWeight: 600, fontSize: 12 }}>
-        {data?.icon} {data?.label}
-      </span>
-    </div>
+      {data?.icon && <span style={{ flexShrink: 0 }}>{data.icon}</span>}
+      {(data?.label || data?.text) && (
+        <span style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+          {data?.label || data?.text}
+        </span>
+      )}
+      {!data?.icon && !data?.label && !data?.text && "HeaderButton"}
+    </button>
   );
 }

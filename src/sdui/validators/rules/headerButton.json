@@ -3,15 +3,20 @@
   "displayName": "Header Button",
   "category": "Atoms",
   "isCompulsory": false,
-  "allowedComponents": [
-    "Icon",
-    "Text"
-  ],
+  "allowedComponents": [],
   "minValue": 0,
-  "maxValue": 2,
+  "maxValue": 0,
   "allowedActions": [
     "onTap"
   ],
-  "requiredDataFields": [],
-  "fields": {}
+  "requiredDataFields": [
+    "label"
+  ],
+  "fields": {
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    }
+  }
 }

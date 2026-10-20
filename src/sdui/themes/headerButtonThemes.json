@@ -6,20 +6,18 @@
     "config": {
       "type": "HeaderButton",
       "containerStyle": {
-        "display": "inline-flex",
-        "alignItems": "center",
-        "justifyContent": "flex-start",
         "backgroundColor": "transparent",
         "border": "none",
         "borderRadius": "0",
         "color": "#0D3540",
-        "fontSize": "16px",
+        "fontSize": "12px",
         "fontWeight": "700",
         "letterSpacing": "0.08em",
         "textTransform": "uppercase",
-        "whiteSpace": "nowrap",
         "boxSizing": "border-box",
-        "cursor": "pointer"
+        "cursor": "pointer",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "id": "headerBtn",

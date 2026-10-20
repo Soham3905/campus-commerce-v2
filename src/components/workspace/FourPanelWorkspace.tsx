@@ -184,10 +184,10 @@ export default function FourPanelWorkspace({
     if (typeof window === "undefined") return;
     const storageKey = `campus_workspace_items_${activeThemeId}`;
     const saved = localStorage.getItem(storageKey);
-    if (saved) {
+    if (saved !== null) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           // If cached layout has outdated narrow header (< 20 cols), upgrade to full width layout
           const hasNarrowHeader = parsed.some(
             (it: any) => it.type === "Header" && (it.placement?.desktop?.colEnd || 0) < 20
@@ -210,10 +210,8 @@ export default function FourPanelWorkspace({
   // Persist layout items to localStorage whenever they change
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (layoutItems.length > 0) {
-      const storageKey = `campus_workspace_items_${activeThemeId}`;
-      localStorage.setItem(storageKey, JSON.stringify(layoutItems));
-    }
+    const storageKey = `campus_workspace_items_${activeThemeId}`;
+    localStorage.setItem(storageKey, JSON.stringify(layoutItems));
   }, [layoutItems, activeThemeId]);
 
   // History stacks for undo & redo

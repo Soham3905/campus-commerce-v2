@@ -6,9 +6,10 @@
     "config": {
       "type": "Image",
       "containerStyle": {
-        "height": "200px",
         "objectFit": "cover",
-        "borderRadius": "14px"
+        "borderRadius": "14px",
+        "boxSizing": "border-box",
+        "overflow": "hidden"
       },
       "data": {
         "imageUrl": "",

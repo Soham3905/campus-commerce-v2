@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { BaseRendererProps } from "../types";
 
 /**
@@ -11,13 +11,49 @@ import type { BaseRendererProps } from "../types";
  * Renders the "Image" component in the SDUI tree.
  * Receives standard props: { children, style, data, actions, ... }
  */
-export default function ImageRenderer({ data = {}, style = {} }: BaseRendererProps) {
+export default function ImageRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const [hasError, setHasError] = useState(false);
+
+  const {
+    flex,
+    flexShrink,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    ...cleanStyle
+  } = (style || {}) as any;
+
+  const fallbackUrl =
+    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80";
+
   return (
-    <div style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
+    <div
+      onClick={onClick}
+      className="no-scrollbar"
+      style={{
+        width: "100%",
+        height: cleanStyle.height || "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: cleanStyle.backgroundColor || "#f8f9fa",
+        borderRadius: cleanStyle.borderRadius || "12px",
+        overflow: "hidden",
+        boxSizing: "border-box",
+        ...cleanStyle,
+      }}
+    >
       <img
-        src={data?.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png"}
+        src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
         alt={data?.altText || "Image"}
-        style={{ width: "100%", height: "180px", objectFit: "contain", ...style }}
+        onError={() => setHasError(true)}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: cleanStyle.objectFit || "cover",
+          display: "block",
+          borderRadius: "inherit",
+        }}
       />
     </div>
   );

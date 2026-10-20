@@ -6,22 +6,17 @@
     "config": {
       "type": "Badge",
       "containerStyle": {
-        "height": "22px",
-        "minHeight": "22px",
-        "flex": "0 0 22px",
-        "flexShrink": "0",
         "alignSelf": "flex-start",
-        "display": "inline-flex",
-        "alignItems": "center",
         "padding": "0 9px",
         "borderRadius": "999px",
         "fontSize": "11px",
         "fontWeight": "600",
         "letterSpacing": "0.01em",
-        "whiteSpace": "nowrap",
         "boxSizing": "border-box",
         "backgroundColor": "#FFF3DF",
-        "color": "#8A5209"
+        "color": "#8A5209",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Badge"

@@ -1472,32 +1472,18 @@
                 {
                   "type": "Label",
                   "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
                     "fontSize": "10px",
                     "fontWeight": "600",
                     "letterSpacing": "0.10em",
                     "textTransform": "uppercase",
                     "color": "#1C3829",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": "Sponsored"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "text": "Sponsored"
+                  }
                 },
                 {
                   "type": "Badge",
@@ -1831,36 +1817,6 @@
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#1C3829",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
                     "height": "22px",
@@ -2190,36 +2146,6 @@
                     "imageUrl": "https://picsum.photos/id/204/600/600",
                     "altText": "Kettleworks electric kettle"
                   }
-                },
-                {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#1C3829",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
                 },
                 {
                   "type": "Badge",
@@ -2553,36 +2479,6 @@
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#1C3829",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
                     "height": "22px",
@@ -2912,36 +2808,6 @@
                     "imageUrl": "https://picsum.photos/id/1078/600/600",
                     "altText": "Volt 65W GaN charger"
                   }
-                },
-                {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#1C3829",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
                 },
                 {
                   "type": "Badge",

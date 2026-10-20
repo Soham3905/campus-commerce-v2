@@ -6,17 +6,8 @@
     "config": {
       "type": "Button",
       "containerStyle": {
-        "height": "44px",
-        "minHeight": "44px",
-        "flex": "0 0 44px",
-        "flexShrink": "0",
         "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
         "backgroundColor": "#C4185F",
-        "marginTop": "auto",
-        "alignSelf": "flex-end",
-        "display": "flex",
-        "alignItems": "center",
-        "justifyContent": "center",
         "padding": "0 16px",
         "borderRadius": "12px",
         "border": "none",
@@ -26,7 +17,9 @@
         "letterSpacing": "0.01em",
         "cursor": "pointer",
         "boxSizing": "border-box",
-        "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+        "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "label": "Button"

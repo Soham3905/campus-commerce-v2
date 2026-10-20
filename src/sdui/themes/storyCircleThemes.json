@@ -9,7 +9,10 @@
         "borderColor": "#123A44",
         "accentColor": "#123A44",
         "--story-ring": "#123A44",
-        "--ring-color": "#123A44"
+        "--ring-color": "#123A44",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "label": "Story",

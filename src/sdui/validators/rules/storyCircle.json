@@ -3,12 +3,9 @@
   "displayName": "Story Circle",
   "category": "Atoms",
   "isCompulsory": false,
-  "allowedComponents": [
-    "Image",
-    "Text"
-  ],
+  "allowedComponents": [],
   "minValue": 0,
-  "maxValue": 2,
+  "maxValue": 0,
   "allowedActions": [
     "onTap",
     "onDrag"

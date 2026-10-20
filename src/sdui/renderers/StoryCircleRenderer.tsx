@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { BaseRendererProps } from "../types";
 
 /**
@@ -12,44 +12,105 @@ import type { BaseRendererProps } from "../types";
  * Receives standard props: { children, style, data, actions, ... }
  */
 export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const [hasError, setHasError] = useState(false);
+
+  const {
+    height,
+    minHeight,
+    flex,
+    flexShrink,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    whiteSpace,
+    textOverflow,
+    ...cleanStyle
+  } = (style || {}) as any;
+
+  const fallbackUrl =
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80";
+
+  const ringColor =
+    cleanStyle.borderColor ||
+    cleanStyle["--story-ring"] ||
+    cleanStyle["--ring-color"] ||
+    "#123A44";
+
   return (
     <div
       onClick={onClick}
+      className="no-scrollbar"
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "6px",
+        justifyContent: "center",
+        gap: "4px",
+        width: "100%",
+        height: "100%",
         cursor: "pointer",
-        flexShrink: 0,
+        boxSizing: "border-box",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        padding: "4px",
         transition: "transform 0.15s ease",
+        ...cleanStyle,
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.06)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.05)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+      }}
     >
       <div
         style={{
-          width: "60px",
-          height: "60px",
+          width: "52px",
+          height: "52px",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          aspectRatio: "1/1",
           borderRadius: "50%",
           padding: "2px",
-          border: "2px solid #e1306c",
+          border: `2px solid ${ringColor}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#f8f9fa",
-          ...style
+          flexShrink: 0,
+          boxSizing: "border-box",
         }}
       >
         <img
-          src={data?.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Information_icon.svg/24px-Information_icon.svg.png"}
+          src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
           alt={data?.label || "Story"}
-          style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+          onError={() => setHasError(true)}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+          }}
         />
       </div>
-      <span style={{ fontSize: "11px", fontWeight: "500", color: style?.color || "inherit" }}>
-        {data?.label}
-      </span>
+      {(data?.label || data?.text) && (
+        <span
+          style={{
+            fontSize: "11px",
+            fontWeight: "500",
+            color: cleanStyle.color || "inherit",
+            textAlign: "center",
+            overflowWrap: "anywhere",
+            wordBreak: "break-word",
+            maxWidth: "100%",
+            lineHeight: "1.2",
+          }}
+        >
+          {data?.label || data?.text}
+        </span>
+      )}
     </div>
   );
 }

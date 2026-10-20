@@ -6,19 +6,14 @@
     "config": {
       "type": "Title",
       "containerStyle": {
-        "height": "16px",
-        "minHeight": "16px",
-        "flex": "0 0 16px",
-        "flexShrink": "0",
-        "overflow": "hidden",
-        "whiteSpace": "nowrap",
-        "textOverflow": "ellipsis",
         "fontSize": "11px",
         "fontWeight": "700",
         "letterSpacing": "0.10em",
         "textTransform": "uppercase",
         "color": "#5E6E72",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Title"

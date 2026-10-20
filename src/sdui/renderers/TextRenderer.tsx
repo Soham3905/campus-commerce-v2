@@ -12,8 +12,34 @@ import type { BaseRendererProps } from "../types";
  * Receives standard props: { children, style, data, actions, ... }
  */
 export default function TextRenderer({ data = {}, style = {} }: BaseRendererProps) {
+  const {
+    whiteSpace,
+    textOverflow,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    ...cleanStyle
+  } = (style || {}) as any;
+
   return (
-    <span style={{ fontSize: "14px", color: style.color || "inherit", ...style }}>
+    <span
+      className="no-scrollbar"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        fontSize: "14px",
+        color: cleanStyle.color || "inherit",
+        boxSizing: "border-box",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        overflowWrap: "anywhere",
+        wordBreak: "break-word",
+        whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
+        ...cleanStyle,
+      }}
+    >
       {data?.text}
     </span>
   );

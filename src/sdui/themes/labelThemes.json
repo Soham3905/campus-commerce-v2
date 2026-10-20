@@ -6,35 +6,18 @@
     "config": {
       "type": "Label",
       "containerStyle": {
-        "height": "16px",
-        "minHeight": "16px",
-        "flex": "0 0 16px",
-        "flexShrink": "0",
-        "display": "flex",
-        "alignItems": "center",
-        "gap": "4px",
-        "overflow": "hidden",
         "fontSize": "10px",
         "fontWeight": "600",
         "letterSpacing": "0.10em",
         "textTransform": "uppercase",
         "color": "#8D9A9D",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Label"
-      },
-      "children": [
-        {
-          "type": "Sponsored",
-          "containerStyle": {
-            "color": "#8D9A9D"
-          },
-          "data": {
-            "text": "Label"
-          }
-        }
-      ]
+      }
     }
   },
   "theme2": {
@@ -61,18 +44,7 @@
       },
       "data": {
         "text": "Label"
-      },
-      "children": [
-        {
-          "type": "Sponsored",
-          "containerStyle": {
-            "color": "#64748B"
-          },
-          "data": {
-            "text": "Label"
-          }
-        }
-      ]
+      }
     }
   },
   "theme3": {
@@ -99,18 +71,7 @@
       },
       "data": {
         "text": "Label"
-      },
-      "children": [
-        {
-          "type": "Sponsored",
-          "containerStyle": {
-            "color": "#10B981"
-          },
-          "data": {
-            "text": "Label"
-          }
-        }
-      ]
+      }
     }
   }
 }

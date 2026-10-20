@@ -1346,49 +1346,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Label",
                   "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
                     "fontSize": "10px",
                     "fontWeight": "600",
                     "letterSpacing": "0.10em",
                     "textTransform": "uppercase",
                     "color": "#8D9A9D",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": "Sponsored"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "text": "Sponsored"
+                  }
                 },
                 {
                   "type": "Badge",
                   "containerStyle": {
-                    "height": "22px",
-                    "minHeight": "22px",
-                    "flex": "0 0 22px",
-                    "flexShrink": "0",
                     "alignSelf": "flex-start",
-                    "display": "inline-flex",
-                    "alignItems": "center",
                     "padding": "0 9px",
                     "borderRadius": "999px",
                     "fontSize": "11px",
                     "fontWeight": "600",
                     "letterSpacing": "0.01em",
-                    "whiteSpace": "nowrap",
                     "boxSizing": "border-box",
                     "backgroundColor": "#FFF3DF",
-                    "color": "#8A5209"
+                    "color": "#8A5209",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "text": "Limited time offer"
@@ -1537,19 +1521,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Button",
                   "containerStyle": {
-                    "height": "44px",
-                    "minHeight": "44px",
-                    "flex": "0 0 44px",
-                    "flexShrink": "0",
-                    "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundColor": "#C4185F",
                     "marginTop": "auto",
                     "width": "calc(100% - 52px)",
                     "alignSelf": "flex-end",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "justifyContent": "center",
                     "padding": "0 16px",
                     "borderRadius": "12px",
                     "border": "none",
@@ -1559,7 +1535,9 @@ export const fullPageJSON: SDUINode = {
                     "letterSpacing": "0.01em",
                     "cursor": "pointer",
                     "boxSizing": "border-box",
-                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "label": "Add to cart"
@@ -1694,51 +1672,19 @@ export const fullPageJSON: SDUINode = {
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#8D9A9D",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
-                    "height": "22px",
-                    "minHeight": "22px",
-                    "flex": "0 0 22px",
-                    "flexShrink": "0",
                     "alignSelf": "flex-start",
-                    "display": "inline-flex",
-                    "alignItems": "center",
                     "padding": "0 9px",
                     "borderRadius": "999px",
                     "fontSize": "11px",
                     "fontWeight": "600",
                     "letterSpacing": "0.01em",
-                    "whiteSpace": "nowrap",
                     "boxSizing": "border-box",
                     "backgroundColor": "#E7EEED",
-                    "color": "#0A2A31"
+                    "color": "#0A2A31",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "text": "Bestseller"
@@ -1887,19 +1833,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Button",
                   "containerStyle": {
-                    "height": "44px",
-                    "minHeight": "44px",
-                    "flex": "0 0 44px",
-                    "flexShrink": "0",
-                    "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundColor": "#C4185F",
                     "marginTop": "auto",
                     "width": "calc(100% - 52px)",
                     "alignSelf": "flex-end",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "justifyContent": "center",
                     "padding": "0 16px",
                     "borderRadius": "12px",
                     "border": "none",
@@ -1909,7 +1847,9 @@ export const fullPageJSON: SDUINode = {
                     "letterSpacing": "0.01em",
                     "cursor": "pointer",
                     "boxSizing": "border-box",
-                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "label": "Add to cart"
@@ -2044,51 +1984,19 @@ export const fullPageJSON: SDUINode = {
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#8D9A9D",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
-                    "height": "22px",
-                    "minHeight": "22px",
-                    "flex": "0 0 22px",
-                    "flexShrink": "0",
                     "alignSelf": "flex-start",
-                    "display": "inline-flex",
-                    "alignItems": "center",
                     "padding": "0 9px",
                     "borderRadius": "999px",
                     "fontSize": "11px",
                     "fontWeight": "600",
                     "letterSpacing": "0.01em",
-                    "whiteSpace": "nowrap",
                     "boxSizing": "border-box",
                     "backgroundColor": "#FDECF2",
-                    "color": "#C4185F"
+                    "color": "#C4185F",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "text": "Only 3 left"
@@ -2237,19 +2145,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Button",
                   "containerStyle": {
-                    "height": "44px",
-                    "minHeight": "44px",
-                    "flex": "0 0 44px",
-                    "flexShrink": "0",
-                    "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundColor": "#C4185F",
                     "marginTop": "auto",
                     "width": "calc(100% - 52px)",
                     "alignSelf": "flex-end",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "justifyContent": "center",
                     "padding": "0 16px",
                     "borderRadius": "12px",
                     "border": "none",
@@ -2259,7 +2159,9 @@ export const fullPageJSON: SDUINode = {
                     "letterSpacing": "0.01em",
                     "cursor": "pointer",
                     "boxSizing": "border-box",
-                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "label": "Add to cart"
@@ -2394,51 +2296,19 @@ export const fullPageJSON: SDUINode = {
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#8D9A9D",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
-                    "height": "22px",
-                    "minHeight": "22px",
-                    "flex": "0 0 22px",
-                    "flexShrink": "0",
                     "alignSelf": "flex-start",
-                    "display": "inline-flex",
-                    "alignItems": "center",
                     "padding": "0 9px",
                     "borderRadius": "999px",
                     "fontSize": "11px",
                     "fontWeight": "600",
                     "letterSpacing": "0.01em",
-                    "whiteSpace": "nowrap",
                     "boxSizing": "border-box",
                     "backgroundColor": "#FFF3DF",
-                    "color": "#8A5209"
+                    "color": "#8A5209",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "text": "Deal of the day"
@@ -2587,19 +2457,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Button",
                   "containerStyle": {
-                    "height": "44px",
-                    "minHeight": "44px",
-                    "flex": "0 0 44px",
-                    "flexShrink": "0",
-                    "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundColor": "#C4185F",
                     "marginTop": "auto",
                     "width": "calc(100% - 52px)",
                     "alignSelf": "flex-end",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "justifyContent": "center",
                     "padding": "0 16px",
                     "borderRadius": "12px",
                     "border": "none",
@@ -2609,7 +2471,9 @@ export const fullPageJSON: SDUINode = {
                     "letterSpacing": "0.01em",
                     "cursor": "pointer",
                     "boxSizing": "border-box",
-                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "label": "Add to cart"
@@ -2744,51 +2608,19 @@ export const fullPageJSON: SDUINode = {
                   }
                 },
                 {
-                  "type": "Label",
-                  "containerStyle": {
-                    "height": "16px",
-                    "minHeight": "16px",
-                    "flex": "0 0 16px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "gap": "4px",
-                    "overflow": "hidden",
-                    "fontSize": "10px",
-                    "fontWeight": "600",
-                    "letterSpacing": "0.10em",
-                    "textTransform": "uppercase",
-                    "color": "#8D9A9D",
-                    "boxSizing": "border-box"
-                  },
-                  "children": [
-                    {
-                      "type": "Sponsored",
-                      "data": {
-                        "text": " "
-                      }
-                    }
-                  ]
-                },
-                {
                   "type": "Badge",
                   "containerStyle": {
-                    "height": "22px",
-                    "minHeight": "22px",
-                    "flex": "0 0 22px",
-                    "flexShrink": "0",
                     "alignSelf": "flex-start",
-                    "display": "inline-flex",
-                    "alignItems": "center",
                     "padding": "0 9px",
                     "borderRadius": "999px",
                     "fontSize": "11px",
                     "fontWeight": "600",
                     "letterSpacing": "0.01em",
-                    "whiteSpace": "nowrap",
                     "boxSizing": "border-box",
                     "backgroundColor": "#E7EEED",
-                    "color": "#0A2A31"
+                    "color": "#0A2A31",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "text": "Bestseller"
@@ -2937,19 +2769,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Button",
                   "containerStyle": {
-                    "height": "44px",
-                    "minHeight": "44px",
-                    "flex": "0 0 44px",
-                    "flexShrink": "0",
-                    "background": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundImage": "linear-gradient(180deg, #D42A6E 0%, #C4185F 100%)",
                     "backgroundColor": "#C4185F",
                     "marginTop": "auto",
                     "width": "calc(100% - 52px)",
                     "alignSelf": "flex-end",
-                    "display": "flex",
-                    "alignItems": "center",
-                    "justifyContent": "center",
                     "padding": "0 16px",
                     "borderRadius": "12px",
                     "border": "none",
@@ -2959,7 +2783,9 @@ export const fullPageJSON: SDUINode = {
                     "letterSpacing": "0.01em",
                     "cursor": "pointer",
                     "boxSizing": "border-box",
-                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)"
+                    "boxShadow": "0 2px 10px rgba(196,24,95,0.24)",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "label": "Add to cart"
