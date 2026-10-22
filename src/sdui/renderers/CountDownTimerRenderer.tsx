@@ -9,10 +9,38 @@ import type { BaseRendererProps } from "../types";
  * ==============================================================================
  * Beginner Note:
  * Renders the "CountDownTimer" component in the SDUI tree.
- * Receives standard props: { children, style, data, actions, ... }
+ * Displays an active ticking countdown timer until a target date.
+ * Label and text wrap naturally like Text component onto the next line
+ * and overflow in the y-direction (no horizontal scrolling in x).
  */
-export default function CountDownTimerRenderer({ data = {}, style = {}, onExpire }: BaseRendererProps) {
+export default function CountDownTimerRenderer({
+  data = {},
+  style = {},
+  onClick,
+  onExpire,
+}: BaseRendererProps) {
   const [timeLeft, setTimeLeft] = useState<string | null>(null);
+
+  const {
+    height,
+    minHeight,
+    maxHeight,
+    flex,
+    flexShrink,
+    display,
+    alignItems,
+    justifyContent,
+    overflow,
+    overflowX,
+    overflowY,
+    scrollbarWidth,
+    msOverflowStyle,
+    maxWidth,
+    margin,
+    whiteSpace,
+    textOverflow,
+    ...cleanStyle
+  } = (style || {}) as any;
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -39,7 +67,7 @@ export default function CountDownTimerRenderer({ data = {}, style = {}, onExpire
 
       const pad = (n: number) => String(n).padStart(2, "0");
 
-      if (data?.showDays === "true") {
+      if (data?.showDays === "true" || days > 0) {
         setTimeLeft(`${days}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`);
       } else {
         setTimeLeft(`${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`);
@@ -51,32 +79,47 @@ export default function CountDownTimerRenderer({ data = {}, style = {}, onExpire
     return () => clearInterval(interval);
   }, [data?.targetDate, data?.showDays, data?.expiredText, onExpire]);
 
-  const textColor = style?.color || "#856404";
+  const textColor = cleanStyle.color || "#0D3540";
 
   return (
     <div
+      onClick={onClick}
+      className="no-scrollbar"
       style={{
-        padding: "12px 20px",
-        backgroundColor: "#fff3cd",
-        borderRadius: "12px",
-        border: "1px solid #ffeeba",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "safe center" as any,
+        justifyContent: "safe center" as any,
         textAlign: "center",
-        ...style
+        gap: cleanStyle.gap || "4px",
+        padding: cleanStyle.padding || "10px 16px",
+        borderRadius: cleanStyle.borderRadius || "12px",
+        border: cleanStyle.border || "1px solid #99F6E4",
+        backgroundColor: cleanStyle.backgroundColor || "#F0FDFA",
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+        overflowX: "hidden",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        ...cleanStyle,
       }}
     >
       {data?.label ? (
         <span
           style={{
+            display: "block",
+            width: "100%",
             color: textColor,
-            fontSize: "13px",
-            fontWeight: 600,
+            fontSize: "11px",
+            fontWeight: 700,
             textTransform: "uppercase",
             letterSpacing: "0.06em",
-            marginBottom: "4px"
+            lineHeight: "1.3",
+            overflowWrap: "anywhere",
+            wordBreak: "break-word",
+            whiteSpace: "normal",
           }}
         >
           {data.label}
@@ -84,11 +127,19 @@ export default function CountDownTimerRenderer({ data = {}, style = {}, onExpire
       ) : null}
       <div
         style={{
-          fontSize: "18px",
+          display: "block",
+          width: "100%",
+          fontSize: cleanStyle.fontSize || "16px",
           fontWeight: "700",
           color: textColor,
-          fontFamily: style?.fontFamily || "'IBM Plex Mono', monospace",
-          letterSpacing: "0.04em"
+          fontFamily:
+            cleanStyle.fontFamily ||
+            "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+          letterSpacing: "0.04em",
+          lineHeight: "1.3",
+          overflowWrap: "anywhere",
+          wordBreak: "break-word",
+          whiteSpace: "normal",
         }}
       >
         {timeLeft || "00h 00m 00s"}

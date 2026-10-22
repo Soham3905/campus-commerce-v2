@@ -501,7 +501,7 @@ export default function FourPanelWorkspace({
           rootItem.placement?.[device] ||
           getDefaultPlacement(rootItem.type, device, 1);
         const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
-        const finalRows = Math.max(currentRows + 2, neededRows);
+        const finalRows = Math.max(currentRows, neededRows);
 
         const expandedPlacement: GridPlacement = {
           ...currentPlace,

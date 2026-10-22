@@ -17,11 +17,11 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
     minHeight,
     flex,
     flexShrink,
+    whiteSpace,
+    textOverflow,
     overflow,
     scrollbarWidth,
     msOverflowStyle,
-    whiteSpace,
-    textOverflow,
     ...cleanStyle
   } = (style || {}) as any;
 
@@ -34,33 +34,61 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: "6px",
         width: "100%",
         height: "100%",
-        padding: "6px 12px",
-        border: "none",
-        backgroundColor: "transparent",
+        padding: cleanStyle.padding || "4px 8px",
+        border: cleanStyle.border || "none",
+        backgroundColor: cleanStyle.backgroundColor || "transparent",
         color: cleanStyle.color || "inherit",
         fontSize: "12px",
         fontWeight: "600",
         cursor: "pointer",
         boxSizing: "border-box",
-        overflow: "auto",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-        overflowWrap: "anywhere",
-        wordBreak: "break-word",
-        textAlign: "center",
+        overflow: "hidden",
         ...cleanStyle,
       }}
     >
-      {data?.icon && <span style={{ flexShrink: 0 }}>{data.icon}</span>}
-      {(data?.label || data?.text) && (
-        <span style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
-          {data?.label || data?.text}
-        </span>
-      )}
-      {!data?.icon && !data?.label && !data?.text && "HeaderButton"}
+      <div
+        className="no-scrollbar"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          maxHeight: "100%",
+          overflow: "auto",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px",
+            margin: "auto 0",
+            width: "100%",
+            flexShrink: 0,
+          }}
+        >
+          {data?.icon && <span style={{ flexShrink: 0 }}>{data.icon}</span>}
+          {(data?.label || data?.text) && (
+            <span
+              style={{
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
+                whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
+                lineHeight: "16px",
+                textAlign: "center",
+              }}
+            >
+              {data?.label || data?.text}
+            </span>
+          )}
+          {!data?.icon && !data?.label && !data?.text && "HeaderButton"}
+        </div>
+      </div>
     </button>
   );
 }

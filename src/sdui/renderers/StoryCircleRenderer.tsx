@@ -19,11 +19,11 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
     minHeight,
     flex,
     flexShrink,
+    whiteSpace,
+    textOverflow,
     overflow,
     scrollbarWidth,
     msOverflowStyle,
-    whiteSpace,
-    textOverflow,
     ...cleanStyle
   } = (style || {}) as any;
 
@@ -44,8 +44,6 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        gap: "4px",
         width: "100%",
         height: "100%",
         cursor: "pointer",
@@ -66,51 +64,64 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
     >
       <div
         style={{
-          width: "52px",
-          height: "52px",
-          maxWidth: "100%",
-          maxHeight: "100%",
-          aspectRatio: "1/1",
-          borderRadius: "50%",
-          padding: "2px",
-          border: `2px solid ${ringColor}`,
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#f8f9fa",
+          margin: "auto 0",
+          gap: "4px",
+          width: "100%",
           flexShrink: 0,
-          boxSizing: "border-box",
         }}
       >
-        <img
-          src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
-          alt={data?.label || "Story"}
-          onError={() => setHasError(true)}
+        <div
           style={{
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      </div>
-      {(data?.label || data?.text) && (
-        <span
-          style={{
-            fontSize: "11px",
-            fontWeight: "500",
-            color: cleanStyle.color || "inherit",
-            textAlign: "center",
-            overflowWrap: "anywhere",
-            wordBreak: "break-word",
+            width: "52px",
+            height: "52px",
             maxWidth: "100%",
-            lineHeight: "1.2",
+            maxHeight: "100%",
+            aspectRatio: "1/1",
+            borderRadius: "50%",
+            padding: "2px",
+            border: `2px solid ${ringColor}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#f8f9fa",
+            flexShrink: 0,
+            boxSizing: "border-box",
           }}
         >
-          {data?.label || data?.text}
-        </span>
-      )}
+          <img
+            src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
+            alt={data?.label || data?.text || "Story"}
+            onError={() => setHasError(true)}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </div>
+        {(data?.label || data?.text) && (
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: "500",
+              color: cleanStyle.color || "inherit",
+              textAlign: "center",
+              overflowWrap: "anywhere",
+              wordBreak: "break-word",
+              maxWidth: "100%",
+              lineHeight: "1.2",
+              whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
+            }}
+          >
+            {data?.label || data?.text}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

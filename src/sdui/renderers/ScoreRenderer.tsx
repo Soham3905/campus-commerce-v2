@@ -9,29 +9,64 @@ import type { BaseRendererProps } from "../types";
  * ==============================================================================
  * Beginner Note:
  * Renders the "Score" component in the SDUI tree.
- * Receives standard props: { children, style, data, actions, ... }
+ * Displays an amber star pill badge with score text and optional "out of".
  */
-export default function ScoreRenderer({ data = {}, style = {} }: BaseRendererProps) {
+export default function ScoreRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const {
+    height,
+    minHeight,
+    maxHeight,
+    flex,
+    flexShrink,
+    display,
+    alignItems,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    ...cleanStyle
+  } = (style || {}) as any;
+
+  const scoreVal = data?.text ?? data?.score ?? "4.5";
+
   return (
-    <span
+    <div
+      onClick={onClick}
+      className="no-scrollbar"
       style={{
-        fontSize: "10px",
-        color: "#e77600",
-        fontWeight: "bold",
-        backgroundColor: "rgba(231,118,0,0.1)",
-        borderRadius: "8px",
-        padding: "2px 6px",
         display: "inline-flex",
         alignItems: "center",
-        ...style
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        ...cleanStyle,
       }}
     >
-      ★ {data?.text}
-      {data?.["out of"] && (
-        <span style={{ color: "#888", fontWeight: "bold", fontSize: "10px"}}>
-          / {data["out of"]}
-        </span>
-      )}
-    </span>
+      <span
+        style={{
+          fontSize: cleanStyle.fontSize || "11px",
+          color: cleanStyle.color || "#e77600",
+          fontWeight: cleanStyle.fontWeight || "700",
+          backgroundColor: cleanStyle.backgroundColor || "rgba(231,118,0,0.1)",
+          borderRadius: cleanStyle.borderRadius || "6px",
+          padding: cleanStyle.padding || "2px 6px",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "3px",
+          lineHeight: "1.2",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <span style={{ fontSize: "12px", lineHeight: 1 }}>★</span>
+        <span>{scoreVal}</span>
+        {data?.["out of"] && (
+          <span style={{ color: "#888", fontWeight: "600", fontSize: "10px", marginLeft: "2px" }}>
+            / {data["out of"]}
+          </span>
+        )}
+      </span>
+    </div>
   );
 }

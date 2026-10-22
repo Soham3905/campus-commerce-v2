@@ -935,37 +935,7 @@
               "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
               "actionName": "ON_ERROR_HERO_BANNER"
             }
-          },
-          "children": [
-            {
-              "type": "CountDownTimer",
-              "containerStyle": {
-                "backgroundColor": "transparent",
-                "position": "absolute",
-                "bottom": "100px",
-                "left": "16px",
-                "border": "1px solid rgba(255,255,255,0.24)",
-                "color": "#FFFFFF",
-                "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
-                "letterSpacing": "0.04em",
-                "boxShadow": "0 4px 16px rgba(196,24,95,0.32)"
-              },
-              "data": {
-                "label": "Flash sale ends in",
-                "expiredText": "Sale ended",
-                "targetDate": "2026-10-14T23:59:00",
-                "showDays": "true",
-                "format": "DD:HH:MM:SS"
-              },
-              "actions": {
-                "onHover": {
-                  "type": "API_CALL",
-                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
-                  "actionName": "ON_HOVER_FLASH_TIMER"
-                }
-              }
-            }
-          ]
+          }
         },
         {
           "type": "Box",
@@ -1558,40 +1528,20 @@
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#10B981",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.4",
-                        "out of": "5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "376"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.4",
+                    "reviewCount": "376"
+                  }
                 },
                 {
                   "type": "PriceBlock",
@@ -1889,40 +1839,20 @@
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#10B981",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.2",
-                        "out of": "5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "12,480"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.2",
+                    "reviewCount": "12,480"
+                  }
                 },
                 {
                   "type": "PriceBlock",
@@ -2220,40 +2150,20 @@
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#10B981",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.6",
-                        "out of": "5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "2,043"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.6",
+                    "reviewCount": "2,043"
+                  }
                 },
                 {
                   "type": "PriceBlock",
@@ -2551,40 +2461,20 @@
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#10B981",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.3",
-                        "out of": "5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "8,912"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.3",
+                    "reviewCount": "8,912"
+                  }
                 },
                 {
                   "type": "PriceBlock",
@@ -2882,40 +2772,20 @@
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#10B981",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.5",
-                        "out of": "5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "5,204"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.5",
+                    "reviewCount": "5,204"
+                  }
                 },
                 {
                   "type": "PriceBlock",
@@ -3165,28 +3035,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.3"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "84"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.3",
+                    "reviewCount": "84"
                   }
                 },
                 {
@@ -3258,28 +3115,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.1"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "120"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.1",
+                    "reviewCount": "120"
                   }
                 },
                 {
@@ -3351,28 +3195,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.5"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "210"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.5",
+                    "reviewCount": "210"
                   }
                 },
                 {
@@ -3444,28 +3275,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.0"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "56"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.0",
+                    "reviewCount": "56"
                   }
                 },
                 {
@@ -3537,28 +3355,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.2"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "340"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.2",
+                    "reviewCount": "340"
                   }
                 },
                 {
@@ -3630,28 +3435,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.6"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "1.2k"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.6",
+                    "reviewCount": "1.2k"
                   }
                 },
                 {
@@ -3723,28 +3515,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.4"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "800"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "4.4",
+                    "reviewCount": "800"
                   }
                 },
                 {
@@ -3816,28 +3595,15 @@
                 },
                 {
                   "type": "Rating",
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "3.9"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "23"
-                      },
-                      "containerStyle": {
-                        "color": "#10B981"
-                      }
-                    }
-                  ],
                   "containerStyle": {
-                    "color": "#10B981"
+                    "color": "#10B981",
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  },
+                  "data": {
+                    "score": "3.9",
+                    "reviewCount": "23"
                   }
                 },
                 {

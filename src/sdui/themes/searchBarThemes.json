@@ -7,19 +7,16 @@
       "type": "SearchBar",
       "containerStyle": {
         "width": "100%",
-        "maxWidth": "340px",
-        "alignItems": "center",
         "border": "1px solid #E4E7E4",
         "borderRadius": "12px",
-        "boxShadow": "none",
         "boxSizing": "border-box",
         "color": "#101F26",
         "caretColor": "#C4185F",
-        "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
+        "padding": "0 12px"
       },
       "data": {
-        "placeholder": "Search..."
+        "placeholder": "Search products, brands and more"
       }
     }
   },

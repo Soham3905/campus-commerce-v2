@@ -17,11 +17,11 @@ export default function ButtonRenderer({ data = {}, style = {}, onClick }: BaseR
     minHeight,
     flex,
     flexShrink,
+    whiteSpace,
+    textOverflow,
     overflow,
     scrollbarWidth,
     msOverflowStyle,
-    whiteSpace,
-    textOverflow,
     ...cleanStyle
   } = (style || {}) as any;
 
@@ -36,25 +36,36 @@ export default function ButtonRenderer({ data = {}, style = {}, onClick }: BaseR
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        minHeight: "36px",
-        padding: "0 16px",
-        borderRadius: "12px",
-        border: "none",
-        fontSize: "14px",
-        fontWeight: "600",
-        letterSpacing: "0.01em",
+        padding: cleanStyle.padding || "4px 12px",
+        borderRadius: cleanStyle.borderRadius || "12px",
+        border: cleanStyle.border || "none",
+        fontSize: cleanStyle.fontSize || "14px",
+        fontWeight: cleanStyle.fontWeight || "600",
+        letterSpacing: cleanStyle.letterSpacing || "0.01em",
         cursor: "pointer",
         boxSizing: "border-box",
-        overflow: "auto",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-        overflowWrap: "anywhere",
-        wordBreak: "break-word",
-        textAlign: "center",
+        overflow: "hidden",
         ...cleanStyle,
       }}
     >
-      {data?.label || data?.text || "Button"}
+      <span
+        className="no-scrollbar"
+        style={{
+          display: "block",
+          width: "100%",
+          maxHeight: "100%",
+          overflow: "auto",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          overflowWrap: "anywhere",
+          wordBreak: "break-word",
+          whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
+          lineHeight: "18px",
+          textAlign: "center",
+        }}
+      >
+        {data?.label || data?.text || "Button"}
+      </span>
     </button>
   );
 }

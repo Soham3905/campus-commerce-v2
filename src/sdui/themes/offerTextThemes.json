@@ -6,21 +6,16 @@
     "config": {
       "type": "OfferText",
       "containerStyle": {
-        "height": "16px",
-        "minHeight": "16px",
-        "flex": "0 0 16px",
-        "flexShrink": "0",
-        "display": "-webkit-box",
-        "WebkitLineClamp": "1",
-        "WebkitBoxOrient": "vertical",
-        "overflow": "hidden",
         "fontSize": "12px",
         "fontWeight": "600",
         "color": "#C4185F",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "OfferText"
+        "text": "Special Campus Deal"
       }
     }
   },
@@ -31,21 +26,16 @@
     "config": {
       "type": "OfferText",
       "containerStyle": {
-        "height": "16px",
-        "minHeight": "16px",
-        "flex": "0 0 16px",
-        "flexShrink": "0",
-        "display": "-webkit-box",
-        "WebkitLineClamp": "1",
-        "WebkitBoxOrient": "vertical",
-        "overflow": "hidden",
         "fontSize": "12px",
         "fontWeight": "600",
         "color": "#2563EB",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "OfferText"
+        "text": "Student Exclusive Offer"
       }
     }
   },
@@ -56,21 +46,16 @@
     "config": {
       "type": "OfferText",
       "containerStyle": {
-        "height": "16px",
-        "minHeight": "16px",
-        "flex": "0 0 16px",
-        "flexShrink": "0",
-        "display": "-webkit-box",
-        "WebkitLineClamp": "1",
-        "WebkitBoxOrient": "vertical",
-        "overflow": "hidden",
         "fontSize": "12px",
         "fontWeight": "600",
         "color": "#10B981",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "OfferText"
+        "text": "Limited Time Campus Discount"
       }
     }
   }

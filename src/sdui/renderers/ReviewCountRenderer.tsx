@@ -9,12 +9,56 @@ import type { BaseRendererProps } from "../types";
  * ==============================================================================
  * Beginner Note:
  * Renders the "ReviewCount" component in the SDUI tree.
- * Receives standard props: { children, style, data, actions, ... }
+ * Displays formatted review counts cleanly without duplicate parentheses.
  */
-export default function ReviewCountRenderer({ data = {}, style = {} }: BaseRendererProps) {
+export default function ReviewCountRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const {
+    height,
+    minHeight,
+    maxHeight,
+    flex,
+    flexShrink,
+    display,
+    alignItems,
+    overflow,
+    scrollbarWidth,
+    msOverflowStyle,
+    ...cleanStyle
+  } = (style || {}) as any;
+
+  const rawText =
+    data?.text !== undefined && data?.text !== null
+      ? String(data.text).trim()
+      : data?.count !== undefined && data?.count !== null
+      ? String(data.count).trim()
+      : "";
+
+  const cleanNumber = rawText
+    ? rawText.replace(/[()]/g, "").replace(/\s*reviews?/i, "").trim()
+    : "120";
+
+  const displayText = cleanNumber ? `(${cleanNumber} reviews)` : "";
+
   return (
-    <span style={{ fontSize: "11px", color: style.color || "inherit", fontWeight: "500", ...style }}>
-      ({data?.text} reviews)
-    </span>
+    <div
+      onClick={onClick}
+      className="no-scrollbar"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        fontSize: cleanStyle.fontSize || "11px",
+        color: cleanStyle.color || "#5E6E72",
+        fontWeight: cleanStyle.fontWeight || "500",
+        ...cleanStyle,
+      }}
+    >
+      <span style={{ whiteSpace: "nowrap" }}>{displayText}</span>
+    </div>
   );
 }

@@ -17,11 +17,11 @@ export default function BadgeRenderer({ data = {}, style = {}, onClick }: BaseRe
     minHeight,
     flex,
     flexShrink,
+    whiteSpace,
+    textOverflow,
     overflow,
     scrollbarWidth,
     msOverflowStyle,
-    whiteSpace,
-    textOverflow,
     ...cleanStyle
   } = (style || {}) as any;
 
@@ -43,16 +43,28 @@ export default function BadgeRenderer({ data = {}, style = {}, onClick }: BaseRe
         backgroundColor: cleanStyle.backgroundColor || "#FFF3DF",
         color: cleanStyle.color || "#8A5209",
         boxSizing: "border-box",
-        overflow: "auto",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-        overflowWrap: "anywhere",
-        wordBreak: "break-word",
-        textAlign: "center",
+        overflow: "hidden",
         ...cleanStyle,
       }}
     >
-      {data?.text || data?.label || "Badge"}
+      <span
+        className="no-scrollbar"
+        style={{
+          display: "block",
+          width: "100%",
+          maxHeight: "100%",
+          overflow: "auto",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          overflowWrap: "anywhere",
+          wordBreak: "break-word",
+          whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
+          lineHeight: "14px",
+          textAlign: "center",
+        }}
+      >
+        {data?.text || data?.label || "Badge"}
+      </span>
     </span>
   );
 }

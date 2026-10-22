@@ -129,13 +129,8 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       rowSpan = 1;
       break;
     case "Header":
-    case "SearchBar":
     case "StoryRow":
-    case "CategoryGrid":
     case "Carousel":
-    case "HeroBanner":
-    case "CouponCode":
-    case "CountDownTimer":
     case "ProductList":
     case "ProductGrid":
     case "Footer":
@@ -146,19 +141,47 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       rowSpan =
         type === "Header"
           ? 3
-          : type === "SearchBar"
-          ? 3
           : type === "StoryRow"
           ? 4
-          : type === "HeroBanner" || type === "Carousel"
+          : type === "Carousel"
           ? 7
           : type === "ProductList" || type === "ProductGrid"
           ? 9
-          : type === "CategoryGrid"
-          ? 6
           : type === "Footer"
           ? 6
           : 4;
+      break;
+    case "CategoryGrid":
+      colSpan = maxCols;
+      rowSpan = 2;
+      break;
+    case "SearchBar":
+      colSpan = Math.min(8, maxCols);
+      rowSpan = 1;
+      break;
+    case "CategoryItem":
+      colSpan = Math.min(2, maxCols);
+      rowSpan = 2;
+      break;
+    case "HeroBanner":
+      colSpan = maxCols;
+      rowSpan = 7;
+      break;
+    case "CouponCode":
+      colSpan = Math.min(9, maxCols);
+      rowSpan = 2;
+      break;
+    case "CountDownTimer":
+      colSpan = Math.min(8, maxCols);
+      rowSpan = 2;
+      break;
+    case "OfferText":
+      colSpan = Math.min(6, maxCols);
+      rowSpan = 1;
+      break;
+    case "Sponsored":
+      colSpan = Math.min(3, maxCols);
+      rowSpan = 1;
       break;
     case "ProductCard":
       colSpan = Math.min(8, maxCols);
@@ -182,6 +205,30 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       break;
     case "Icon":
       colSpan = Math.min(1, maxCols);
+      rowSpan = 1;
+      break;
+    case "PriceBlock":
+      colSpan = Math.min(7, maxCols);
+      rowSpan = 1;
+      break;
+    case "DeliveryInfo":
+      colSpan = Math.min(6, maxCols);
+      rowSpan = 1;
+      break;
+    case "Rating":
+      colSpan = Math.min(4, maxCols);
+      rowSpan = 1;
+      break;
+    case "ReviewCount":
+      colSpan = Math.min(3, maxCols);
+      rowSpan = 1;
+      break;
+    case "ShareButton":
+      colSpan = Math.min(3, maxCols);
+      rowSpan = 1;
+      break;
+    case "Score":
+      colSpan = Math.min(2, maxCols);
       rowSpan = 1;
       break;
     default:
@@ -397,6 +444,14 @@ export function calculateRequiredRootRows(
 
   const children = rootItem.config?.children || [];
   if (children.length === 0) return currentPlace.rowEnd - currentPlace.rowStart;
+
+  // Horizontal row containers: CategoryGrid and StoryRow layout children in a single horizontal track.
+  // Adding children adds columns horizontally — it does not increase vertical rows.
+  if (rootItem.type === "CategoryGrid" || rootItem.type === "StoryRow") {
+    const defaultPlace = getDefaultPlacement(rootItem.type, device, 1);
+    const minRows = defaultPlace.rowEnd - defaultPlace.rowStart;
+    return Math.max(currentPlace.rowEnd - currentPlace.rowStart, minRows);
+  }
 
   if (rootItem.type === "ProductList") {
     let currentLineWidth = 0;
@@ -636,6 +691,7 @@ function RenderInteractiveNode({
 
   // Wrapper dimensions for nested child
   const wrapperStyle: React.CSSProperties = {
+    ...(isRoot ? { width: "100%", height: "100%" } : {}),
     ...(node.containerStyle?.width ? { width: effectiveContainerStyle.width } : {}),
     ...(node.containerStyle?.height ? { height: effectiveContainerStyle.height } : {}),
     ...(liveWidth ? { width: liveWidth } : {}),
@@ -655,7 +711,7 @@ function RenderInteractiveNode({
         e.stopPropagation();
       }}
       style={wrapperStyle}
-      className={`relative transition-all duration-150 ${
+      className={`relative transition-all duration-150 ${isRoot ? "w-full h-full min-h-0" : ""} ${
         isSelected
           ? "ring-2 ring-blue-500 rounded-sm z-30 shadow-xs"
           : "hover:outline hover:outline-blue-400 hover:outline-dashed hover:outline-1 rounded-sm cursor-pointer"
@@ -1604,7 +1660,7 @@ export default function CanvasPanel({
       totalColumns
     );
     const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
-    const finalRows = Math.max(currentRows + 2, neededRows);
+    const finalRows = Math.max(currentRows, neededRows);
 
     const expandedPlacement: GridPlacement = {
       ...currentPlace,
@@ -1680,7 +1736,7 @@ export default function CanvasPanel({
       totalColumns
     );
     const currentRows = currentPlace.rowEnd - currentPlace.rowStart;
-    const finalRows = Math.max(currentRows + 2, neededRows);
+    const finalRows = Math.max(currentRows, neededRows);
 
     const expandedPlacement: GridPlacement = {
       ...currentPlace,
@@ -2550,7 +2606,7 @@ export default function CanvasPanel({
                     )}
 
                     {/* Real SDUI Component with Interactive Child Selection */}
-                    <div className="w-full h-full">
+                    <div className="w-full h-full min-h-0">
                       <RenderInteractiveNode
                         node={item.config}
                         rootItemId={item.id}

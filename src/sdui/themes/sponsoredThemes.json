@@ -10,7 +10,11 @@
         "fontSize": "11px",
         "fontWeight": "600",
         "letterSpacing": "0.5px",
-        "textTransform": "uppercase"
+        "textTransform": "uppercase",
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Sponsored"
@@ -24,7 +28,15 @@
     "config": {
       "type": "Sponsored",
       "containerStyle": {
-        "color": "#64748B"
+        "color": "#64748B",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase",
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Sponsored"
@@ -38,7 +50,15 @@
     "config": {
       "type": "Sponsored",
       "containerStyle": {
-        "color": "#10B981"
+        "color": "#10B981",
+        "fontSize": "11px",
+        "fontWeight": "600",
+        "letterSpacing": "0.5px",
+        "textTransform": "uppercase",
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "Sponsored"

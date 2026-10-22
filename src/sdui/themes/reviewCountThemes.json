@@ -6,10 +6,15 @@
     "config": {
       "type": "ReviewCount",
       "containerStyle": {
-        "color": "#5E6E72"
+        "color": "#5E6E72",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "(120)"
+        "text": "120"
       }
     }
   },
@@ -20,10 +25,15 @@
     "config": {
       "type": "ReviewCount",
       "containerStyle": {
-        "color": "#2563EB"
+        "color": "#2563EB",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "(120)"
+        "text": "120"
       }
     }
   },
@@ -34,10 +44,15 @@
     "config": {
       "type": "ReviewCount",
       "containerStyle": {
-        "color": "#10B981"
+        "color": "#10B981",
+        "fontSize": "11px",
+        "fontWeight": "500",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "text": "(120)"
+        "text": "120"
       }
     }
   }

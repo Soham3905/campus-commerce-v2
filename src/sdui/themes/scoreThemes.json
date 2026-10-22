@@ -6,8 +6,10 @@
     "config": {
       "type": "Score",
       "containerStyle": {
-        "fontWeight": "700",
-        "color": "#101F26"
+        "color": "#101F26",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "4.5",
@@ -22,7 +24,10 @@
     "config": {
       "type": "Score",
       "containerStyle": {
-        "color": "#64748B"
+        "color": "#64748B",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "4.5",
@@ -37,7 +42,10 @@
     "config": {
       "type": "Score",
       "containerStyle": {
-        "color": "#10B981"
+        "color": "#10B981",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
         "text": "4.5",

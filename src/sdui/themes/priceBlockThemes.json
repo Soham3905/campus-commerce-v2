@@ -6,25 +6,20 @@
     "config": {
       "type": "PriceBlock",
       "containerStyle": {
-        "height": "28px",
-        "minHeight": "28px",
-        "flex": "0 0 28px",
-        "flexShrink": "0",
-        "display": "flex",
-        "alignItems": "baseline",
         "gap": "8px",
-        "overflow": "hidden",
         "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
         "fontSize": "18px",
         "fontWeight": "600",
         "letterSpacing": "-0.01em",
         "color": "#101F26",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "sellingPrice": "₹999",
-        "mrp": "₹1,999",
-        "discount": "50% OFF"
+        "sellingPrice": "999",
+        "mrp": "1999",
+        "discount": "50"
       }
     }
   },

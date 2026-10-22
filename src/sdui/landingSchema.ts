@@ -1,20 +1,5 @@
 import type { SDUINode } from "./types";
 
-/**
- * ==============================================================================
- * SDUI Full Page JSON Schema
- * ==============================================================================
- * Beginner Note:
- * This file contains the complete Server-Driven UI (SDUI) blueprint for the
- * Campus Commerce landing page.
- *
- * How it works:
- * - "type": Identifies which React component to render (e.g. Header, ProductCard).
- * - "containerStyle": Custom CSS styles applied to that component.
- * - "placement": Coordinates on the 100-column grid for (mobile, tablet, desktop).
- * - "children": Sub-components nested inside this component.
- * - "data": Dynamic text, images, badges, and prices shown on the UI.
- */
 export const fullPageJSON: SDUINode = {
   "type": "Home",
   "containerStyle": {
@@ -46,9 +31,24 @@ export const fullPageJSON: SDUINode = {
             "scrollbarWidth": "none"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 1, "rowEnd": 5 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 1, "rowEnd": 5 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 1, "rowEnd": 5 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 1,
+              "rowEnd": 5
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 1,
+              "rowEnd": 5
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 1,
+              "rowEnd": 5
+            }
           },
           "children": [
             {
@@ -102,7 +102,7 @@ export const fullPageJSON: SDUINode = {
                 "whiteSpace": "nowrap",
                 "boxSizing": "border-box",
                 "cursor": "pointer",
-                "boxShadow": "inset 0 -2px 0 #C4185F",
+                "boxShadow": "inset 0 -2px 0 #C4185F"
               },
               "data": {
                 "id": "home",
@@ -294,26 +294,37 @@ export const fullPageJSON: SDUINode = {
             "boxShadow": "0 4px 14px rgba(10,42,49,0.18)"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 15 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 10 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 6, "rowEnd": 10 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 6,
+              "rowEnd": 15
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 6,
+              "rowEnd": 10
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 6,
+              "rowEnd": 10
+            }
           },
           "children": [
             {
               "type": "SearchBar",
               "containerStyle": {
                 "width": "100%",
-                "maxWidth": "340px",
-                "alignItems": "center",
                 "border": "1px solid #E4E7E4",
                 "borderRadius": "12px",
-                "boxShadow": "none",
                 "boxSizing": "border-box",
                 "color": "#101F26",
                 "caretColor": "#C4185F",
-                "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
-                "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
-                "backgroundColor": "#FFFFFF"
+                "backgroundColor": "#FFFFFF",
+                "padding": "0 12px"
               },
               "data": {
                 "placeholder": "Search products, brands and more"
@@ -448,12 +459,27 @@ export const fullPageJSON: SDUINode = {
           "type": "StoryRow",
           "containerStyle": {
             "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
-            "backgroundColor": "transparent",
+            "backgroundColor": "transparent"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 16, "rowEnd": 26 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 11, "rowEnd": 22 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 11, "rowEnd": 22 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 16,
+              "rowEnd": 26
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 11,
+              "rowEnd": 22
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 11,
+              "rowEnd": 22
+            }
           },
           "actions": {
             "onDrop": {
@@ -599,27 +625,41 @@ export const fullPageJSON: SDUINode = {
         {
           "type": "CategoryGrid",
           "containerStyle": {
-            "background": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
-            "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
             "backgroundColor": "#FFFFFF",
             "borderRadius": "16px",
             "border": "1px solid #E4E7E4",
             "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
             "boxSizing": "border-box",
+            "padding": "6px 12px"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 27, "rowEnd": 35 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 22, "rowEnd": 30 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 22, "rowEnd": 30 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 27,
+              "rowEnd": 35
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 22,
+              "rowEnd": 30
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 22,
+              "rowEnd": 30
+            }
           },
           "children": [
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -639,10 +679,10 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -662,10 +702,10 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -685,10 +725,10 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -708,10 +748,10 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -731,10 +771,10 @@ export const fullPageJSON: SDUINode = {
             {
               "type": "CategoryItem",
               "containerStyle": {
-                "gap": "10px",
+                "gap": "6px",
                 "borderRadius": "12px",
                 "fontWeight": "600",
-                "fontSize": "16px",
+                "fontSize": "11px",
                 "color": "#101F26",
                 "cursor": "pointer",
                 "boxSizing": "border-box"
@@ -750,7 +790,7 @@ export const fullPageJSON: SDUINode = {
                   "actionName": "ON_TAP_GROCERY"
                 }
               }
-            },
+            }
           ]
         },
         {
@@ -758,12 +798,27 @@ export const fullPageJSON: SDUINode = {
           "containerStyle": {
             "borderRadius": "16px",
             "border": "1px solid #E4E7E4",
-            "boxSizing": "border-box",
+            "boxSizing": "border-box"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 36, "rowEnd": 58 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 31, "rowEnd": 54 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 31, "rowEnd": 54 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 36,
+              "rowEnd": 58
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 31,
+              "rowEnd": 54
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 31,
+              "rowEnd": 54
+            }
           },
           "data": {
             "showDots": true,
@@ -791,7 +846,7 @@ export const fullPageJSON: SDUINode = {
               "containerStyle": {
                 "height": "220px",
                 "objectFit": "cover",
-                "borderRadius": "16px",
+                "borderRadius": "16px"
               },
               "data": {
                 "imageUrl": "https://picsum.photos/id/1080/1600/500",
@@ -817,7 +872,7 @@ export const fullPageJSON: SDUINode = {
               "containerStyle": {
                 "height": "220px",
                 "objectFit": "cover",
-                "borderRadius": "16px",
+                "borderRadius": "16px"
               },
               "data": {
                 "imageUrl": "https://picsum.photos/id/180/1600/500",
@@ -832,12 +887,27 @@ export const fullPageJSON: SDUINode = {
             "borderRadius": "16px",
             "border": "1px solid #E4E7E4",
             "boxShadow": "0 1px 2px rgba(16,31,38,0.05)",
-            "boxSizing": "border-box",
+            "boxSizing": "border-box"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 59, "rowEnd": 99 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 55, "rowEnd": 95 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 55, "rowEnd": 95 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 59,
+              "rowEnd": 99
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 55,
+              "rowEnd": 95
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 55,
+              "rowEnd": 95
+            }
           },
           "data": {
             "imageUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1600&q=80",
@@ -856,37 +926,7 @@ export const fullPageJSON: SDUINode = {
               "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
               "actionName": "ON_ERROR_HERO_BANNER"
             }
-          },
-          "children": [
-            {
-              "type": "CountDownTimer",
-              "containerStyle": {
-                "backgroundColor": "transparent",
-                "position": "absolute",
-                "bottom": "100px",
-                "left": "16px",
-                "border": "1px solid rgba(255,255,255,0.24)",
-                "color": "#FFFFFF",
-                "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
-                "letterSpacing": "0.04em",
-                "boxShadow": "0 4px 16px rgba(196,24,95,0.32)"
-              },
-              "data": {
-                "label": "Flash sale ends in",
-                "expiredText": "Sale ended",
-                "targetDate": "2026-10-14T23:59:00",
-                "showDays": "true",
-                "format": "DD:HH:MM:SS"
-              },
-              "actions": {
-                "onHover": {
-                  "type": "API_CALL",
-                  "endpoint": "https://jsonplaceholder.typicode.com/todos/1",
-                  "actionName": "ON_HOVER_FLASH_TIMER"
-                }
-              }
-            }
-          ]
+          }
         },
         {
           "type": "Box",
@@ -898,12 +938,27 @@ export const fullPageJSON: SDUINode = {
             "overflowX": "auto",
             "scrollbarWidth": "none",
             "WebkitOverflowScrolling": "touch",
-            "boxSizing": "border-box",
+            "boxSizing": "border-box"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 100, "rowEnd": 111 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 96, "rowEnd": 107 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 96, "rowEnd": 107 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 100,
+              "rowEnd": 111
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 96,
+              "rowEnd": 107
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 96,
+              "rowEnd": 107
+            }
           },
           "children": [
             {
@@ -922,7 +977,7 @@ export const fullPageJSON: SDUINode = {
                 "fontSize": "14px",
                 "fontWeight": "500",
                 "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                "boxSizing": "border-box",
+                "boxSizing": "border-box"
               },
               "data": {
                 "title": "Save 20% on this order",
@@ -1081,12 +1136,27 @@ export const fullPageJSON: SDUINode = {
             "overflowX": "auto",
             "scrollbarWidth": "none",
             "WebkitOverflowScrolling": "touch",
-            "boxSizing": "border-box",
+            "boxSizing": "border-box"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 112, "rowEnd": 120 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 108, "rowEnd": 116 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 108, "rowEnd": 116 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 112,
+              "rowEnd": 120
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 108,
+              "rowEnd": 116
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 108,
+              "rowEnd": 116
+            }
           },
           "children": [
             {
@@ -1241,12 +1311,27 @@ export const fullPageJSON: SDUINode = {
             "gap": "14px",
             "overflowX": "auto",
             "WebkitOverflowScrolling": "touch",
-            "boxSizing": "border-box",
+            "boxSizing": "border-box"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 121, "rowEnd": 173 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 117, "rowEnd": 169 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 117, "rowEnd": 169 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 121,
+              "rowEnd": 173
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 117,
+              "rowEnd": 169
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 117,
+              "rowEnd": 169
+            }
           },
           "actions": {
             "onScroll": {
@@ -1281,7 +1366,7 @@ export const fullPageJSON: SDUINode = {
                 "border": "1px solid #E4E7E4",
                 "borderRadius": "16px",
                 "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
-                "boxSizing": "border-box",
+                "boxSizing": "border-box"
               },
               "data": {
                 "id": "serenelife-001"
@@ -1426,52 +1511,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.4",
-                        "out of": "5"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "376"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.4",
+                    "reviewCount": "376"
+                  }
                 },
                 {
                   "type": "PriceBlock",
                   "containerStyle": {
-                    "height": "28px",
-                    "minHeight": "28px",
-                    "flex": "0 0 28px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "baseline",
                     "gap": "8px",
-                    "overflow": "hidden",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "18px",
                     "fontWeight": "600",
                     "letterSpacing": "-0.01em",
                     "color": "#101F26",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "sellingPrice": "₹7,089",
@@ -1502,16 +1568,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "DeliveryInfo",
                   "containerStyle": {
-                    "height": "18px",
-                    "minHeight": "18px",
-                    "flex": "0 0 18px",
-                    "flexShrink": "0",
-                    "overflow": "hidden",
-                    "whiteSpace": "nowrap",
-                    "textOverflow": "ellipsis",
                     "fontSize": "12px",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "prefix": "Free delivery",
@@ -1738,52 +1799,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.2",
-                        "out of": "5"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "12,480"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.2",
+                    "reviewCount": "12,480"
+                  }
                 },
                 {
                   "type": "PriceBlock",
                   "containerStyle": {
-                    "height": "28px",
-                    "minHeight": "28px",
-                    "flex": "0 0 28px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "baseline",
                     "gap": "8px",
-                    "overflow": "hidden",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "18px",
                     "fontWeight": "600",
                     "letterSpacing": "-0.01em",
                     "color": "#101F26",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "sellingPrice": "₹2,499",
@@ -1814,16 +1856,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "DeliveryInfo",
                   "containerStyle": {
-                    "height": "18px",
-                    "minHeight": "18px",
-                    "flex": "0 0 18px",
-                    "flexShrink": "0",
-                    "overflow": "hidden",
-                    "whiteSpace": "nowrap",
-                    "textOverflow": "ellipsis",
                     "fontSize": "12px",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "prefix": "Free delivery",
@@ -2050,52 +2087,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.6",
-                        "out of": "5"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "2,043"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.6",
+                    "reviewCount": "2,043"
+                  }
                 },
                 {
                   "type": "PriceBlock",
                   "containerStyle": {
-                    "height": "28px",
-                    "minHeight": "28px",
-                    "flex": "0 0 28px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "baseline",
                     "gap": "8px",
-                    "overflow": "hidden",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "18px",
                     "fontWeight": "600",
                     "letterSpacing": "-0.01em",
                     "color": "#101F26",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "sellingPrice": "₹1,299",
@@ -2126,16 +2144,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "DeliveryInfo",
                   "containerStyle": {
-                    "height": "18px",
-                    "minHeight": "18px",
-                    "flex": "0 0 18px",
-                    "flexShrink": "0",
-                    "overflow": "hidden",
-                    "whiteSpace": "nowrap",
-                    "textOverflow": "ellipsis",
                     "fontSize": "12px",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "prefix": "Free delivery",
@@ -2362,52 +2375,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.3",
-                        "out of": "5"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "8,912"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.3",
+                    "reviewCount": "8,912"
+                  }
                 },
                 {
                   "type": "PriceBlock",
                   "containerStyle": {
-                    "height": "28px",
-                    "minHeight": "28px",
-                    "flex": "0 0 28px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "baseline",
                     "gap": "8px",
-                    "overflow": "hidden",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "18px",
                     "fontWeight": "600",
                     "letterSpacing": "-0.01em",
                     "color": "#101F26",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "sellingPrice": "₹5,499",
@@ -2438,16 +2432,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "DeliveryInfo",
                   "containerStyle": {
-                    "height": "18px",
-                    "minHeight": "18px",
-                    "flex": "0 0 18px",
-                    "flexShrink": "0",
-                    "overflow": "hidden",
-                    "whiteSpace": "nowrap",
-                    "textOverflow": "ellipsis",
                     "fontSize": "12px",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "prefix": "Free delivery",
@@ -2674,52 +2663,33 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "Rating",
                   "containerStyle": {
-                    "height": "20px",
-                    "minHeight": "20px",
-                    "flex": "0 0 20px",
-                    "flexShrink": "0",
-                    "display": "flex",
                     "alignItems": "center",
                     "gap": "6px",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "12px",
                     "letterSpacing": "0.02em",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
-                  "children": [
-                    {
-                      "type": "Score",
-                      "data": {
-                        "text": "4.5",
-                        "out of": "5"
-                      }
-                    },
-                    {
-                      "type": "ReviewCount",
-                      "data": {
-                        "text": "5,204"
-                      }
-                    }
-                  ]
+                  "data": {
+                    "score": "4.5",
+                    "reviewCount": "5,204"
+                  }
                 },
                 {
                   "type": "PriceBlock",
                   "containerStyle": {
-                    "height": "28px",
-                    "minHeight": "28px",
-                    "flex": "0 0 28px",
-                    "flexShrink": "0",
-                    "display": "flex",
-                    "alignItems": "baseline",
                     "gap": "8px",
-                    "overflow": "hidden",
                     "fontFamily": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
                     "fontSize": "18px",
                     "fontWeight": "600",
                     "letterSpacing": "-0.01em",
                     "color": "#101F26",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "sellingPrice": "₹1,899",
@@ -2750,16 +2720,11 @@ export const fullPageJSON: SDUINode = {
                 {
                   "type": "DeliveryInfo",
                   "containerStyle": {
-                    "height": "18px",
-                    "minHeight": "18px",
-                    "flex": "0 0 18px",
-                    "flexShrink": "0",
-                    "overflow": "hidden",
-                    "whiteSpace": "nowrap",
-                    "textOverflow": "ellipsis",
                     "fontSize": "12px",
                     "color": "#5E6E72",
-                    "boxSizing": "border-box"
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
                   },
                   "data": {
                     "prefix": "Free delivery",
@@ -2871,44 +2836,27 @@ export const fullPageJSON: SDUINode = {
             }
           ]
         },
-        // This is Box And Text Component..
-        // {
-        //   "type": "Box",
-        //   "containerStyle": {
-        //     "padding": "20px",
-        //     "backgroundColor": "#e0f2fe",
-        //     "borderRadius": "12px",
-        //     "display": "flex",
-        //     "justifyContent": "center",
-        //     "alignItems": "center",
-        //     "border": "2px dashed #0284c7"
-        //   },
-        //   "placement": {
-        //     "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 174, "rowEnd": 180 },
-        //     "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 170, "rowEnd": 172 },
-        //     "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 170, "rowEnd": 172 }
-        //   },
-        //   "children": [
-        //     {
-        //       "type": "Text",
-        //       "data": {
-        //         "text": "This is a demonstration of Box and Text components!"
-        //       },
-        //       "containerStyle": {
-        //         "fontSize": "16px",
-        //         "fontWeight": "bold",
-        //         "color": "#0369a1"
-        //       }
-        //     }
-        //   ]
-        // },
-        // ── 10. SMALL PRODUCT CARDS (RESPONSIVE GRID) ───────────────────
         {
           "type": "Box",
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 174, "rowEnd": 350 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 170, "rowEnd": 350 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 170, "rowEnd": 350 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 174,
+              "rowEnd": 350
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 170,
+              "rowEnd": 350
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 170,
+              "rowEnd": 350
+            }
           },
           "containerStyle": {
             "display": "grid",
@@ -2930,13 +2878,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s1" },
+              "data": {
+                "id": "s1"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/20/400/400", "altText": "Gas Stove" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.3" } }, { "type": "ReviewCount", "data": { "text": "84" } }] },
-                { "type": "Title", "data": { "text": "BIGFLAME Power Hexa..." } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹6,632", "mrp": "₹12,800", "discount": "48%" } },
-                { "type": "OfferText", "data": { "text": "₹6,512 with Bank offer" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/20/400/400",
+                    "altText": "Gas Stove"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.3",
+                    "reviewCount": "84"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "BIGFLAME Power Hexa..."
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹6,632",
+                    "mrp": "₹12,800",
+                    "discount": "48%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "₹6,512 with Bank offer"
+                  }
+                }
               ]
             },
             {
@@ -2949,13 +2938,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s2" },
+              "data": {
+                "id": "s2"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/10/400/400", "altText": "Men Cargos" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.1" } }, { "type": "ReviewCount", "data": { "text": "120" } }] },
-                { "type": "Title", "data": { "text": "VeBNoR Men Cargos" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹524", "mrp": "₹1,999", "discount": "73%" } },
-                { "type": "OfferText", "data": { "text": "Special discount" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/10/400/400",
+                    "altText": "Men Cargos"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.1",
+                    "reviewCount": "120"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "VeBNoR Men Cargos"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹524",
+                    "mrp": "₹1,999",
+                    "discount": "73%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Special discount"
+                  }
+                }
               ]
             },
             {
@@ -2968,13 +2998,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s3" },
+              "data": {
+                "id": "s3"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80", "altText": "Shoes" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.5" } }, { "type": "ReviewCount", "data": { "text": "210" } }] },
-                { "type": "Title", "data": { "text": "RED TAPE Lifestyle Sneakers" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹1,391", "mrp": "₹9,099", "discount": "84%" } },
-                { "type": "OfferText", "data": { "text": "Limited time deal" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+                    "altText": "Shoes"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.5",
+                    "reviewCount": "210"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "RED TAPE Lifestyle Sneakers"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹1,391",
+                    "mrp": "₹9,099",
+                    "discount": "84%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Limited time deal"
+                  }
+                }
               ]
             },
             {
@@ -2987,13 +3058,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s4" },
+              "data": {
+                "id": "s4"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/30/400/400", "altText": "T-Shirt" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.0" } }, { "type": "ReviewCount", "data": { "text": "56" } }] },
-                { "type": "Title", "data": { "text": "Anime Printed Cotton Tee" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹399", "mrp": "₹999", "discount": "60%" } },
-                { "type": "OfferText", "data": { "text": "Trending on campus" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/30/400/400",
+                    "altText": "T-Shirt"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.0",
+                    "reviewCount": "56"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "Anime Printed Cotton Tee"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹399",
+                    "mrp": "₹999",
+                    "discount": "60%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Trending on campus"
+                  }
+                }
               ]
             },
             {
@@ -3006,13 +3118,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s5" },
+              "data": {
+                "id": "s5"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/40/400/400", "altText": "Smart Watch" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.2" } }, { "type": "ReviewCount", "data": { "text": "340" } }] },
-                { "type": "Title", "data": { "text": "Noise Pulse 2 Max Display" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹1,499", "mrp": "₹5,999", "discount": "75%" } },
-                { "type": "OfferText", "data": { "text": "Lowest price ever" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/40/400/400",
+                    "altText": "Smart Watch"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.2",
+                    "reviewCount": "340"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "Noise Pulse 2 Max Display"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹1,499",
+                    "mrp": "₹5,999",
+                    "discount": "75%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Lowest price ever"
+                  }
+                }
               ]
             },
             {
@@ -3025,13 +3178,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s6" },
+              "data": {
+                "id": "s6"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/50/400/400", "altText": "Backpack" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.6" } }, { "type": "ReviewCount", "data": { "text": "1.2k" } }] },
-                { "type": "Title", "data": { "text": "Skybags 25L Campus Bag" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹899", "mrp": "₹2,100", "discount": "57%" } },
-                { "type": "OfferText", "data": { "text": "Bestseller" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/50/400/400",
+                    "altText": "Backpack"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.6",
+                    "reviewCount": "1.2k"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "Skybags 25L Campus Bag"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹899",
+                    "mrp": "₹2,100",
+                    "discount": "57%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Bestseller"
+                  }
+                }
               ]
             },
             {
@@ -3044,13 +3238,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s7" },
+              "data": {
+                "id": "s7"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/60/400/400", "altText": "Headphones" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "4.4" } }, { "type": "ReviewCount", "data": { "text": "800" } }] },
-                { "type": "Title", "data": { "text": "boAt Rockerz 450 Wireless" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹1,299", "mrp": "₹3,990", "discount": "67%" } },
-                { "type": "OfferText", "data": { "text": "Mega savings" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/60/400/400",
+                    "altText": "Headphones"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "4.4",
+                    "reviewCount": "800"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "boAt Rockerz 450 Wireless"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹1,299",
+                    "mrp": "₹3,990",
+                    "discount": "67%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Mega savings"
+                  }
+                }
               ]
             },
             {
@@ -3063,13 +3298,54 @@ export const fullPageJSON: SDUINode = {
                 "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)",
                 "border": "1px solid #F1F5F9"
               },
-              "data": { "id": "s8" },
+              "data": {
+                "id": "s8"
+              },
               "children": [
-                { "type": "Image", "containerStyle": { "height": "140px", "objectFit": "cover", "borderRadius": "8px" }, "data": { "imageUrl": "https://picsum.photos/id/70/400/400", "altText": "Sunglasses" } },
-                { "type": "Rating", "children": [{ "type": "Score", "data": { "text": "3.9" } }, { "type": "ReviewCount", "data": { "text": "23" } }] },
-                { "type": "Title", "data": { "text": "Fastrack UV Protect Shades" } },
-                { "type": "PriceBlock", "data": { "sellingPrice": "₹599", "mrp": "₹999", "discount": "40%" } },
-                { "type": "OfferText", "data": { "text": "Hot Deal" } }
+                {
+                  "type": "Image",
+                  "containerStyle": {
+                    "height": "140px",
+                    "objectFit": "cover",
+                    "borderRadius": "8px"
+                  },
+                  "data": {
+                    "imageUrl": "https://picsum.photos/id/70/400/400",
+                    "altText": "Sunglasses"
+                  }
+                },
+                {
+                  "type": "Rating",
+                  "data": {
+                    "score": "3.9",
+                    "reviewCount": "23"
+                  },
+                  "containerStyle": {
+                    "boxSizing": "border-box",
+                    "overflow": "auto",
+                    "scrollbarWidth": "none"
+                  }
+                },
+                {
+                  "type": "Title",
+                  "data": {
+                    "text": "Fastrack UV Protect Shades"
+                  }
+                },
+                {
+                  "type": "PriceBlock",
+                  "data": {
+                    "sellingPrice": "₹599",
+                    "mrp": "₹999",
+                    "discount": "40%"
+                  }
+                },
+                {
+                  "type": "OfferText",
+                  "data": {
+                    "text": "Hot Deal"
+                  }
+                }
               ]
             }
           ]
@@ -3089,9 +3365,24 @@ export const fullPageJSON: SDUINode = {
             "borderTop": "1px solid rgba(255,255,255,0.08)"
           },
           "placement": {
-            "mobile": { "colStart": 1, "colEnd": 100, "rowStart": 352, "rowEnd": 380 },
-            "tablet": { "colStart": 1, "colEnd": 100, "rowStart": 352, "rowEnd": 380 },
-            "desktop": { "colStart": 1, "colEnd": 100, "rowStart": 352, "rowEnd": 380 }
+            "mobile": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 352,
+              "rowEnd": 380
+            },
+            "tablet": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 352,
+              "rowEnd": 380
+            },
+            "desktop": {
+              "colStart": 1,
+              "colEnd": 100,
+              "rowStart": 352,
+              "rowEnd": 380
+            }
           },
           "data": {
             "sections": [

@@ -3,13 +3,9 @@
   "displayName": "Category Item",
   "category": "Navigation",
   "isCompulsory": false,
-  "allowedComponents": [
-    "Image",
-    "Text",
-    "Badge"
-  ],
+  "allowedComponents": [],
   "minValue": 0,
-  "maxValue": 3,
+  "maxValue": 0,
   "allowedActions": [
     "onTap"
   ],
@@ -20,12 +16,17 @@
     "label": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 50
+      "maxLength": 200
     },
     "icon": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 50
+      "maxLength": 500
+    },
+    "imageUrl": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
     }
   }
 }

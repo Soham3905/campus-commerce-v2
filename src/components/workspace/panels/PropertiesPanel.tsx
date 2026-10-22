@@ -505,12 +505,19 @@ export default function PropertiesPanel({
                       lowerKey.includes("iconurl") ||
                       lowerKey.includes("banner") ||
                       lowerKey === "src";
-                    const isNumber =
-                      typeof val === "number" ||
+                    const isPrice =
+                      lowerKey === "sellingprice" ||
+                      lowerKey === "mrp" ||
                       lowerKey.includes("price") ||
-                      lowerKey.includes("rating") ||
-                      lowerKey.includes("count") ||
-                      lowerKey.includes("score");
+                      lowerKey.includes("mrp");
+                    const isDiscount = lowerKey.includes("discount");
+                    const isNumber =
+                      !isPrice &&
+                      !isDiscount &&
+                      (typeof val === "number" ||
+                       lowerKey.includes("rating") ||
+                       lowerKey.includes("count") ||
+                       lowerKey.includes("score"));
                     const isBoolean = typeof val === "boolean";
 
                     return (
@@ -539,6 +546,42 @@ export default function PropertiesPanel({
                             />
                             <span className="text-xs text-zinc-600">
                               {val ? "Enabled" : "Disabled"}
+                            </span>
+                          </div>
+                        ) : isPrice ? (
+                          <div className="relative flex items-center">
+                            <span className="absolute left-2.5 text-xs font-semibold text-zinc-500 select-none pointer-events-none">
+                              ₹
+                            </span>
+                            <input
+                              type="text"
+                              value={String(val ?? "").replace(/[^0-9.]/g, "")}
+                              onChange={(e) =>
+                                handleDataChange(
+                                  key,
+                                  e.target.value.replace(/[^0-9.]/g, "")
+                                )
+                              }
+                              placeholder="0"
+                              className="w-full rounded-lg border border-zinc-200 bg-white pl-6 pr-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                            />
+                          </div>
+                        ) : isDiscount ? (
+                          <div className="relative flex items-center">
+                            <input
+                              type="text"
+                              value={String(val ?? "").replace(/[^0-9.]/g, "")}
+                              onChange={(e) =>
+                                handleDataChange(
+                                  key,
+                                  e.target.value.replace(/[^0-9.]/g, "")
+                                )
+                              }
+                              placeholder="0"
+                              className="w-full rounded-lg border border-zinc-200 bg-white pl-2.5 pr-7 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                            />
+                            <span className="absolute right-2.5 text-xs font-semibold text-zinc-500 select-none pointer-events-none">
+                              %
                             </span>
                           </div>
                         ) : isLongText ? (

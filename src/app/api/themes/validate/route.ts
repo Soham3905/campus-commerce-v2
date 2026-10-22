@@ -22,7 +22,9 @@ export async function GET() {
       if (fs.existsSync(filePath)) {
         themesToValidate[themeId] = JSON.parse(fs.readFileSync(filePath, "utf-8"));
       }
-    } catch {}
+    } catch (err) {
+      console.error(`[Validate API] Failed to read ${filePath}:`, err);
+    }
   }
 
   themesToValidate.landing_schema = themesToValidate.theme1;

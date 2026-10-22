@@ -6,24 +6,24 @@
     "config": {
       "type": "CouponCode",
       "containerStyle": {
-        "flexShrink": "0",
-        "minWidth": "280px",
-        "maxWidth": "320px",
         "backgroundImage": "linear-gradient(180deg, #FFF3DF 0%, #FFF3DF 100%)",
         "backgroundColor": "#FFF3DF",
-        "padding": "14px 16px",
-        "borderRadius": "16px",
-        "border": "1px dashed #E9C489",
+        "padding": "12px 16px",
+        "borderRadius": "14px",
+        "border": "1.5px dashed #E9C489",
         "color": "#8A5209",
-        "fontSize": "14px",
+        "fontSize": "13px",
         "fontWeight": "500",
         "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "boxSizing": "border-box"
+        "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none"
       },
       "data": {
-        "title": "CouponCode",
-        "coupon": "COUPON",
-        "description": "Default coupon code description",
+        "title": "CAMPUS SAVINGS",
+        "coupon": "SAVE50",
+        "description": "Flat ₹50 off on campus orders",
         "copyLabel": "Copy"
       }
     }
@@ -35,24 +35,24 @@
     "config": {
       "type": "CouponCode",
       "containerStyle": {
-        "flexShrink": "0",
-        "minWidth": "280px",
-        "maxWidth": "320px",
         "backgroundColor": "#FFFFFF",
-        "padding": "14px 16px",
-        "borderRadius": "16px",
+        "padding": "12px 16px",
+        "borderRadius": "14px",
         "border": "1.5px dashed #CBD5E1",
         "color": "#0F172A",
-        "fontSize": "14px",
+        "fontSize": "13px",
         "fontWeight": "500",
         "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none",
         "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.04)"
       },
       "data": {
-        "title": "CouponCode",
-        "coupon": "COUPON",
-        "description": "Default coupon code description",
+        "title": "STUDENT SPECIAL",
+        "coupon": "STUDENT20",
+        "description": "Extra 20% off all textbook orders",
         "copyLabel": "Copy"
       }
     }
@@ -64,24 +64,24 @@
     "config": {
       "type": "CouponCode",
       "containerStyle": {
-        "flexShrink": "0",
-        "minWidth": "280px",
-        "maxWidth": "320px",
         "backgroundColor": "#FFFFFF",
-        "padding": "14px 16px",
-        "borderRadius": "16px",
+        "padding": "12px 16px",
+        "borderRadius": "14px",
         "border": "1.5px dashed #F59E0B",
         "color": "#18181B",
-        "fontSize": "14px",
+        "fontSize": "13px",
         "fontWeight": "500",
         "fontFamily": "'Inter Tight', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "boxSizing": "border-box",
+        "overflowX": "hidden",
+        "overflowY": "auto",
+        "scrollbarWidth": "none",
         "boxShadow": "0 2px 10px rgba(0, 0, 0, 0.05)"
       },
       "data": {
-        "title": "CouponCode",
-        "coupon": "COUPON",
-        "description": "Default coupon code description",
+        "title": "CAMPUS DISCOUNT",
+        "coupon": "CAMPUSDEAL",
+        "description": "Exclusive student partner coupon",
         "copyLabel": "Copy"
       }
     }

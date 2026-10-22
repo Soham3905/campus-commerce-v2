@@ -3,16 +3,9 @@
   "displayName": "Hero Banner",
   "category": "Marketing",
   "isCompulsory": false,
-  "allowedComponents": [
-    "Image",
-    "Title",
-    "Button",
-    "CountDownTimer",
-    "Text",
-    "Box"
-  ],
+  "allowedComponents": [],
   "minValue": 0,
-  "maxValue": 10,
+  "maxValue": 0,
   "allowedActions": [
     "onTap",
     "onMount",

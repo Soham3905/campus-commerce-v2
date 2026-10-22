@@ -6,17 +6,18 @@
     "config": {
       "type": "CategoryItem",
       "containerStyle": {
-        "gap": "10px",
+        "gap": "6px",
         "borderRadius": "12px",
         "fontWeight": "600",
-        "fontSize": "16px",
+        "fontSize": "9px",
         "color": "#101F26",
         "cursor": "pointer",
         "boxSizing": "border-box"
       },
       "data": {
-        "label": "CategoryItem",
-        "icon": "📦"
+        "label": "Category",
+        "icon": "📦",
+        "imageUrl": ""
       }
     }
   },
