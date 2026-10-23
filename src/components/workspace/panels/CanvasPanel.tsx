@@ -145,9 +145,11 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
             ? 2
             : type === "Carousel"
               ? 5
-              : type === "ProductList" || type === "ProductGrid"
-                ? 9
-                : type === "Footer"
+              : type === "ProductList"
+                ? 13
+                : type === "ProductGrid"
+                  ? 9
+                  : type === "Footer"
                   ? 4
                   : 4;
       break;
@@ -189,7 +191,7 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       break;
     case "ProductCard":
       colSpan = Math.min(8, maxCols);
-      rowSpan = 8;
+      rowSpan = 11;
       break;
     case "Image":
       colSpan = Math.min(8, maxCols);
@@ -513,41 +515,57 @@ export function calculateRequiredRootRows(
   }
 
   if (rootItem.type === "ProductList") {
-    let currentLineWidth = 0;
-    let lines = 1;
-    let maxCardHeight = 300;
+    let maxCardHeight = 524;
 
     for (const ch of children) {
-      let cardWidth = 280;
-      let cardHeight = 300;
+      let cardHeight = 524;
 
-      if (ch.containerStyle?.width) {
-        const parsed = parseInt(String(ch.containerStyle.width), 10);
-        if (!isNaN(parsed) && parsed > 0) cardWidth = parsed;
-      }
       if (ch.containerStyle?.height) {
         const parsed = parseInt(String(ch.containerStyle.height), 10);
         if (!isNaN(parsed) && parsed > 0) cardHeight = parsed;
       }
 
-      if (ch.id === overrideChildId) {
-        if (overrideWidthPx !== undefined) cardWidth = overrideWidthPx;
-        if (overrideHeightPx !== undefined) cardHeight = overrideHeightPx;
+      if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
+        cardHeight = overrideHeightPx;
       }
 
       if (cardHeight > maxCardHeight) maxCardHeight = cardHeight;
-
-      if (currentLineWidth > 0 && currentLineWidth + cardWidth + 12 > rootWidthPx) {
-        lines++;
-        currentLineWidth = cardWidth;
-      } else {
-        currentLineWidth += (currentLineWidth > 0 ? 12 : 0) + cardWidth;
-      }
     }
 
-    const totalNeededPx = lines * (maxCardHeight + 16) + 32;
+    // ProductList is a single horizontal scroll track (does not wrap vertically)
+    const totalNeededPx = maxCardHeight + 20;
     const neededRows = Math.ceil((totalNeededPx + GRID_GAP_PX) / (ROW_HEIGHT_PX + GRID_GAP_PX));
     return Math.max(currentPlace.rowEnd - currentPlace.rowStart, neededRows);
+  }
+
+  // ProductCard container: dynamically calculates vertical rows based on its actual children
+  if (rootItem.type === "ProductCard") {
+    let totalHeightPx = 28; // padding top (14px) + padding bottom (14px)
+    for (const ch of children) {
+      let h = 24;
+      if (ch.type === "Image") h = 160;
+      else if (ch.type === "Description") h = 36;
+      else if (ch.type === "Button") h = 38;
+      else if (ch.type === "ShareButton") h = 36; // stacked below Button
+      else if (ch.type === "PriceBlock") h = 24;
+      else if (ch.type === "Rating") h = 20;
+      else if (ch.type === "Badge" || ch.type === "Label" || ch.type === "Sponsored") h = 18;
+      else if (ch.type === "Title") h = 16;
+      else if (ch.type === "OfferText" || ch.type === "DeliveryInfo") h = 16;
+
+      if (ch.containerStyle?.height) {
+        const parsed = parseInt(String(ch.containerStyle.height), 10);
+        if (!isNaN(parsed) && parsed > 0) h = parsed;
+      }
+      if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
+        h = overrideHeightPx;
+      }
+      if (h > 0) {
+        totalHeightPx += h + 6;
+      }
+    }
+    const neededRows = Math.ceil((totalHeightPx + GRID_GAP_PX) / (ROW_HEIGHT_PX + GRID_GAP_PX));
+    return Math.max(neededRows, 6);
   }
 
   // Generic container height check (e.g. Box, HeroBanner)
@@ -1385,13 +1403,36 @@ export function getAllowedChildrenForType(type: string): string[] {
 /**
  * Creates a default child SDUINode with proper initial data and styling.
  */
-export function createDefaultChildNode(childType: string, themeId: string = "theme1"): SDUINode {
+export function createDefaultChildNode(
+  childType: string,
+  themeId: string = "theme1",
+  parentType?: string
+): SDUINode {
   const defaults = getAllDefaultComponents(themeId);
   const found = defaults.find((c) => c.type === childType);
-  if (found && found.config) {
-    return JSON.parse(JSON.stringify(found.config));
+  let baseNode: SDUINode =
+    found && found.config
+      ? JSON.parse(JSON.stringify(found.config))
+      : { type: childType, data: {} };
+
+  // When adding a ProductCard into a ProductList horizontal track,
+  // enforce uniform card width and height matching theme1's product list cards
+  if (childType === "ProductCard" && (parentType === "ProductList" || !parentType)) {
+    baseNode = {
+      ...baseNode,
+      containerStyle: {
+        ...(baseNode.containerStyle || {}),
+        flex: "0 0 auto",
+        width: "clamp(236px, 74vw, 268px)",
+        height: "524px",
+        minHeight: "524px",
+        maxHeight: "524px",
+        alignSelf: "stretch",
+      },
+    };
   }
-  return { type: childType, data: {} };
+
+  return baseNode;
 }
 
 // -----------------------------------------------------------------------------
@@ -1730,7 +1771,7 @@ export default function CanvasPanel({
 
     // Create new child node
     const newChildNode = ensureNodeIds(
-      createDefaultChildNode(childType),
+      createDefaultChildNode(childType, "theme1", targetNode.type),
       `${childType.toLowerCase()}-${Date.now().toString(36)}`
     );
 
@@ -2667,6 +2708,11 @@ export default function CanvasPanel({
                   : layoutPreview?.[item.id] || savedPlacement;
 
                 const isSelected = selectedItemId === item.id;
+                const isChildSelected = Boolean(
+                  selectedItemId &&
+                  item.config &&
+                  findParentNodeInTree(item.config, selectedItemId) !== null
+                );
 
                 return (
                   <div
@@ -2679,7 +2725,7 @@ export default function CanvasPanel({
                     style={{
                       gridColumn: `${placement.colStart} / ${placement.colEnd}`,
                       gridRow: `${placement.rowStart} / ${placement.rowEnd}`,
-                      zIndex: isSelected || isInteractingThis ? 60 : item.zIndex ?? 1,
+                      zIndex: isSelected || isChildSelected || isInteractingThis ? 60 : item.zIndex ?? 1,
                     }}
                     className={`relative group flex flex-col justify-center select-none ${isInteractingThis
                         ? "ring-2 ring-blue-500 shadow-xl opacity-90 cursor-grabbing z-50"

@@ -7,6 +7,7 @@
       "type": "ProductList",
       "containerStyle": {
         "gap": "14px",
+        "padding": "8px",
         "overflowX": "auto",
         "WebkitOverflowScrolling": "touch",
         "boxSizing": "border-box"
@@ -15,54 +16,408 @@
       "children": [
         {
           "type": "ProductCard",
+          "containerStyle": {
+            "backgroundColor": "#FFFFFF",
+            "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+            "position": "relative",
+            "flex": "0 0 auto",
+            "width": "clamp(236px, 74vw, 268px)",
+            "height": "524px",
+            "minHeight": "524px",
+            "maxHeight": "524px",
+            "alignSelf": "stretch",
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": "8px",
+            "padding": "14px",
+            "border": "1px solid #E4E7E4",
+            "borderRadius": "16px",
+            "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+            "boxSizing": "border-box"
+          },
           "data": {
-            "id": "p1"
+            "id": "noise-pulse-001"
           },
           "children": [
             {
               "type": "Image",
+              "containerStyle": {
+                "height": "176px",
+                "minHeight": "176px",
+                "width": "100%",
+                "objectFit": "contain",
+                "backgroundColor": "#FAFAF8",
+                "borderRadius": "10px",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "imageUrl": "",
-                "altText": "Product 1"
+                "imageUrl": "https://m.media-amazon.com/images/I/816r5iLd4LL._AC_UL480_FMwebp_QL65_.jpg",
+                "altText": "Noise ColorFit Pulse 2"
+              }
+            },
+            {
+              "type": "Label",
+              "containerStyle": {
+                "fontSize": "10px",
+                "fontWeight": "600",
+                "letterSpacing": "0.10em",
+                "textTransform": "uppercase",
+                "color": "#8D9A9D",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Sponsored"
+              }
+            },
+            {
+              "type": "Badge",
+              "containerStyle": {
+                "alignSelf": "flex-start",
+                "padding": "2px 8px",
+                "borderRadius": "999px",
+                "fontSize": "11px",
+                "fontWeight": "600",
+                "backgroundColor": "#FFF3DF",
+                "color": "#8A5209",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Limited time offer"
               }
             },
             {
               "type": "Title",
+              "containerStyle": {
+                "fontSize": "12px",
+                "fontWeight": "700",
+                "letterSpacing": "0.08em",
+                "textTransform": "uppercase",
+                "color": "#5E6E72",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "text": "Product 1"
+                "text": "Noise ColorFit Pulse 2"
+              }
+            },
+            {
+              "type": "Description",
+              "containerStyle": {
+                "fontSize": "13px",
+                "lineHeight": "18px",
+                "fontWeight": "500",
+                "color": "#101F26",
+                "display": "-webkit-box",
+                "WebkitLineClamp": "2",
+                "WebkitBoxOrient": "vertical",
+                "overflow": "hidden",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "1.85\" TFT display with Bluetooth calling, 10-day battery and 100 sports modes"
+              }
+            },
+            {
+              "type": "Rating",
+              "containerStyle": {
+                "alignItems": "center",
+                "gap": "6px",
+                "fontSize": "12px",
+                "color": "#5E6E72",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "score": "4.4",
+                "reviewCount": "376"
               }
             },
             {
               "type": "PriceBlock",
+              "containerStyle": {
+                "display": "flex",
+                "alignItems": "baseline",
+                "gap": "8px",
+                "fontSize": "17px",
+                "fontWeight": "700",
+                "color": "#0D3540",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "sellingPrice": "₹499"
+                "sellingPrice": "₹1,499",
+                "mrp": "₹5,999",
+                "discount": "75% OFF"
+              }
+            },
+            {
+              "type": "OfferText",
+              "containerStyle": {
+                "fontSize": "11px",
+                "fontWeight": "600",
+                "color": "#C4185F",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Up to 5% back with Amazon Pay card"
+              }
+            },
+            {
+              "type": "DeliveryInfo",
+              "containerStyle": {
+                "fontSize": "11px",
+                "color": "#5E6E72",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "prefix": "Free delivery",
+                "daysOffset": 2
+              }
+            },
+            {
+              "type": "Button",
+              "containerStyle": {
+                "width": "100%",
+                "height": "38px",
+                "marginTop": "auto",
+                "borderRadius": "10px",
+                "backgroundColor": "#0D3540",
+                "color": "#FFFFFF",
+                "fontWeight": "600",
+                "fontSize": "13px",
+                "border": "none",
+                "cursor": "pointer",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "label": "Add to cart"
+              }
+            },
+            {
+              "type": "ShareButton",
+              "containerStyle": {
+                "width": "100%",
+                "height": "36px",
+                "borderRadius": "10px",
+                "display": "inline-flex",
+                "alignItems": "center",
+                "justifyContent": "center",
+                "gap": "6px",
+                "backgroundColor": "#FFFFFF",
+                "border": "1px solid #101F26",
+                "color": "#101F26",
+                "fontSize": "13px",
+                "fontWeight": "600",
+                "cursor": "pointer",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "label": "Share",
+                "icon": "↗"
               }
             }
           ]
         },
         {
           "type": "ProductCard",
+          "containerStyle": {
+            "backgroundColor": "#FFFFFF",
+            "backgroundImage": "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+            "position": "relative",
+            "flex": "0 0 auto",
+            "width": "clamp(236px, 74vw, 268px)",
+            "height": "524px",
+            "minHeight": "524px",
+            "maxHeight": "524px",
+            "alignSelf": "stretch",
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": "8px",
+            "padding": "14px",
+            "border": "1px solid #E4E7E4",
+            "borderRadius": "16px",
+            "boxShadow": "0 1px 2px rgba(16,31,38,0.04)",
+            "boxSizing": "border-box"
+          },
           "data": {
-            "id": "p2"
+            "id": "aurora-buds-002"
           },
           "children": [
             {
               "type": "Image",
+              "containerStyle": {
+                "height": "176px",
+                "minHeight": "176px",
+                "width": "100%",
+                "objectFit": "contain",
+                "backgroundColor": "#FAFAF8",
+                "borderRadius": "10px",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "imageUrl": "",
-                "altText": "Product 2"
+                "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+                "altText": "Aurora Sound Pro"
+              }
+            },
+            {
+              "type": "Label",
+              "containerStyle": {
+                "fontSize": "10px",
+                "fontWeight": "600",
+                "letterSpacing": "0.10em",
+                "textTransform": "uppercase",
+                "color": "#8D9A9D",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Sponsored"
+              }
+            },
+            {
+              "type": "Badge",
+              "containerStyle": {
+                "alignSelf": "flex-start",
+                "padding": "2px 8px",
+                "borderRadius": "999px",
+                "fontSize": "11px",
+                "fontWeight": "600",
+                "backgroundColor": "#E0F2FE",
+                "color": "#0369A1",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Best Seller"
               }
             },
             {
               "type": "Title",
+              "containerStyle": {
+                "fontSize": "12px",
+                "fontWeight": "700",
+                "letterSpacing": "0.08em",
+                "textTransform": "uppercase",
+                "color": "#5E6E72",
+                "whiteSpace": "nowrap",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "text": "Product 2"
+                "text": "Aurora Sound Pro"
+              }
+            },
+            {
+              "type": "Description",
+              "containerStyle": {
+                "fontSize": "13px",
+                "lineHeight": "18px",
+                "fontWeight": "500",
+                "color": "#101F26",
+                "display": "-webkit-box",
+                "WebkitLineClamp": "2",
+                "WebkitBoxOrient": "vertical",
+                "overflow": "hidden",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "Wireless noise cancelling over-ear headphones with 40h playtime and fast charging"
+              }
+            },
+            {
+              "type": "Rating",
+              "containerStyle": {
+                "alignItems": "center",
+                "gap": "6px",
+                "fontSize": "12px",
+                "color": "#5E6E72",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "score": "4.8",
+                "reviewCount": "1,240"
               }
             },
             {
               "type": "PriceBlock",
+              "containerStyle": {
+                "display": "flex",
+                "alignItems": "baseline",
+                "gap": "8px",
+                "fontSize": "17px",
+                "fontWeight": "700",
+                "color": "#0D3540",
+                "boxSizing": "border-box"
+              },
               "data": {
-                "sellingPrice": "₹799"
+                "sellingPrice": "₹2,999",
+                "mrp": "₹7,999",
+                "discount": "62% OFF"
+              }
+            },
+            {
+              "type": "OfferText",
+              "containerStyle": {
+                "fontSize": "11px",
+                "fontWeight": "600",
+                "color": "#C4185F",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "text": "No Cost EMI available on major cards"
+              }
+            },
+            {
+              "type": "DeliveryInfo",
+              "containerStyle": {
+                "fontSize": "11px",
+                "color": "#5E6E72",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "prefix": "Free delivery",
+                "daysOffset": 1
+              }
+            },
+            {
+              "type": "Button",
+              "containerStyle": {
+                "width": "100%",
+                "height": "38px",
+                "marginTop": "auto",
+                "borderRadius": "10px",
+                "backgroundColor": "#0D3540",
+                "color": "#FFFFFF",
+                "fontWeight": "600",
+                "fontSize": "13px",
+                "border": "none",
+                "cursor": "pointer",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "label": "Add to cart"
+              }
+            },
+            {
+              "type": "ShareButton",
+              "containerStyle": {
+                "width": "100%",
+                "height": "36px",
+                "borderRadius": "10px",
+                "display": "inline-flex",
+                "alignItems": "center",
+                "justifyContent": "center",
+                "gap": "6px",
+                "backgroundColor": "#FFFFFF",
+                "border": "1px solid #101F26",
+                "color": "#101F26",
+                "fontSize": "13px",
+                "fontWeight": "600",
+                "cursor": "pointer",
+                "boxSizing": "border-box"
+              },
+              "data": {
+                "label": "Share",
+                "icon": "↗"
               }
             }
           ]

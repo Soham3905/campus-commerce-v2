@@ -901,9 +901,35 @@ export default function PropertiesPanel({
                             >
                               <span className="text-zinc-400">└</span>
                               <span className="font-bold">{ch.type}</span>
-                              {Boolean(ch.config?.data?.label || ch.config?.data?.title || ch.config?.data?.altText || ch.config?.data?.text) && (
-                                <span className="text-zinc-400 font-normal truncate max-w-[100px]">
-                                  ({ch.config?.data?.label || ch.config?.data?.title || ch.config?.data?.altText || ch.config?.data?.text})
+                              {Boolean(
+                                ch.config?.data?.label ||
+                                ch.config?.data?.title ||
+                                ch.config?.data?.altText ||
+                                ch.config?.data?.text ||
+                                ch.config?.data?.sellingPrice ||
+                                ch.config?.data?.score ||
+                                ch.config?.data?.prefix ||
+                                (ch.type === "ProductCard" && (
+                                  ch.config?.children?.find((c: any) => c.type === "Title")?.data?.text ||
+                                  ch.config?.children?.find((c: any) => c.type === "Image")?.data?.altText ||
+                                  ch.config?.data?.id
+                                ))
+                              ) && (
+                                <span className="text-zinc-400 font-normal truncate max-w-[130px]">
+                                  (
+                                  {ch.config?.data?.label ||
+                                    ch.config?.data?.title ||
+                                    ch.config?.data?.altText ||
+                                    ch.config?.data?.text ||
+                                    ch.config?.data?.sellingPrice ||
+                                    ch.config?.data?.score ||
+                                    ch.config?.data?.prefix ||
+                                    (ch.type === "ProductCard" && (
+                                      ch.config?.children?.find((c: any) => c.type === "Title")?.data?.text ||
+                                      ch.config?.children?.find((c: any) => c.type === "Image")?.data?.altText ||
+                                      ch.config?.data?.id
+                                    ))}
+                                  )
                                 </span>
                               )}
                             </button>

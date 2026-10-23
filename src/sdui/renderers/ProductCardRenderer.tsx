@@ -9,6 +9,7 @@ import type { BaseRendererProps } from "../types";
  * ==============================================================================
  * Beginner Note:
  * Renders the "ProductCard" component in the SDUI tree.
+ * Displays product image, brand/title, pricing, ratings, badges, and actions.
  * Receives standard props: { children, style, data, actions, ... }
  */
 export default function ProductCardRenderer({ children, style = {} }: BaseRendererProps) {
@@ -19,58 +20,26 @@ export default function ProductCardRenderer({ children, style = {} }: BaseRender
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        padding: '14px',
-        width: '280px',
-        maxWidth: '100%',
-        borderRadius: '16px',
-        backgroundColor: '#ffffff',
-        position: 'relative',
-        overflow: 'hidden',
-        border: '1px solid #E4E7E4',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-        ...style
+        width: "100%",
+        maxWidth: "100%",
+        borderRadius: "16px",
+        backgroundColor: "#ffffff",
+        position: "relative",
+        border: "1px solid #E4E7E4",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        padding: "14px",
+        transition: "all 0.2s ease",
+        boxShadow: isHovered
+          ? "0 8px 24px rgba(16, 31, 38, 0.08)"
+          : (style.boxShadow || "0 1px 3px rgba(16, 31, 38, 0.04)"),
+        transform: isHovered ? "translateY(-2px)" : "none",
+        ...style,
       }}
     >
       {children}
-
-      {/* Floating Quick Add Pill on Hover */}
-      {isHovered && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '145px',
-            left: '14px',
-            right: '14px',
-            zIndex: 10
-          }}
-        >
-          <button
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: '100%',
-              padding: '9px 14px',
-              backgroundColor: '#111827',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '12px',
-              fontWeight: '600',
-              fontSize: '13px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)'
-            }}
-          >
-            <span>⚡</span>
-            <span>Quick Add</span>
-          </button>
-        </div>
-      )}
     </div>
   );
 }

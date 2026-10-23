@@ -13,9 +13,6 @@ import type { BaseRendererProps } from "../types";
  */
 export default function ShareButtonRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
   const {
-    height,
-    minHeight,
-    maxHeight,
     flex,
     flexShrink,
     display,
@@ -33,8 +30,8 @@ export default function ShareButtonRenderer({ data = {}, style = {}, onClick }: 
       onClick={onClick}
       className="no-scrollbar"
       style={{
-        width: "100%",
-        height: "100%",
+        width: cleanStyle.width || "100%",
+        height: cleanStyle.height || "auto",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
@@ -55,7 +52,25 @@ export default function ShareButtonRenderer({ data = {}, style = {}, onClick }: 
         ...cleanStyle,
       }}
     >
-      {data?.icon && <span style={{ fontSize: "14px", lineHeight: 1 }}>{data.icon}</span>}
+      {data?.icon && (
+        <span
+          style={{
+            fontSize: "12px",
+            lineHeight: 1,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "18px",
+            height: "18px",
+            borderRadius: "4px",
+            backgroundColor: "#2563EB",
+            color: "#FFFFFF",
+            flexShrink: 0,
+          }}
+        >
+          {data.icon}
+        </span>
+      )}
       {data?.label && <span>{data.label}</span>}
     </button>
   );

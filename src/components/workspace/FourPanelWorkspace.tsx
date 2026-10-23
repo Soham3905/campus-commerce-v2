@@ -474,7 +474,7 @@ export default function FourPanelWorkspace({
         if (!allowed.includes(childType)) return prev;
 
         const newChildNode = ensureNodeIds(
-          createDefaultChildNode(childType, activeThemeId),
+          createDefaultChildNode(childType, activeThemeId, targetNode.type),
           `${childType.toLowerCase()}-${Date.now().toString(36)}`
         );
 
