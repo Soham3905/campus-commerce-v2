@@ -458,8 +458,9 @@ export const fullPageJSON: SDUINode = {
         {
           "type": "StoryRow",
           "containerStyle": {
-            "padding": "20px max(16px, calc((100% - 1180px) / 2)) 8px",
-            "backgroundColor": "transparent"
+            "padding": "6px 12px",
+            "backgroundColor": "transparent",
+            "boxSizing": "border-box"
           },
           "placement": {
             "mobile": {
@@ -854,17 +855,15 @@ export const fullPageJSON: SDUINode = {
               }
             },
             {
-              "type": "IFrame",
+              "type": "Image",
               "containerStyle": {
                 "height": "220px",
-                "width": "100%",
-                "borderRadius": "16px",
-                "overflow": "hidden"
+                "objectFit": "cover",
+                "borderRadius": "16px"
               },
               "data": {
-                "src": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1",
-                "title": "Campus Tech & Deals Showcase",
-                "allowFullScreen": true
+                "imageUrl": "https://picsum.photos/id/1060/1600/500",
+                "altText": "Campus Showcase"
               }
             },
             {

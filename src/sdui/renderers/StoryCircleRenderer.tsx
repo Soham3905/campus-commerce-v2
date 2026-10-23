@@ -13,10 +13,12 @@ import type { BaseRendererProps } from "../types";
  */
 export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
   const [hasError, setHasError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const {
     height,
     minHeight,
+    maxHeight,
     flex,
     flexShrink,
     whiteSpace,
@@ -39,89 +41,99 @@ export default function StoryCircleRenderer({ data = {}, style = {}, onClick }: 
   return (
     <div
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-label={data?.label || data?.text || "Story"}
       className="no-scrollbar"
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "flex-start",
         width: "100%",
-        height: "100%",
+        minHeight: "72px",
         cursor: "pointer",
         boxSizing: "border-box",
-        overflow: "auto",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-        padding: "4px",
-        transition: "transform 0.15s ease",
+        padding: "2px 2px",
+        userSelect: "none",
         ...cleanStyle,
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.05)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)";
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* 1. Circle Avatar: Always pinned at the top, NEVER clipped or pushed out of view */}
       <div
         style={{
+          width: "48px",
+          height: "48px",
+          minWidth: "48px",
+          minHeight: "48px",
+          aspectRatio: "1/1",
+          borderRadius: "50%",
+          padding: "2px",
+          border: `2px solid ${ringColor}`,
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          margin: "auto 0",
-          gap: "4px",
-          width: "100%",
+          justifyContent: "center",
+          backgroundColor: "#f8f9fa",
           flexShrink: 0,
+          boxSizing: "border-box",
+          transform: isHovered ? "scale(1.06)" : "scale(1)",
+          transition: "transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)",
         }}
       >
-        <div
+        <img
+          src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
+          alt={data?.label || data?.text || "Story"}
+          onError={() => setHasError(true)}
           style={{
-            width: "52px",
-            height: "52px",
-            maxWidth: "100%",
-            maxHeight: "100%",
-            aspectRatio: "1/1",
+            width: "100%",
+            height: "100%",
             borderRadius: "50%",
-            padding: "2px",
-            border: `2px solid ${ringColor}`,
+            objectFit: "cover",
+            display: "block",
+            pointerEvents: "none",
+          }}
+        />
+      </div>
+
+      {/* 2. Text Label: Pinned below avatar with scroll support for extra large text */}
+      {(data?.label || data?.text) && (
+        <div
+          className="no-scrollbar"
+          style={{
+            width: "100%",
+            height: "22px",
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginTop: "2px",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#f8f9fa",
+            justifyContent: "flex-start",
             flexShrink: 0,
-            boxSizing: "border-box",
+            textAlign: "center",
           }}
         >
-          <img
-            src={!hasError && data?.imageUrl ? data.imageUrl : fallbackUrl}
-            alt={data?.label || data?.text || "Story"}
-            onError={() => setHasError(true)}
-            style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-        </div>
-        {(data?.label || data?.text) && (
           <span
             style={{
               fontSize: "11px",
               fontWeight: "500",
               color: cleanStyle.color || "inherit",
+              display: "block",
               textAlign: "center",
               overflowWrap: "anywhere",
               wordBreak: "break-word",
-              maxWidth: "100%",
               lineHeight: "1.2",
               whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
             }}
           >
             {data?.label || data?.text}
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

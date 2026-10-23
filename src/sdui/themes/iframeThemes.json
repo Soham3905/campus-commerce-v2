@@ -6,14 +6,15 @@
     "config": {
       "type": "IFrame",
       "containerStyle": {
-        "height": "220px",
-        "width": "100%",
         "borderRadius": "16px",
-        "overflow": "hidden"
+        "overflow": "hidden",
+        "boxSizing": "border-box",
+        "border": "1px solid #E2E8F0",
+        "backgroundColor": "#F8FAFC"
       },
       "data": {
-        "src": "",
-        "title": "IFrame",
+        "src": "https://www.openstreetmap.org/export/embed.html?bbox=79.049%2C21.121%2C79.056%2C21.128&layer=mapnik",
+        "title": "Campus Map",
         "allowFullScreen": true
       }
     }

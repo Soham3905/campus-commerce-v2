@@ -5,9 +5,7 @@
   "isCompulsory": false,
   "allowedComponents": [
     "HeaderButton",
-    "SearchBar",
-    "Icon",
-    "Box"
+    "SearchBar"
   ],
   "minValue": 0,
   "maxValue": 10,

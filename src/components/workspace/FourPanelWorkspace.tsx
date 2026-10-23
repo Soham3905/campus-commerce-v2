@@ -481,14 +481,14 @@ export default function FourPanelWorkspace({
         const updatedConfig =
           rootItem.id === targetNodeId
             ? {
-                ...rootItem.config,
-                children: [
-                  ...(Array.isArray(rootItem.config.children)
-                    ? rootItem.config.children
-                    : []),
-                  newChildNode,
-                ],
-              }
+              ...rootItem.config,
+              children: [
+                ...(Array.isArray(rootItem.config.children)
+                  ? rootItem.config.children
+                  : []),
+                newChildNode,
+              ],
+            }
             : addChildToNodeRecursive(rootItem.config, targetNodeId, newChildNode);
 
         const neededRows = calculateRequiredRootRows(
@@ -641,17 +641,15 @@ export default function FourPanelWorkspace({
             type="button"
             onClick={handleTogglePreview}
             title={showLivePreview ? "Close Live Preview (Esc)" : "Play Live Preview"}
-            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${
-              showLivePreview
+            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 ${showLivePreview
                 ? "bg-emerald-600 text-white shadow-emerald-600/20 hover:bg-emerald-700 ring-2 ring-emerald-400/40"
                 : "bg-zinc-900 text-white shadow-zinc-900/15 hover:bg-zinc-800"
-            }`}
+              }`}
           >
             {/* Play Icon */}
             <svg
-              className={`w-3.5 h-3.5 fill-current transition-transform duration-200 ${
-                showLivePreview ? "scale-110" : ""
-              }`}
+              className={`w-3.5 h-3.5 fill-current transition-transform duration-200 ${showLivePreview ? "scale-110" : ""
+                }`}
               viewBox="0 0 24 24"
             >
               <path d="M8 5v14l11-7z" />
@@ -675,33 +673,30 @@ export default function FourPanelWorkspace({
           <button
             type="button"
             onClick={() => setMobilePanel(1)}
-            className={`py-1.5 rounded-md transition text-center ${
-              mobilePanel === 1
+            className={`py-1.5 rounded-md transition text-center ${mobilePanel === 1
                 ? "bg-white text-zinc-900 shadow-2xs font-bold"
                 : "text-zinc-500 hover:text-zinc-800"
-            }`}
+              }`}
           >
             1. Blocks
           </button>
           <button
             type="button"
             onClick={() => setMobilePanel(2)}
-            className={`py-1.5 rounded-md transition text-center ${
-              mobilePanel === 2
+            className={`py-1.5 rounded-md transition text-center ${mobilePanel === 2
                 ? "bg-white text-zinc-900 shadow-2xs font-bold"
                 : "text-zinc-500 hover:text-zinc-800"
-            }`}
+              }`}
           >
             2. Canvas
           </button>
           <button
             type="button"
             onClick={() => setMobilePanel(3)}
-            className={`py-1.5 rounded-md transition text-center relative ${
-              mobilePanel === 3
+            className={`py-1.5 rounded-md transition text-center relative ${mobilePanel === 3
                 ? "bg-white text-zinc-900 shadow-2xs font-bold"
                 : "text-zinc-500 hover:text-zinc-800"
-            }`}
+              }`}
           >
             <span>3. Props</span>
             {selectedItem && (
@@ -714,11 +709,10 @@ export default function FourPanelWorkspace({
               setMobilePanel(4);
               setShowLivePreview(true);
             }}
-            className={`py-1.5 rounded-md transition text-center flex items-center justify-center gap-1.5 ${
-              mobilePanel === 4
+            className={`py-1.5 rounded-md transition text-center flex items-center justify-center gap-1.5 ${mobilePanel === 4
                 ? "bg-white text-zinc-900 shadow-2xs font-bold"
                 : "text-zinc-500 hover:text-zinc-800"
-            }`}
+              }`}
           >
             <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
@@ -732,18 +726,16 @@ export default function FourPanelWorkspace({
       <div className="relative flex-1 flex flex-row gap-2.5 p-2.5 sm:p-3 overflow-hidden min-h-0">
         {/* Panel 1: Components (Toolbox) */}
         <div
-          className={`h-full ${
-            mobilePanel === 1 ? "flex flex-1" : "hidden"
-          } lg:flex lg:w-56 xl:w-60 lg:shrink-0`}
+          className={`h-full ${mobilePanel === 1 ? "flex flex-1" : "hidden"
+            } lg:flex lg:w-56 xl:w-60 lg:shrink-0`}
         >
           <ToolboxPanel />
         </div>
 
         {/* Panel 2: Canvas Panel */}
         <div
-          className={`h-full ${
-            mobilePanel === 2 ? "flex flex-1" : "hidden"
-          } lg:flex lg:flex-1 lg:min-w-0`}
+          className={`h-full ${mobilePanel === 2 ? "flex flex-1" : "hidden"
+            } lg:flex lg:flex-1 lg:min-w-0`}
         >
           <CanvasPanel
             items={layoutItems}
@@ -757,9 +749,8 @@ export default function FourPanelWorkspace({
 
         {/* Panel 3: Properties Panel */}
         <div
-          className={`h-full ${
-            mobilePanel === 3 ? "flex flex-1" : "hidden"
-          } lg:flex lg:w-72 xl:w-80 lg:shrink-0`}
+          className={`h-full ${mobilePanel === 3 ? "flex flex-1" : "hidden"
+            } lg:flex lg:w-72 xl:w-80 lg:shrink-0`}
         >
           <PropertiesPanel
             selectedItem={selectedItem}
@@ -775,13 +766,11 @@ export default function FourPanelWorkspace({
         {/* Panel 4: Overlapping Slide-over Live Preview Panel */}
         {(showLivePreview || mobilePanel === 4) && (
           <div
-            className={`h-full z-40 ${
-              mobilePanel === 4 ? "flex flex-1 lg:hidden" : "hidden"
-            } ${
-              showLivePreview
+            className={`h-full z-40 ${mobilePanel === 4 ? "flex flex-1 lg:hidden" : "hidden"
+              } ${showLivePreview
                 ? "lg:flex lg:absolute lg:top-2.5 sm:lg:top-3 lg:right-2.5 sm:lg:right-3 lg:bottom-2.5 sm:lg:bottom-3 lg:w-[380px] xl:w-[410px] lg:max-w-[calc(100%-1.5rem)] lg:flex-col lg:shadow-2xl lg:rounded-xl lg:overflow-hidden lg:ring-1 lg:ring-black/10 animate-slide-in-right"
                 : "lg:hidden"
-            }`}
+              }`}
           >
             <PreviewPanel
               layoutItems={layoutItems}

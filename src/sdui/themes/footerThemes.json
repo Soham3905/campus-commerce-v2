@@ -19,20 +19,46 @@
       "data": {
         "sections": [
           {
-            "title": "Footer Section",
+            "title": "About Us",
             "links": [
               {
-                "label": "Link 1",
+                "label": "About VNIT",
                 "url": "#"
               },
               {
-                "label": "Link 2",
+                "label": "Campus Commerce",
+                "url": "#"
+              }
+            ]
+          },
+          {
+            "title": "Categories",
+            "links": [
+              {
+                "label": "Books & Stationery",
+                "url": "#"
+              },
+              {
+                "label": "Hostel Essentials",
+                "url": "#"
+              }
+            ]
+          },
+          {
+            "title": "Help & Support",
+            "links": [
+              {
+                "label": "Contact Admin",
+                "url": "#"
+              },
+              {
+                "label": "Terms of Use",
                 "url": "#"
               }
             ]
           }
         ],
-        "copyrightText": "© 2026 Campus Commerce"
+        "copyrightText": "© 2026 Campus Commerce — VNIT"
       }
     }
   },

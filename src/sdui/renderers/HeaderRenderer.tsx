@@ -11,10 +11,50 @@ import type { BaseRendererProps } from "../types";
  * Renders the "Header" component in the SDUI tree.
  * Receives standard props: { children, style, data, actions, ... }
  */
-export default function HeaderRenderer({ children, style = {} }: BaseRendererProps) {
+export default function HeaderRenderer({
+  children,
+  style = {},
+  onClick,
+}: BaseRendererProps) {
+  // Clean rigid dimensions from style so the header conforms fluidly to its container
+  const {
+    height,
+    minHeight,
+    maxHeight,
+    width,
+    minWidth,
+    maxWidth,
+    flex,
+    flexShrink,
+    overflow,
+    overflowX,
+    overflowY,
+    scrollbarWidth,
+    msOverflowStyle,
+    ...cleanStyle
+  } = (style || {}) as any;
+
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, ...style }}>
+    <header
+      onClick={onClick}
+      role="banner"
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: cleanStyle.justifyContent || "space-between",
+        gap: cleanStyle.gap || "12px",
+        width: "100%",
+        minHeight: "36px",
+        padding: cleanStyle.padding || "4px 16px",
+        backgroundColor: cleanStyle.backgroundColor || "#0D3540",
+        borderRadius: cleanStyle.borderRadius || "12px",
+        boxSizing: "border-box",
+        overflow: "visible",
+        ...cleanStyle,
+      }}
+    >
       {children}
-    </div>
+    </header>
   );
 }

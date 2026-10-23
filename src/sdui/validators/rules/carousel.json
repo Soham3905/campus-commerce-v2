@@ -4,10 +4,7 @@
   "category": "Layout",
   "isCompulsory": false,
   "allowedComponents": [
-    "HeroBanner",
-    "Image",
-    "Box",
-    "IFrame"
+    "Image"
   ],
   "minValue": 1,
   "maxValue": 15,
@@ -18,5 +15,23 @@
     "onSwipeRight"
   ],
   "requiredDataFields": [],
-  "fields": {}
+  "fields": {
+    "autoPlay": {
+      "type": "boolean"
+    },
+    "autoPlayInterval": {
+      "type": "number",
+      "minimum": 1000,
+      "maximum": 20000
+    },
+    "infiniteLoop": {
+      "type": "boolean"
+    },
+    "showDots": {
+      "type": "boolean"
+    },
+    "showArrows": {
+      "type": "boolean"
+    }
+  }
 }

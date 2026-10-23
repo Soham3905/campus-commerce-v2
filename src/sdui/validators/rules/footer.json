@@ -4,9 +4,8 @@
   "category": "Layout",
   "isCompulsory": false,
   "allowedComponents": [
-    "Text",
-    "Box",
-    "Button"
+    "Button",
+    "Text"
   ],
   "minValue": 0,
   "maxValue": 10,

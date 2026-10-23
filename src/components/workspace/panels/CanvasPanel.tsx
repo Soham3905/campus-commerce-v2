@@ -140,20 +140,24 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       colSpan = maxCols;
       rowSpan =
         type === "Header"
-          ? 3
+          ? 1
           : type === "StoryRow"
-          ? 4
-          : type === "Carousel"
-          ? 7
-          : type === "ProductList" || type === "ProductGrid"
-          ? 9
-          : type === "Footer"
-          ? 6
-          : 4;
+            ? 2
+            : type === "Carousel"
+              ? 5
+              : type === "ProductList" || type === "ProductGrid"
+                ? 9
+                : type === "Footer"
+                  ? 4
+                  : 4;
       break;
     case "CategoryGrid":
       colSpan = maxCols;
       rowSpan = 2;
+      break;
+    case "Box":
+      colSpan = maxCols;
+      rowSpan = 3;
       break;
     case "SearchBar":
       colSpan = Math.min(8, maxCols);
@@ -230,6 +234,10 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
     case "Score":
       colSpan = Math.min(2, maxCols);
       rowSpan = 1;
+      break;
+    case "IFrame":
+      colSpan = Math.min(12, maxCols);
+      rowSpan = 6;
       break;
     default:
       colSpan = Math.min(8, maxCols);
@@ -453,6 +461,57 @@ export function calculateRequiredRootRows(
     return Math.max(currentPlace.rowEnd - currentPlace.rowStart, minRows);
   }
 
+  // Header container: children (SearchBar and HeaderButton) wrap when exceeding available width.
+  // Each wrapped line occupies 1 canvas grid row.
+  if (rootItem.type === "Header") {
+    let currentLineWidth = 0;
+    let lines = 1;
+    const gap = 12;
+
+    for (const ch of children) {
+      let childWidth = 120; // default for HeaderButton
+      if (ch.type === "SearchBar") {
+        childWidth = 240; // default for SearchBar
+      }
+      if (ch.containerStyle?.width) {
+        const parsed = parseInt(String(ch.containerStyle.width), 10);
+        if (!isNaN(parsed) && parsed > 0) childWidth = parsed;
+      } else if (ch.containerStyle?.minWidth) {
+        const parsed = parseInt(String(ch.containerStyle.minWidth), 10);
+        if (!isNaN(parsed) && parsed > 0) childWidth = parsed;
+      }
+
+      if (ch.id === overrideChildId && overrideWidthPx !== undefined) {
+        childWidth = overrideWidthPx;
+      }
+
+      if (currentLineWidth > 0 && currentLineWidth + childWidth + gap > rootWidthPx) {
+        lines++;
+        currentLineWidth = childWidth;
+      } else {
+        currentLineWidth += (currentLineWidth > 0 ? gap : 0) + childWidth;
+      }
+    }
+
+    const defaultPlace = getDefaultPlacement(rootItem.type, device, 1);
+    const minRows = defaultPlace.rowEnd - defaultPlace.rowStart;
+    return Math.max(lines, minRows);
+  }
+
+  // Footer container: occupies 4 canvas rows by default across all columns
+  if (rootItem.type === "Footer") {
+    const defaultPlace = getDefaultPlacement(rootItem.type, device, 1);
+    const minRows = defaultPlace.rowEnd - defaultPlace.rowStart;
+    return Math.max(currentPlace.rowEnd - currentPlace.rowStart, minRows);
+  }
+
+  // Carousel container: horizontally layered slides occupy 5 canvas rows by default across all columns
+  if (rootItem.type === "Carousel") {
+    const defaultPlace = getDefaultPlacement(rootItem.type, device, 1);
+    const minRows = defaultPlace.rowEnd - defaultPlace.rowStart;
+    return Math.max(currentPlace.rowEnd - currentPlace.rowStart, minRows);
+  }
+
   if (rootItem.type === "ProductList") {
     let currentLineWidth = 0;
     let lines = 1;
@@ -492,21 +551,42 @@ export function calculateRequiredRootRows(
   }
 
   // Generic container height check (e.g. Box, HeroBanner)
-  let maxChildHeight = 0;
-  for (const ch of children) {
-    let h = 100;
-    if (ch.containerStyle?.height) {
-      const parsed = parseInt(String(ch.containerStyle.height), 10);
-      if (!isNaN(parsed)) h = parsed;
+  const isRowLayout =
+    rootItem.config?.containerStyle?.flexDirection === "row" ||
+    rootItem.config?.containerStyle?.overflowX === "auto";
+
+  let contentHeightPx = 0;
+  if (isRowLayout) {
+    let maxChildHeight = 0;
+    for (const ch of children) {
+      let h = 80;
+      if (ch.containerStyle?.height) {
+        const parsed = parseInt(String(ch.containerStyle.height), 10);
+        if (!isNaN(parsed)) h = parsed;
+      }
+      if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
+        h = overrideHeightPx;
+      }
+      if (h > maxChildHeight) maxChildHeight = h;
     }
-    if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
-      h = overrideHeightPx;
+    contentHeightPx = maxChildHeight;
+  } else {
+    // Column or grid layout: stack children heights
+    for (const ch of children) {
+      let h = 60;
+      if (ch.containerStyle?.height) {
+        const parsed = parseInt(String(ch.containerStyle.height), 10);
+        if (!isNaN(parsed)) h = parsed;
+      }
+      if (ch.id === overrideChildId && overrideHeightPx !== undefined) {
+        h = overrideHeightPx;
+      }
+      contentHeightPx += h + 8;
     }
-    if (h > maxChildHeight) maxChildHeight = h;
   }
 
-  if (maxChildHeight > 0) {
-    const totalNeededPx = maxChildHeight + 40;
+  if (contentHeightPx > 0) {
+    const totalNeededPx = contentHeightPx + 40;
     const neededRows = Math.ceil((totalNeededPx + GRID_GAP_PX) / (ROW_HEIGHT_PX + GRID_GAP_PX));
     return Math.max(currentPlace.rowEnd - currentPlace.rowStart, neededRows);
   }
@@ -636,23 +716,23 @@ function RenderInteractiveNode({
   const renderedChildren =
     node.children && node.children.length > 0
       ? node.children.map((child, idx) => (
-          <RenderInteractiveNode
-            key={child.id || idx}
-            node={child}
-            rootItemId={rootItemId}
-            selectedItemId={selectedItemId}
-            onSelectItem={onSelectItem}
-            onAddChild={onAddChild}
-            onDuplicateChild={onDuplicateChild}
-            onDeleteChild={onDeleteChild}
-            onStartChildResize={onStartChildResize}
-            childResize={childResize}
-            isRoot={false}
-            items={items}
-            device={device}
-            onMoveItem={onMoveItem}
-          />
-        ))
+        <RenderInteractiveNode
+          key={child.id || idx}
+          node={child}
+          rootItemId={rootItemId}
+          selectedItemId={selectedItemId}
+          onSelectItem={onSelectItem}
+          onAddChild={onAddChild}
+          onDuplicateChild={onDuplicateChild}
+          onDeleteChild={onDeleteChild}
+          onStartChildResize={onStartChildResize}
+          childResize={childResize}
+          isRoot={false}
+          items={items}
+          device={device}
+          onMoveItem={onMoveItem}
+        />
+      ))
       : null;
 
   // Check if this specific node is currently being resized live
@@ -692,6 +772,11 @@ function RenderInteractiveNode({
   // Wrapper dimensions for nested child
   const wrapperStyle: React.CSSProperties = {
     ...(isRoot ? { width: "100%", height: "100%" } : {}),
+    ...(node.containerStyle?.flex ? { flex: node.containerStyle.flex } : {}),
+    ...(node.containerStyle?.flexGrow !== undefined ? { flexGrow: node.containerStyle.flexGrow } : {}),
+    ...(node.containerStyle?.flexShrink !== undefined ? { flexShrink: node.containerStyle.flexShrink } : {}),
+    ...(node.containerStyle?.minWidth ? { minWidth: node.containerStyle.minWidth } : {}),
+    ...(node.containerStyle?.maxWidth ? { maxWidth: node.containerStyle.maxWidth } : {}),
     ...(node.containerStyle?.width ? { width: effectiveContainerStyle.width } : {}),
     ...(node.containerStyle?.height ? { height: effectiveContainerStyle.height } : {}),
     ...(liveWidth ? { width: liveWidth } : {}),
@@ -711,11 +796,10 @@ function RenderInteractiveNode({
         e.stopPropagation();
       }}
       style={wrapperStyle}
-      className={`relative transition-all duration-150 ${isRoot ? "w-full h-full min-h-0" : ""} ${
-        isSelected
+      className={`relative transition-all duration-150 ${isRoot ? "w-full h-full min-h-0" : ""} ${isSelected
           ? "ring-2 ring-blue-500 rounded-sm z-30 shadow-xs"
           : "hover:outline hover:outline-blue-400 hover:outline-dashed hover:outline-1 rounded-sm cursor-pointer"
-      }`}
+        }`}
     >
       {/* Floating live dimension tooltip while resizing */}
       {isThisResizing && childResize && (
@@ -751,6 +835,16 @@ function RenderInteractiveNode({
       )}
 
       {content}
+      {node.type === "IFrame" && (
+        <div
+          className="absolute inset-0 z-20 cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (node.id) onSelectItem(node.id);
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -1644,9 +1738,9 @@ export default function CanvasPanel({
     const updatedConfig =
       rootItem.id === targetNodeId
         ? {
-            ...rootItem.config,
-            children: [...(Array.isArray(rootItem.config.children) ? rootItem.config.children : []), newChildNode],
-          }
+          ...rootItem.config,
+          children: [...(Array.isArray(rootItem.config.children) ? rootItem.config.children : []), newChildNode],
+        }
         : addChildToNodeRecursive(rootItem.config, targetNodeId, newChildNode);
 
     // Calculate required root rows for newly added content
@@ -2176,12 +2270,12 @@ export default function CanvasPanel({
           itemsRef.current.map((it) =>
             it.id === targetId
               ? {
-                  ...it,
-                  placement: {
-                    ...it.placement,
-                    [device]: finalPlacement,
-                  },
-                }
+                ...it,
+                placement: {
+                  ...it.placement,
+                  [device]: finalPlacement,
+                },
+              }
               : it
           )
         );
@@ -2284,7 +2378,7 @@ export default function CanvasPanel({
       try {
         const raw = e.dataTransfer.getData("application/json");
         if (raw) payload = JSON.parse(raw);
-      } catch {}
+      } catch { }
     }
 
     if (!payload || !payload.type || !gridRef.current) return;
@@ -2347,7 +2441,7 @@ export default function CanvasPanel({
       try {
         const raw = e.dataTransfer.getData("application/json");
         if (raw) payload = JSON.parse(raw);
-      } catch {}
+      } catch { }
     }
 
     if (!payload || !payload.type) {
@@ -2448,11 +2542,10 @@ export default function CanvasPanel({
                 key={dev}
                 type="button"
                 onClick={() => handleSwitchDevice(dev)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer ${
-                  isActive
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer ${isActive
                     ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-600 hover:text-zinc-900"
-                }`}
+                  }`}
               >
                 <span>{conf.icon}</span>
                 <span className="hidden sm:inline">{conf.label}</span>
@@ -2467,11 +2560,10 @@ export default function CanvasPanel({
           <button
             type="button"
             onClick={() => setGridEnabled((v) => !v)}
-            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer border ${
-              gridEnabled
+            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition cursor-pointer border ${gridEnabled
                 ? "bg-blue-50 border-blue-200 text-blue-700"
                 : "bg-white border-zinc-200 text-zinc-500 hover:bg-zinc-50"
-            }`}
+              }`}
             title={gridEnabled ? "Grid appears during drag & resize interactions" : "Grid overlay disabled"}
           >
             <span>▦ Grid: {gridEnabled ? "On" : "Off"}</span>
@@ -2589,14 +2681,13 @@ export default function CanvasPanel({
                       gridRow: `${placement.rowStart} / ${placement.rowEnd}`,
                       zIndex: isSelected || isInteractingThis ? 60 : item.zIndex ?? 1,
                     }}
-                    className={`relative group flex flex-col justify-center select-none ${
-                      isInteractingThis
+                    className={`relative group flex flex-col justify-center select-none ${isInteractingThis
                         ? "ring-2 ring-blue-500 shadow-xl opacity-90 cursor-grabbing z-50"
                         : "transition-all duration-200 ease-out " +
-                          (isSelected
-                            ? "ring-2 ring-blue-500 rounded-sm shadow-xs cursor-grab"
-                            : "hover:ring-1 hover:ring-blue-300/80 rounded-sm cursor-pointer")
-                    }`}
+                        (isSelected
+                          ? "ring-2 ring-blue-500 rounded-sm shadow-xs cursor-grab"
+                          : "hover:ring-1 hover:ring-blue-300/80 rounded-sm cursor-pointer")
+                      }`}
                   >
                     {/* Floating coordinate tooltip while dragging or resizing */}
                     {isInteractingThis && (
@@ -2606,7 +2697,7 @@ export default function CanvasPanel({
                     )}
 
                     {/* Real SDUI Component with Interactive Child Selection */}
-                    <div className="w-full h-full min-h-0">
+                    <div className="w-full h-full min-h-0 relative">
                       <RenderInteractiveNode
                         node={item.config}
                         rootItemId={item.id}
@@ -2622,6 +2713,17 @@ export default function CanvasPanel({
                         device={device}
                         onMoveItem={handleMoveItem}
                       />
+                      {/* Overlay over iframes or during interactions to guarantee clicks & drags are received by canvas */}
+                      {(item.type === "IFrame" || interaction !== null) && (
+                        <div
+                          className="absolute inset-0 z-20 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectItem(item.id);
+                          }}
+                          onPointerDown={(e) => handleStartMove(e, item)}
+                        />
+                      )}
                     </div>
 
                     {/* Step 3: Selection Bounding Box & 8 Resize Handles */}

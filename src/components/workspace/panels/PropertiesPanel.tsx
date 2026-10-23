@@ -356,22 +356,20 @@ export default function PropertiesPanel({
         <button
           type="button"
           onClick={() => setActiveTab("visual")}
-          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer ${
-            activeTab === "visual"
+          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer ${activeTab === "visual"
               ? "border-zinc-900 text-zinc-900"
               : "border-transparent text-zinc-400 hover:text-zinc-600"
-          }`}
+            }`}
         >
           Visual Editor
         </button>
         <button
           type="button"
           onClick={() => setActiveTab("json")}
-          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer flex items-center gap-1.5 ${
-            activeTab === "json"
+          className={`pb-1.5 text-xs font-semibold border-b-2 transition cursor-pointer flex items-center gap-1.5 ${activeTab === "json"
               ? "border-zinc-900 text-zinc-900"
               : "border-transparent text-zinc-400 hover:text-zinc-600"
-          }`}
+            }`}
         >
           <span>Raw JSON</span>
           {jsonError && (
@@ -399,33 +397,30 @@ export default function PropertiesPanel({
               <button
                 type="button"
                 onClick={() => setActiveSection("content")}
-                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
-                  activeSection === "content"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${activeSection === "content"
                     ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                }`}
+                  }`}
               >
                 Content
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSection("style")}
-                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
-                  activeSection === "style"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${activeSection === "style"
                     ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                }`}
+                  }`}
               >
                 Style
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSection("layout")}
-                className={`py-1.5 rounded-md transition text-center cursor-pointer ${
-                  activeSection === "layout"
+                className={`py-1.5 rounded-md transition text-center cursor-pointer ${activeSection === "layout"
                     ? "bg-white text-zinc-900 shadow-2xs font-bold"
                     : "text-zinc-500 hover:text-zinc-800"
-                }`}
+                  }`}
               >
                 Layout
               </button>
@@ -501,10 +496,11 @@ export default function PropertiesPanel({
                       lowerKey.includes("details") ||
                       lowerKey.includes("reviewtext");
                     const isImage =
-                      lowerKey.includes("image") ||
-                      lowerKey.includes("iconurl") ||
-                      lowerKey.includes("banner") ||
-                      lowerKey === "src";
+                      (lowerKey.includes("image") ||
+                        lowerKey.includes("iconurl") ||
+                        lowerKey.includes("banner") ||
+                        lowerKey === "src") &&
+                      selectedItem.type !== "IFrame";
                     const isPrice =
                       lowerKey === "sellingprice" ||
                       lowerKey === "mrp" ||
@@ -515,10 +511,18 @@ export default function PropertiesPanel({
                       !isPrice &&
                       !isDiscount &&
                       (typeof val === "number" ||
-                       lowerKey.includes("rating") ||
-                       lowerKey.includes("count") ||
-                       lowerKey.includes("score"));
-                    const isBoolean = typeof val === "boolean";
+                        lowerKey.includes("rating") ||
+                        lowerKey.includes("count") ||
+                        lowerKey.includes("score") ||
+                        lowerKey.includes("interval"));
+                    const isBoolean =
+                      typeof val === "boolean" ||
+                      lowerKey.startsWith("show") ||
+                      lowerKey.startsWith("is") ||
+                      lowerKey.startsWith("has") ||
+                      lowerKey === "autoplay" ||
+                      lowerKey === "infiniteloop" ||
+                      lowerKey.includes("fullscreen");
 
                     return (
                       <div key={key} className="space-y-1">
@@ -592,25 +596,219 @@ export default function PropertiesPanel({
                             className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
                           />
                         ) : isNumber ? (
-                          <input
-                            type="number"
-                            value={val}
-                            onChange={(e) =>
-                              handleDataChange(
-                                key,
-                                e.target.value === "" ? "" : Number(e.target.value)
-                              )
-                            }
-                            className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                          <div className="relative flex items-center">
+                            <input
+                              type="number"
+                              value={val}
+                              onChange={(e) =>
+                                handleDataChange(
+                                  key,
+                                  e.target.value === "" ? "" : Number(e.target.value)
+                                )
+                              }
+                              className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                            />
+                            {lowerKey.includes("interval") && (
+                              <span className="absolute right-2.5 text-[11px] font-semibold text-zinc-400 pointer-events-none select-none">
+                                ms
+                              </span>
+                            )}
+                          </div>
+                        ) : key === "sections" && Array.isArray(val) ? (
+                          <div className="space-y-2 pt-1">
+                            {val.map((section: any, sIdx: number) => (
+                              <div
+                                key={sIdx}
+                                className="p-2 rounded-lg bg-zinc-50 border border-zinc-200 space-y-1.5"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] font-bold text-zinc-500 uppercase">
+                                    Section {sIdx + 1}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = val.filter(
+                                        (_: any, idx: number) => idx !== sIdx
+                                      );
+                                      handleDataChange(key, updated);
+                                    }}
+                                    className="text-[10px] text-zinc-400 hover:text-red-500 cursor-pointer"
+                                    title="Delete section"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                                <div>
+                                  <label className="text-[10px] text-zinc-600 font-medium block mb-0.5">
+                                    Title
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={section.title || ""}
+                                    onChange={(e) => {
+                                      const updated = val.map((s: any, idx: number) =>
+                                        idx === sIdx ? { ...s, title: e.target.value } : s
+                                      );
+                                      handleDataChange(key, updated);
+                                    }}
+                                    placeholder="Section Title"
+                                    className="w-full rounded border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
+                                  />
+                                </div>
+                                <div className="space-y-1 pt-1">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[9px] font-semibold text-zinc-400 uppercase">
+                                      Links ({section.links?.length || 0})
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const newLinks = [
+                                          ...(section.links || []),
+                                          { label: "New Link", url: "#" },
+                                        ];
+                                        const updated = val.map((s: any, idx: number) =>
+                                          idx === sIdx ? { ...s, links: newLinks } : s
+                                        );
+                                        handleDataChange(key, updated);
+                                      }}
+                                      className="text-[10px] text-blue-600 hover:text-blue-700 font-semibold cursor-pointer"
+                                    >
+                                      + Add Link
+                                    </button>
+                                  </div>
+                                  {(section.links || []).map((link: any, lIdx: number) => (
+                                    <div key={lIdx} className="flex items-center gap-1.5">
+                                      <input
+                                        type="text"
+                                        value={link.label || ""}
+                                        onChange={(e) => {
+                                          const newLinks = (section.links || []).map(
+                                            (l: any, idx: number) =>
+                                              idx === lIdx
+                                                ? { ...l, label: e.target.value }
+                                                : l
+                                          );
+                                          const updated = val.map((s: any, idx: number) =>
+                                            idx === sIdx ? { ...s, links: newLinks } : s
+                                          );
+                                          handleDataChange(key, updated);
+                                        }}
+                                        placeholder="Label"
+                                        className="w-1/2 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-xs text-zinc-800 focus:outline-none"
+                                      />
+                                      <input
+                                        type="text"
+                                        value={link.url || ""}
+                                        onChange={(e) => {
+                                          const newLinks = (section.links || []).map(
+                                            (l: any, idx: number) =>
+                                              idx === lIdx
+                                                ? { ...l, url: e.target.value }
+                                                : l
+                                          );
+                                          const updated = val.map((s: any, idx: number) =>
+                                            idx === sIdx ? { ...s, links: newLinks } : s
+                                          );
+                                          handleDataChange(key, updated);
+                                        }}
+                                        placeholder="URL"
+                                        className="w-1/2 rounded border border-zinc-200 bg-white px-1.5 py-0.5 text-xs font-mono text-zinc-800 focus:outline-none"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const newLinks = (section.links || []).filter(
+                                            (_: any, idx: number) => idx !== lIdx
+                                          );
+                                          const updated = val.map((s: any, idx: number) =>
+                                            idx === sIdx ? { ...s, links: newLinks } : s
+                                          );
+                                          handleDataChange(key, updated);
+                                        }}
+                                        className="text-zinc-400 hover:text-red-500 text-[10px] px-0.5 cursor-pointer"
+                                        title="Remove link"
+                                      >
+                                        ✕
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newSec = {
+                                  title: "New Section",
+                                  links: [{ label: "Link 1", url: "#" }],
+                                };
+                                handleDataChange(key, [...val, newSec]);
+                              }}
+                              className="w-full py-1 rounded-lg border border-dashed border-zinc-300 hover:border-zinc-400 text-zinc-600 hover:text-zinc-900 text-xs font-semibold cursor-pointer transition text-center"
+                            >
+                              + Add Section
+                            </button>
+                          </div>
+                        ) : typeof val === "object" && val !== null ? (
+                          <textarea
+                            rows={3}
+                            value={typeof val === "string" ? val : JSON.stringify(val, null, 2)}
+                            onChange={(e) => {
+                              try {
+                                handleDataChange(key, JSON.parse(e.target.value));
+                              } catch {
+                                // keep raw string while typing
+                              }
+                            }}
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1 text-xs font-mono text-zinc-800 focus:outline-none focus:border-zinc-400"
                           />
                         ) : (
                           <div className="space-y-1">
                             <input
                               type="text"
                               value={val}
+                              placeholder={
+                                selectedItem.type === "IFrame" && key === "src"
+                                  ? "https://www.youtube.com/embed/... or map embed URL"
+                                  : ""
+                              }
                               onChange={(e) => handleDataChange(key, e.target.value)}
                               className="w-full rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs text-zinc-800 focus:outline-none focus:border-zinc-400"
                             />
+                            {selectedItem.type === "IFrame" && key === "src" && (
+                              <div className="space-y-1 pt-0.5">
+                                <span className="text-[10px] text-zinc-400 block font-medium">
+                                  💡 Embed Presets:
+                                </span>
+                                <div className="flex flex-wrap gap-1">
+                                  {[
+                                    {
+                                      label: "🗺️ Campus Map",
+                                      url: "https://www.openstreetmap.org/export/embed.html?bbox=79.049%2C21.121%2C79.056%2C21.128&layer=mapnik",
+                                    },
+                                    {
+                                      label: "🎥 YouTube",
+                                      url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                                    },
+                                    {
+                                      label: "🌐 Wikipedia",
+                                      url: "https://en.wikipedia.org/wiki/Visvesvaraya_National_Institute_of_Technology",
+                                    },
+                                  ].map((preset) => (
+                                    <button
+                                      key={preset.label}
+                                      type="button"
+                                      onClick={() => handleDataChange("src", preset.url)}
+                                      className="text-[10px] px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-medium transition cursor-pointer"
+                                    >
+                                      {preset.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                             {isImage && val && typeof val === "string" && (
                               <div className="relative h-14 w-full rounded border border-zinc-200 overflow-hidden bg-zinc-50 flex items-center justify-center">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -703,6 +901,11 @@ export default function PropertiesPanel({
                             >
                               <span className="text-zinc-400">└</span>
                               <span className="font-bold">{ch.type}</span>
+                              {Boolean(ch.config?.data?.label || ch.config?.data?.title || ch.config?.data?.altText || ch.config?.data?.text) && (
+                                <span className="text-zinc-400 font-normal truncate max-w-[100px]">
+                                  ({ch.config?.data?.label || ch.config?.data?.title || ch.config?.data?.altText || ch.config?.data?.text})
+                                </span>
+                              )}
                             </button>
 
                             {onDeleteChild && ch.id && (
@@ -767,11 +970,10 @@ export default function PropertiesPanel({
                         key={p.label}
                         type="button"
                         onClick={() => handleStyleChange("backgroundColor", p.value)}
-                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${
-                          currentStyles.backgroundColor === p.value
+                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${currentStyles.backgroundColor === p.value
                             ? "border-zinc-900 ring-1 ring-zinc-900 bg-zinc-50"
                             : "border-zinc-200 hover:border-zinc-400 bg-white"
-                        }`}
+                          }`}
                       >
                         <span
                           className="h-2 w-2 rounded-full border border-black/10"
@@ -821,11 +1023,10 @@ export default function PropertiesPanel({
                         key={p.label}
                         type="button"
                         onClick={() => handleStyleChange("color", p.value)}
-                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${
-                          currentStyles.color === p.value
+                        className={`h-5 px-1.5 rounded text-[9px] font-semibold border transition cursor-pointer flex items-center gap-1 ${currentStyles.color === p.value
                             ? "border-zinc-900 ring-1 ring-zinc-900 bg-zinc-50"
                             : "border-zinc-200 hover:border-zinc-400 bg-white"
-                        }`}
+                          }`}
                       >
                         <span
                           className="h-2 w-2 rounded-full border border-black/10"
@@ -848,11 +1049,10 @@ export default function PropertiesPanel({
                         key={fs}
                         type="button"
                         onClick={() => handleStyleChange("fontSize", fs)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.fontSize === fs
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.fontSize === fs
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {fs}
                       </button>
@@ -875,11 +1075,10 @@ export default function PropertiesPanel({
                         key={fw.val}
                         type="button"
                         onClick={() => handleStyleChange("fontWeight", fw.val)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.fontWeight === fw.val
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.fontWeight === fw.val
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {fw.label}
                       </button>
@@ -896,11 +1095,10 @@ export default function PropertiesPanel({
                         key={ta}
                         type="button"
                         onClick={() => handleStyleChange("textAlign", ta)}
-                        className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${
-                          currentStyles.textAlign === ta
+                        className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${currentStyles.textAlign === ta
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {ta}
                       </button>
@@ -924,11 +1122,10 @@ export default function PropertiesPanel({
                         key={p.val}
                         type="button"
                         onClick={() => handleStyleChange("padding", p.val)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.padding === p.val
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.padding === p.val
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {p.label}
                       </button>
@@ -949,11 +1146,10 @@ export default function PropertiesPanel({
                         key={m.val}
                         type="button"
                         onClick={() => handleStyleChange("margin", m.val)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.margin === m.val
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.margin === m.val
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {m.label}
                       </button>
@@ -978,11 +1174,10 @@ export default function PropertiesPanel({
                         key={r.val}
                         type="button"
                         onClick={() => handleStyleChange("borderRadius", r.val)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.borderRadius === r.val
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.borderRadius === r.val
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {r.label}
                       </button>
@@ -1004,11 +1199,10 @@ export default function PropertiesPanel({
                             handleStyleChange("borderStyle", "solid");
                           }
                         }}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.borderWidth === bw
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.borderWidth === bw
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {bw}
                       </button>
@@ -1032,12 +1226,11 @@ export default function PropertiesPanel({
                         key={sh.label}
                         type="button"
                         onClick={() => handleStyleChange("boxShadow", sh.val)}
-                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                          currentStyles.boxShadow === sh.val ||
-                          (!currentStyles.boxShadow && sh.val === "none")
+                        className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.boxShadow === sh.val ||
+                            (!currentStyles.boxShadow && sh.val === "none")
                             ? "bg-zinc-900 text-white"
                             : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                        }`}
+                          }`}
                       >
                         {sh.label}
                       </button>
@@ -1048,28 +1241,27 @@ export default function PropertiesPanel({
                 {/* 7. Image Fit (If Image component or has image) */}
                 {(selectedItem.type.toLowerCase().includes("image") ||
                   currentStyles.objectFit) && (
-                  <div className="pt-2 border-t border-zinc-100">
-                    <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
-                      Image Object Fit
-                    </label>
-                    <div className="grid grid-cols-3 gap-1">
-                      {["cover", "contain", "fill"].map((fit) => (
-                        <button
-                          key={fit}
-                          type="button"
-                          onClick={() => handleStyleChange("objectFit", fit)}
-                          className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${
-                            currentStyles.objectFit === fit
-                              ? "bg-zinc-900 text-white"
-                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
-                        >
-                          {fit}
-                        </button>
-                      ))}
+                    <div className="pt-2 border-t border-zinc-100">
+                      <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                        Image Object Fit
+                      </label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {["cover", "contain", "fill"].map((fit) => (
+                          <button
+                            key={fit}
+                            type="button"
+                            onClick={() => handleStyleChange("objectFit", fit)}
+                            className={`py-1 rounded text-[10px] font-semibold capitalize transition cursor-pointer ${currentStyles.objectFit === fit
+                                ? "bg-zinc-900 text-white"
+                                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                              }`}
+                          >
+                            {fit}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             )}
 
@@ -1110,11 +1302,10 @@ export default function PropertiesPanel({
                             key={p.label}
                             type="button"
                             onClick={() => handleGridSpanChange(p.span)}
-                            className={`py-1.5 text-center rounded text-[10px] font-semibold transition cursor-pointer ${
-                              isActive
+                            className={`py-1.5 text-center rounded text-[10px] font-semibold transition cursor-pointer ${isActive
                                 ? "bg-zinc-900 text-white"
                                 : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                            }`}
+                              }`}
                           >
                             {p.label}
                           </button>
@@ -1165,11 +1356,10 @@ export default function PropertiesPanel({
                           onClick={() =>
                             handleStyleChange("width", w.val === "auto" ? "" : w.val)
                           }
-                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                            isActive
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${isActive
                               ? "bg-zinc-900 text-white"
                               : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                            }`}
                         >
                           {w.label}
                         </button>
@@ -1214,11 +1404,10 @@ export default function PropertiesPanel({
                           onClick={() =>
                             handleStyleChange("height", h.val === "auto" ? "" : h.val)
                           }
-                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                            isActive
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${isActive
                               ? "bg-zinc-900 text-white"
                               : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                            }`}
                         >
                           {h.label}
                         </button>
@@ -1261,13 +1450,40 @@ export default function PropertiesPanel({
                           key={g}
                           type="button"
                           onClick={() => handleStyleChange("gap", g)}
-                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${
-                            currentStyles.gap === g
+                          className={`py-1 rounded text-[10px] font-semibold transition cursor-pointer ${currentStyles.gap === g
                               ? "bg-zinc-900 text-white"
                               : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                          }`}
+                            }`}
                         >
                           {g}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 6. Layout Direction for Containers */}
+                {childrenList.length > 0 && (
+                  <div className="pt-2 border-t border-zinc-100">
+                    <label className="text-[11px] font-semibold text-zinc-700 block mb-1">
+                      Layout Direction
+                    </label>
+                    <div className="grid grid-cols-2 gap-1">
+                      {[
+                        { label: "Vertical (Column)", val: "column" },
+                        { label: "Horizontal (Row)", val: "row" },
+                      ].map((d) => (
+                        <button
+                          key={d.val}
+                          type="button"
+                          onClick={() => handleStyleChange("flexDirection", d.val)}
+                          className={`py-1.5 rounded text-[10px] font-semibold transition cursor-pointer ${(currentStyles.flexDirection === d.val) ||
+                              (!currentStyles.flexDirection && d.val === "column")
+                              ? "bg-zinc-900 text-white"
+                              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                            }`}
+                        >
+                          {d.label}
                         </button>
                       ))}
                     </div>
