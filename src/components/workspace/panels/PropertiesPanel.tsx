@@ -751,6 +751,72 @@ export default function PropertiesPanel({
                               + Add Section
                             </button>
                           </div>
+                        ) : key === "items" && Array.isArray(val) && selectedItem.type === "NavBar" ? (
+                          <div className="space-y-2 pt-1">
+                            {val.map((item: any, iIdx: number) => (
+                              <div
+                                key={iIdx}
+                                className="p-2 rounded-lg bg-zinc-50 border border-zinc-200 space-y-1.5"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[10px] font-bold text-zinc-600 uppercase">
+                                    Tab {iIdx + 1}: {item.icon} {item.label}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = val.filter((_: any, idx: number) => idx !== iIdx);
+                                      handleDataChange(key, updated);
+                                    }}
+                                    className="text-[10px] text-zinc-400 hover:text-red-500 cursor-pointer"
+                                    title="Delete tab"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                                <div className="grid grid-cols-2 gap-1.5">
+                                  <div>
+                                    <label className="text-[10px] text-zinc-500 font-medium block mb-0.5">Label</label>
+                                    <input
+                                      type="text"
+                                      value={item.label || ""}
+                                      onChange={(e) => {
+                                        const updated = val.map((it: any, idx: number) =>
+                                          idx === iIdx ? { ...it, label: e.target.value } : it
+                                        );
+                                        handleDataChange(key, updated);
+                                      }}
+                                      className="w-full rounded border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 focus:outline-none"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-[10px] text-zinc-500 font-medium block mb-0.5">Icon</label>
+                                    <input
+                                      type="text"
+                                      value={item.icon || ""}
+                                      onChange={(e) => {
+                                        const updated = val.map((it: any, idx: number) =>
+                                          idx === iIdx ? { ...it, icon: e.target.value } : it
+                                        );
+                                        handleDataChange(key, updated);
+                                      }}
+                                      className="w-full rounded border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-800 focus:outline-none"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newTab = { label: "New Tab", icon: "⭐", isActive: "false" };
+                                handleDataChange(key, [...val, newTab]);
+                              }}
+                              className="w-full py-1 rounded-lg border border-dashed border-zinc-300 hover:border-zinc-400 text-zinc-600 hover:text-zinc-900 text-xs font-semibold cursor-pointer transition text-center"
+                            >
+                              + Add Navigation Tab
+                            </button>
+                          </div>
                         ) : typeof val === "object" && val !== null ? (
                           <textarea
                             rows={3}
@@ -917,18 +983,19 @@ export default function PropertiesPanel({
                               ) && (
                                 <span className="text-zinc-400 font-normal truncate max-w-[130px]">
                                   (
-                                  {ch.config?.data?.label ||
-                                    ch.config?.data?.title ||
-                                    ch.config?.data?.altText ||
-                                    ch.config?.data?.text ||
-                                    ch.config?.data?.sellingPrice ||
-                                    ch.config?.data?.score ||
-                                    ch.config?.data?.prefix ||
-                                    (ch.type === "ProductCard" && (
-                                      ch.config?.children?.find((c: any) => c.type === "Title")?.data?.text ||
-                                      ch.config?.children?.find((c: any) => c.type === "Image")?.data?.altText ||
-                                      ch.config?.data?.id
-                                    ))}
+                                  {(ch.config?.data?.icon ? `${ch.config.data.icon} ` : "") +
+                                    (ch.config?.data?.label ||
+                                      ch.config?.data?.title ||
+                                      ch.config?.data?.altText ||
+                                      ch.config?.data?.text ||
+                                      ch.config?.data?.sellingPrice ||
+                                      ch.config?.data?.score ||
+                                      ch.config?.data?.prefix ||
+                                      (ch.type === "ProductCard" && (
+                                        ch.config?.children?.find((c: any) => c.type === "Title")?.data?.text ||
+                                        ch.config?.children?.find((c: any) => c.type === "Image")?.data?.altText ||
+                                        ch.config?.data?.id
+                                      )) || "")}
                                   )
                                 </span>
                               )}

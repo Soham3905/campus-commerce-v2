@@ -3,9 +3,12 @@
   "displayName": "Navigation Bar",
   "category": "Navigation",
   "isCompulsory": false,
-  "allowedComponents": [],
+  "allowedComponents": [
+    "HeaderButton",
+    "Button"
+  ],
   "minValue": 0,
-  "maxValue": 0,
+  "maxValue": 8,
   "allowedActions": [
     "onTabSelect"
   ],

@@ -3403,12 +3403,17 @@ export const fullPageJSON: SDUINode = {
       "containerStyle": {
         "position": "sticky",
         "bottom": "0",
-        "width": "100%",
-        "height": "60px",
+        "zIndex": 100,
         "backgroundColor": "#FFFFFF",
-        "zIndex": "210",
         "borderTop": "1px solid #E5E7EB",
-        "display": "flex"
+        "boxShadow": "0 -1px 3px rgba(16, 31, 38, 0.05)",
+        "padding": "4px 8px",
+        "display": "flex",
+        "justifyContent": "space-around",
+        "alignItems": "center",
+        "width": "100%",
+        "height": "100%",
+        "boxSizing": "border-box"
       },
       "data": {
         "items": [
@@ -3457,7 +3462,121 @@ export const fullPageJSON: SDUINode = {
             }
           }
         ]
-      }
+      },
+      "children": [
+        {
+          "type": "HeaderButton",
+          "containerStyle": {
+            "flex": "1",
+            "flexDirection": "column",
+            "gap": "2px",
+            "padding": "4px 2px",
+            "backgroundColor": "transparent",
+            "border": "none",
+            "color": "#0D3540",
+            "fontSize": "10px",
+            "fontWeight": "700",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "id": "nav-home",
+            "label": "Home",
+            "icon": "🏠",
+            "isActive": "true"
+          },
+          "actions": {
+            "onTap": {
+              "type": "NAVIGATE",
+              "route": "home"
+            }
+          }
+        },
+        {
+          "type": "HeaderButton",
+          "containerStyle": {
+            "flex": "1",
+            "flexDirection": "column",
+            "gap": "2px",
+            "padding": "4px 2px",
+            "backgroundColor": "transparent",
+            "border": "none",
+            "color": "#6B7280",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "id": "nav-categories",
+            "label": "Categories",
+            "icon": "🗂️",
+            "isActive": "false"
+          },
+          "actions": {
+            "onTap": {
+              "type": "NAVIGATE",
+              "route": "categories"
+            }
+          }
+        },
+        {
+          "type": "HeaderButton",
+          "containerStyle": {
+            "flex": "1",
+            "flexDirection": "column",
+            "gap": "2px",
+            "padding": "4px 2px",
+            "backgroundColor": "transparent",
+            "border": "none",
+            "color": "#6B7280",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "id": "nav-cart",
+            "label": "Cart",
+            "icon": "🛒",
+            "isActive": "false"
+          },
+          "actions": {
+            "onTap": {
+              "type": "NAVIGATE",
+              "route": "cart"
+            }
+          }
+        },
+        {
+          "type": "HeaderButton",
+          "containerStyle": {
+            "flex": "1",
+            "flexDirection": "column",
+            "gap": "2px",
+            "padding": "4px 2px",
+            "backgroundColor": "transparent",
+            "border": "none",
+            "color": "#6B7280",
+            "fontSize": "10px",
+            "fontWeight": "600",
+            "cursor": "pointer",
+            "boxSizing": "border-box"
+          },
+          "data": {
+            "id": "nav-account",
+            "label": "Account",
+            "icon": "👤",
+            "isActive": "false"
+          },
+          "actions": {
+            "onTap": {
+              "type": "NAVIGATE",
+              "route": "account"
+            }
+          }
+        }
+      ]
     }
   ]
 }

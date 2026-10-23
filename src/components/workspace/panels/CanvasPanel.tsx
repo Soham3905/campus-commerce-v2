@@ -141,17 +141,19 @@ export function getDefaultPlacement(type: string, device: DeviceType, startRow: 
       rowSpan =
         type === "Header"
           ? 1
-          : type === "StoryRow"
+          : type === "NavBar"
             ? 2
-            : type === "Carousel"
-              ? 5
-              : type === "ProductList"
-                ? 13
-                : type === "ProductGrid"
-                  ? 9
-                  : type === "Footer"
-                  ? 4
-                  : 4;
+            : type === "StoryRow"
+              ? 2
+              : type === "Carousel"
+                ? 5
+                : type === "ProductList"
+                  ? 13
+                  : type === "ProductGrid"
+                    ? 9
+                    : type === "Footer"
+                    ? 4
+                    : 4;
       break;
     case "CategoryGrid":
       colSpan = maxCols;
@@ -455,9 +457,9 @@ export function calculateRequiredRootRows(
   const children = rootItem.config?.children || [];
   if (children.length === 0) return currentPlace.rowEnd - currentPlace.rowStart;
 
-  // Horizontal row containers: CategoryGrid and StoryRow layout children in a single horizontal track.
+  // Horizontal row containers: CategoryGrid, StoryRow, and NavBar layout children in a single horizontal track.
   // Adding children adds columns horizontally — it does not increase vertical rows.
-  if (rootItem.type === "CategoryGrid" || rootItem.type === "StoryRow") {
+  if (rootItem.type === "CategoryGrid" || rootItem.type === "StoryRow" || rootItem.type === "NavBar") {
     const defaultPlace = getDefaultPlacement(rootItem.type, device, 1);
     const minRows = defaultPlace.rowEnd - defaultPlace.rowStart;
     return Math.max(currentPlace.rowEnd - currentPlace.rowStart, minRows);
@@ -1428,6 +1430,32 @@ export function createDefaultChildNode(
         minHeight: "524px",
         maxHeight: "524px",
         alignSelf: "stretch",
+      },
+    };
+  }
+
+  // When adding a HeaderButton into a NavBar, configure vertical bottom nav tab styling
+  if (childType === "HeaderButton" && parentType === "NavBar") {
+    baseNode = {
+      ...baseNode,
+      containerStyle: {
+        ...(baseNode.containerStyle || {}),
+        flex: "1",
+        flexDirection: "column",
+        gap: "2px",
+        padding: "4px 2px",
+        backgroundColor: "transparent",
+        border: "none",
+        color: "#6B7280",
+        fontSize: "10px",
+        fontWeight: "600",
+        cursor: "pointer",
+        boxSizing: "border-box",
+      },
+      data: {
+        label: "Tab",
+        icon: "🧭",
+        isActive: "false",
       },
     };
   }

@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { BaseRendererProps } from "../types";
+import { NavBarContext } from "./NavBarRenderer";
 
 /**
  * ==============================================================================
@@ -12,6 +13,8 @@ import type { BaseRendererProps } from "../types";
  * Receives standard props: { children, style, data, actions, ... }
  */
 export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }: BaseRendererProps) {
+  const isInsideNavBar = React.useContext(NavBarContext);
+
   const {
     height,
     minHeight,
@@ -24,6 +27,18 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
     msOverflowStyle,
     ...cleanStyle
   } = (style || {}) as any;
+
+  const isActive = data?.isActive === "true" || data?.isActive === true;
+  const activeColor = cleanStyle.activeColor || "#0D3540";
+  const inactiveColor = cleanStyle.inactiveColor || cleanStyle.color || "#6B7280";
+  const effectiveColor = cleanStyle.color
+    ? cleanStyle.color
+    : isActive
+      ? activeColor
+      : inactiveColor;
+
+  const direction = cleanStyle.flexDirection || (isInsideNavBar ? "column" : "row");
+  const isColumn = direction === "column";
 
   return (
     <button
@@ -39,9 +54,9 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
         padding: cleanStyle.padding || "4px 8px",
         border: cleanStyle.border || "none",
         backgroundColor: cleanStyle.backgroundColor || "transparent",
-        color: cleanStyle.color || "inherit",
-        fontSize: "12px",
-        fontWeight: "600",
+        color: effectiveColor,
+        fontSize: cleanStyle.fontSize || "12px",
+        fontWeight: cleanStyle.fontWeight || (isActive ? "700" : "600"),
         cursor: "pointer",
         boxSizing: "border-box",
         overflow: "hidden",
@@ -64,22 +79,37 @@ export default function HeaderButtonRenderer({ data = {}, style = {}, onClick }:
         <div
           style={{
             display: "flex",
+            flexDirection: direction,
             alignItems: "center",
             justifyContent: "center",
-            gap: "6px",
+            gap: cleanStyle.gap || (isColumn ? "2px" : "6px"),
             margin: "auto 0",
             width: "100%",
             flexShrink: 0,
           }}
         >
-          {data?.icon && <span style={{ flexShrink: 0 }}>{data.icon}</span>}
+          {data?.icon && (
+            <span
+              style={{
+                flexShrink: 0,
+                fontSize:
+                  cleanStyle.iconSize ||
+                  (isColumn ? "18px" : undefined),
+                lineHeight: 1,
+              }}
+            >
+              {data.icon}
+            </span>
+          )}
           {(data?.label || data?.text) && (
             <span
               style={{
                 overflowWrap: "anywhere",
                 wordBreak: "break-word",
                 whiteSpace: whiteSpace && whiteSpace !== "nowrap" ? whiteSpace : "normal",
-                lineHeight: "16px",
+                lineHeight: isColumn ? "14px" : "16px",
+                fontSize: cleanStyle.fontSize || (isColumn ? "10px" : undefined),
+                fontWeight: cleanStyle.fontWeight || (isActive ? "700" : "600"),
                 textAlign: "center",
               }}
             >
